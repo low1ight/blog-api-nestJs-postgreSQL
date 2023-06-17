@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { UsersController } from './users/users.controller';
+import { UsersController } from './modules/users/users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserQueryRepository } from './users/repository/user.query.repository';
+import { UsersQueryRepository } from './modules/users/repository/users-query-repository.service';
+import { UsersRepository } from './modules/users/repository/users.repository';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { UserQueryRepository } from './users/repository/user.query.repository';
     }),
   ],
   controllers: [AppController, UsersController],
-  providers: [AppService, UserQueryRepository],
+  providers: [AppService, UsersQueryRepository, UsersRepository],
 })
 export class AppModule {}
