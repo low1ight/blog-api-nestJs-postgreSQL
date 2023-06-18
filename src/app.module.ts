@@ -4,9 +4,12 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { UsersSaController } from './modules/users/controllers/sa/users.sa.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersQueryRepository } from './modules/users/repositories/query-repository/users-query-repository.service';
+import { UsersQueryRepository } from './modules/users/repositories/query-repository/sa/users-query-repository.service';
 import { UsersSaRepository } from './modules/users/repositories/repository/sa/users.sa.repository';
 import { UsersService } from './modules/users/users.service';
+import { TestingService } from './modules/testing/testing.service';
+import { TestingRepository } from './modules/testing/repositories/repository/testing.repository';
+import { TestingController } from './modules/testing/controllers/testing.controller';
 
 @Module({
   imports: [
@@ -24,12 +27,14 @@ import { UsersService } from './modules/users/users.service';
       synchronize: false,
     }),
   ],
-  controllers: [AppController, UsersSaController],
+  controllers: [AppController, UsersSaController, TestingController],
   providers: [
     AppService,
     UsersQueryRepository,
     UsersService,
     UsersSaRepository,
+    TestingService,
+    TestingRepository,
   ],
 })
 export class AppModule {}
