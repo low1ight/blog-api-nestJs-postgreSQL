@@ -5,7 +5,7 @@ export class UserDbModel {
     public password: string,
     public passwordRecoveryCode: string,
     public email: string,
-    public createdAt: string,
-    public updatedAt: string,
+    public createdAt: Date,
+    public updatedAt: Date,
   ) {}
 }

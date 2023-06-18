@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { UsersQueryRepository } from '../../repositories/query-repository/users-query-repository.service';
 import { UsersService } from '../../users.service';
+import { UsersQueryRepository } from '../../repositories/query-repository/sa/users-query-repository';
 
 @Controller('sa/users')
 export class UsersSaController {
