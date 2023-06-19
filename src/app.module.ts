@@ -5,11 +5,15 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersSaController } from './modules/users/controllers/sa/users.sa.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersSaRepository } from './modules/users/repositories/repository/sa/users.sa.repository';
-import { UsersService } from './modules/users/users.service';
+import { UsersSaService } from './modules/users/users.sa.service';
 import { TestingService } from './modules/testing/testing.service';
 import { TestingRepository } from './modules/testing/repositories/repository/testing.repository';
 import { TestingController } from './modules/testing/controllers/testing.controller';
 import { UsersQueryRepository } from './modules/users/repositories/query-repository/sa/users-query-repository';
+import {
+  IsUserEmailAlreadyExist,
+  IsUserLoginAlreadyExist,
+} from './common/customValidators/IsUserFieldsExist';
 
 @Module({
   imports: [
@@ -29,9 +33,11 @@ import { UsersQueryRepository } from './modules/users/repositories/query-reposit
   ],
   controllers: [AppController, UsersSaController, TestingController],
   providers: [
+    IsUserLoginAlreadyExist,
+    IsUserEmailAlreadyExist,
     AppService,
     UsersQueryRepository,
-    UsersService,
+    UsersSaService,
     UsersSaRepository,
     TestingService,
     TestingRepository,

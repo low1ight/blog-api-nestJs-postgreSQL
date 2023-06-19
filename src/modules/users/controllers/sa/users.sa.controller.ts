@@ -1,12 +1,13 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { UsersService } from '../../users.service';
 import { UsersQueryRepository } from '../../repositories/query-repository/sa/users-query-repository';
+import { CreateUserDto } from './dto/CreateUserDto';
+import { UsersSaService } from '../../users.sa.service';
 
 @Controller('sa/users')
 export class UsersSaController {
   constructor(
     private readonly usersQueryRepository: UsersQueryRepository,
-    private readonly usersService: UsersService,
+    private readonly usersService: UsersSaService,
   ) {}
 
   @Get()
@@ -17,11 +18,7 @@ export class UsersSaController {
   @Post('')
   async createUser(
     @Body()
-    dto: {
-      login: string;
-      password: string;
-      email: string;
-    },
+    dto: CreateUserDto,
   ) {
     return await this.usersService.createUser(dto);
   }
