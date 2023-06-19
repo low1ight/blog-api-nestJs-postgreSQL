@@ -1,11 +1,9 @@
-export class UserDbModel {
-  constructor(
-    public id: number,
-    public login: string,
-    public password: string,
-    public passwordRecoveryCode: string,
-    public email: string,
-    public createdAt: Date,
-    public updatedAt: Date,
-  ) {}
-}
+export type UserDbModel = {
+  id: number;
+  login: string;
+  password: string;
+  passwordRecoveryCode: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

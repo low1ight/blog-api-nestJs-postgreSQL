@@ -1,8 +1,6 @@
-export class UserBanInfoDbModel {
-  constructor(
-    public userId: number,
-    public isBanned: boolean,
-    public banReason: string,
-    public banDate: Date,
-  ) {}
-}
+export type UserBanInfoDbModel = {
+  userId: number;
+  isBanned: boolean;
+  banReason: string;
+  banDate: Date;
+};
