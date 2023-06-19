@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { UserDbModel } from '../../dto/User.db.model';
+import { UserSaViewModel } from '../../query-repository/sa/dto/UserSaViewModel';
 
 @Injectable()
 export class UsersSaRepository {
@@ -15,7 +16,7 @@ export class UsersSaRepository {
     login: string;
     password: string;
     email: string;
-  }): Promise<UserDbModel> {
+  }): Promise<UserSaViewModel> {
     //create user
     const createdUserData: UserDbModel = await this.dataSource.query(
       `
@@ -24,7 +25,7 @@ export class UsersSaRepository {
         INSERT INTO public."Users"("login", "password", "passwordRecoveryCode", "email")
         VALUES($1, $2, null, $3)
         
-        RETURNING * ;
+        RETURNING "id","login","email","createdAt" ;
     `,
       [login, password, email],
     );
@@ -49,7 +50,12 @@ export class UsersSaRepository {
     
     `);
 
-    return createdUser;
+    return new UserSaViewModel({
+      ...createdUser,
+      isBanned: false,
+      banDate: null,
+      banReason: null,
+    });
   }
 
   async checkIsUserExistByField(
