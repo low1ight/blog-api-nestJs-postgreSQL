@@ -3,6 +3,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { UserDbModel } from '../../dto/User.db.model';
 import { UserSaViewModel } from '../../query-repository/sa/dto/UserSaViewModel';
+import { CreateUserDto } from '../../../controllers/sa/dto/CreateUserDto';
 
 @Injectable()
 export class UsersSaRepository {
@@ -12,11 +13,7 @@ export class UsersSaRepository {
     login,
     password,
     email,
-  }: {
-    login: string;
-    password: string;
-    email: string;
-  }): Promise<UserSaViewModel> {
+  }: CreateUserDto): Promise<UserSaViewModel> {
     //create user
     const createdUserData: UserDbModel = await this.dataSource.query(
       `

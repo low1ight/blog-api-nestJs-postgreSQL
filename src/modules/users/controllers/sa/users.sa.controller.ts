@@ -1,13 +1,14 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UsersQueryRepository } from '../../repositories/query-repository/sa/users-query-repository';
 import { CreateUserDto } from './dto/CreateUserDto';
-import { UsersSaService } from '../../users.sa.service';
+import { CommandBus } from '@nestjs/cqrs';
+import { CreateUserUseCaseCommand } from '../../application/use-cases/create-user-use-case';
 
 @Controller('sa/users')
 export class UsersSaController {
   constructor(
     private readonly usersQueryRepository: UsersQueryRepository,
-    private readonly usersService: UsersSaService,
+    protected commandBus: CommandBus,
   ) {}
 
   @Get()
@@ -20,6 +21,6 @@ export class UsersSaController {
     @Body()
     dto: CreateUserDto,
   ) {
-    return await this.usersService.createUser(dto);
+    return await this.commandBus.execute(new CreateUserUseCaseCommand(dto));
   }
 }
