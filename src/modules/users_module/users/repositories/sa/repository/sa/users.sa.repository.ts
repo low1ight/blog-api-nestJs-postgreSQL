@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { UserDbModel } from '../../dto/User.db.model';
-import { UserSaViewModel } from '../../query-repository/sa/dto/UserSaViewModel';
-import { CreateUserDto } from '../../../controllers/sa/dto/CreateUserDto';
+import { UserDbModel } from '../../../dto/User.db.model';
+import { UserSaViewModel } from '../../query-repository/dto/UserSaViewModel';
+import { CreateUserDto } from '../../../../controllers/sa/dto/CreateUserDto';
 
 @Injectable()
 export class UsersSaRepository {

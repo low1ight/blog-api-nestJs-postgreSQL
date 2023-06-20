@@ -1,7 +1,7 @@
-import { UsersSaService } from '../modules/users/users-sa.service';
+import { UsersSaService } from '../modules/users_module/users_module-sa.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Test } from '@nestjs/testing';
-import { UsersSaRepository } from '../modules/users/repositories/repository/sa/users.sa.repository';
+import { UsersSaRepository } from '../modules/users_module/users/repositories/sa/repository/sa/users.sa.repository';
 
 describe('Testing describe', () => {
   let usersService: UsersSaService;

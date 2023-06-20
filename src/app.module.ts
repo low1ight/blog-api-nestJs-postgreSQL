@@ -2,20 +2,21 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { UsersSaController } from './modules/users/controllers/sa/users.sa.controller';
+import { UsersSaController } from './modules/users_module/users/controllers/sa/users.sa.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersSaRepository } from './modules/users/repositories/repository/sa/users.sa.repository';
-import { UsersSaService } from './modules/users/application/users.sa.service';
+import { UsersSaRepository } from './modules/users_module/users/repositories/sa/repository/sa/users.sa.repository';
+import { UsersSaService } from './modules/users_module/users/application/users.sa.service';
 import { TestingService } from './modules/testing/testing.service';
 import { TestingRepository } from './modules/testing/repositories/repository/testing.repository';
 import { TestingController } from './modules/testing/controllers/testing.controller';
-import { UsersQueryRepository } from './modules/users/repositories/query-repository/sa/users-query-repository';
+import { UsersQueryRepository } from './modules/users_module/users/repositories/sa/query-repository/users-query-repository';
 import {
   IsUserEmailAlreadyExist,
   IsUserLoginAlreadyExist,
 } from './common/customValidators/IsUserFieldsExist';
 import { CqrsModule } from '@nestjs/cqrs';
-import { CreateUserUseCase } from './modules/users/application/use-cases/create-user-use-case';
+import { CreateUserUseCase } from './modules/users_module/users/application/use-cases/create-user-use-case';
+import { PasswordHashAdapter } from './modules/users_module/adapters/passwordHash.adapter';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [CreateUserUseCase];
@@ -43,6 +44,7 @@ const useCases = [CreateUserUseCase];
     UsersSaService,
     UsersSaRepository,
     TestingService,
+    PasswordHashAdapter,
     TestingRepository,
     ...customValidators,
     ...useCases,
