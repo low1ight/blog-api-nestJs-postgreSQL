@@ -22,8 +22,8 @@ export class DeleteUserUseCase
 
     if (!isUserExist) return false;
 
-    const result = await this.usersSaRepository.deleteUserById(command.userId);
+    await this.usersSaRepository.deleteUserById(command.userId);
 
-    console.log(result);
+    return true;
   }
 }

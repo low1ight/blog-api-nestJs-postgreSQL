@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -34,7 +36,12 @@ export class UsersSaController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
-    await this.commandBus.execute(new DeleteUserUseCaseCommand(id));
+    const isDeleted = await this.commandBus.execute(
+      new DeleteUserUseCaseCommand(id),
+    );
+
+    if (!isDeleted) throw new NotFoundException();
   }
 }
