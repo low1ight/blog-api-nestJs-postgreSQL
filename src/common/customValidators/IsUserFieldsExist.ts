@@ -5,12 +5,12 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { Injectable } from '@nestjs/common';
-import { UsersSaService } from '../../modules/users_module/users/application/users.sa.service';
+import { UsersService } from '../../modules/users_module/users/application/users.service';
 
 @Injectable()
 @ValidatorConstraint({ async: true })
 export class IsUserLoginAlreadyExist implements ValidatorConstraintInterface {
-  constructor(protected usersService: UsersSaService) {}
+  constructor(protected usersService: UsersService) {}
 
   async validate(login: any) {
     const isLoginExist = await this.usersService.isUserLoginExist(login);
@@ -22,7 +22,7 @@ export class IsUserLoginAlreadyExist implements ValidatorConstraintInterface {
 @Injectable()
 @ValidatorConstraint({ async: true })
 export class IsUserEmailAlreadyExist implements ValidatorConstraintInterface {
-  constructor(protected usersService: UsersSaService) {}
+  constructor(protected usersService: UsersService) {}
 
   async validate(email: any) {
     const isEmailExist = await this.usersService.isUserEmailExist(email);

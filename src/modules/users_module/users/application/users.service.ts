@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersSaRepository } from '../repositories/sa/repository/sa/users.sa.repository';
 
 @Injectable()
-export class UsersSaService {
+export class UsersService {
   constructor(private readonly usersRepository: UsersSaRepository) {}
 
   async isUserEmailExist(email: string) {
