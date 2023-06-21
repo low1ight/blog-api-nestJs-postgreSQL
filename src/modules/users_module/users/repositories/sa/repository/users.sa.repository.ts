@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { UserDbModel } from '../../../dto/User.db.model';
-import { UserSaViewModel } from '../../query-repository/dto/UserSaViewModel';
-import { CreateUserDto } from '../../../../controllers/sa/dto/CreateUserDto';
+import { UserDbModel } from '../../dto/User.db.model';
+import { UserSaViewModel } from '../query-repository/dto/UserSaViewModel';
+import { CreateUserDto } from '../../../controllers/sa/dto/CreateUserDto';
 
 @Injectable()
 export class UsersSaRepository {
@@ -55,21 +55,16 @@ export class UsersSaRepository {
     });
   }
 
-  async checkIsUserExistByField(
-    findBy: string,
-    findStr: string,
-  ): Promise<boolean> {
-    //should return 1 if user exist
-    const isExist = await this.dataSource.query(
-      `
-    SELECT COUNT(1) FROM "Users" WHERE ${findBy} = $1
-    `,
-
-      [findStr],
-    );
-
-    //transform result to boolean and return
-
-    return !!Number(isExist[0].count);
+  async deleteUserById(id: number) {
+    await this.dataSource.transaction(async (manager) => {
+      await manager.query(
+        `DELETE FROM "UsersEmailConfirmation" WHERE "ownerId" = $1`,
+        [id],
+      );
+      await manager.query(` DELETE FROM "UsersBanInfo" WHERE "userId" = $1`, [
+        id,
+      ]);
+      await manager.query(`DELETE FROM "Users" WHERE id = $1`, [id]);
+    });
   }
 }

@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { UsersSaController } from './modules/users_module/users/controllers/sa/users.sa.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersSaRepository } from './modules/users_module/users/repositories/sa/repository/sa/users.sa.repository';
+import { UsersSaRepository } from './modules/users_module/users/repositories/sa/repository/users.sa.repository';
 import { UsersService } from './modules/users_module/users/application/users.service';
 import { TestingService } from './modules/testing/testing.service';
 import { TestingRepository } from './modules/testing/repositories/repository/testing.repository';
@@ -17,9 +17,11 @@ import {
 import { CqrsModule } from '@nestjs/cqrs';
 import { CreateUserUseCase } from './modules/users_module/users/application/sa/use-cases/create-user-use-case';
 import { PasswordHashAdapter } from './modules/users_module/adapters/passwordHash.adapter';
+import { UsersRepository } from './modules/users_module/users/repositories/users.repository';
+import { DeleteUserUseCase } from './modules/users_module/users/application/sa/use-cases/delete-user-use-case';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
-const useCases = [CreateUserUseCase];
+const useCases = [CreateUserUseCase, DeleteUserUseCase];
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -46,6 +48,7 @@ const useCases = [CreateUserUseCase];
     TestingService,
     PasswordHashAdapter,
     TestingRepository,
+    UsersRepository,
     ...customValidators,
     ...useCases,
   ],

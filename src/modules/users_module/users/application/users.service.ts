@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { UsersSaRepository } from '../repositories/sa/repository/sa/users.sa.repository';
+import { UsersRepository } from '../repositories/users.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepository: UsersSaRepository) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   async isUserEmailExist(email: string) {
     return await this.usersRepository.checkIsUserExistByField('email', email);

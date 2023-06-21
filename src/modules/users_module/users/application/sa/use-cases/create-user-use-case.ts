@@ -1,6 +1,6 @@
 import { CreateUserDto } from '../../../controllers/sa/dto/CreateUserDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UsersSaRepository } from '../../../repositories/sa/repository/sa/users.sa.repository';
+import { UsersSaRepository } from '../../../repositories/sa/repository/users.sa.repository';
 import { PasswordHashAdapter } from '../../../../adapters/passwordHash.adapter';
 
 export class CreateUserUseCaseCommand {
