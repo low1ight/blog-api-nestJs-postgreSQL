@@ -8,6 +8,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { UsersQueryRepository } from '../../repositories/sa/query-repository/users-query-repository';
@@ -19,6 +20,8 @@ import {
   UserInputQueryType,
   userQueryMapper,
 } from '../../../../../utils/querryMapper/user-query-mapper';
+import { SetBanStatusForUserUseCaseCommand } from '../../application/sa/use-cases/set-ban-status-for-user-use-case';
+import { BanUserDto } from './dto/BanUserDto';
 
 @Controller('sa/users')
 export class UsersSaController {
@@ -50,5 +53,18 @@ export class UsersSaController {
     );
 
     if (!isDeleted) throw new NotFoundException();
+  }
+
+  @Put(':id/ban')
+  @HttpCode(204)
+  async setBanStatusForUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: BanUserDto,
+  ) {
+    const isSuccessfulSet = await this.commandBus.execute(
+      new SetBanStatusForUserUseCaseCommand(id, dto),
+    );
+
+    if (!isSuccessfulSet) throw new NotFoundException();
   }
 }

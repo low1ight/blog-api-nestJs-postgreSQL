@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import { UserDbModel } from '../../dto/User.db.model';
 import { UserSaViewModel } from '../query-repository/dto/UserSaViewModel';
 import { CreateUserDto } from '../../../controllers/sa/dto/CreateUserDto';
+import { BanUserDto } from '../../../controllers/sa/dto/BanUserDto';
 
 @Injectable()
 export class UsersSaRepository {
@@ -66,5 +67,20 @@ export class UsersSaRepository {
       ]);
       await manager.query(`DELETE FROM "Users" WHERE id = $1`, [id]);
     });
+  }
+
+  async setBanStatusForUser(userId: number, dto: BanUserDto) {
+    await this.dataSource.query(
+      `
+    
+       UPDATE public."UsersBanInfo"
+       SET "isBanned"=$2, "banReason"=$3, "banDate"=CURRENT_DATE
+       WHERE "userId" = $1;
+    
+    
+    
+    `,
+      [userId, dto.isBanned, dto.banReason],
+    );
   }
 }

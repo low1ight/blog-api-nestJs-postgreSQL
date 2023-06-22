@@ -19,6 +19,7 @@ import { CreateUserUseCase } from './modules/users_module/users/application/sa/u
 import { PasswordHashAdapter } from './modules/users_module/adapters/passwordHash.adapter';
 import { UsersRepository } from './modules/users_module/users/repositories/users.repository';
 import { DeleteUserUseCase } from './modules/users_module/users/application/sa/use-cases/delete-user-use-case';
+import { SetBanStatusForUserUseCase } from './modules/users_module/users/application/sa/use-cases/set-ban-status-for-user-use-case';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [CreateUserUseCase, DeleteUserUseCase];
@@ -49,6 +50,7 @@ const useCases = [CreateUserUseCase, DeleteUserUseCase];
     PasswordHashAdapter,
     TestingRepository,
     UsersRepository,
+    SetBanStatusForUserUseCase,
     ...customValidators,
     ...useCases,
   ],
