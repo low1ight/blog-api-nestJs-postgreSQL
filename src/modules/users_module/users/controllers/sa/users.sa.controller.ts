@@ -11,7 +11,6 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { UsersQueryRepository } from '../../repositories/sa/query-repository/users-query-repository';
 import { CreateUserDto } from './dto/CreateUserDto';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateUserUseCaseCommand } from '../../application/sa/use-cases/create-user-use-case';
@@ -22,6 +21,7 @@ import {
 } from '../../../../../utils/querryMapper/user-query-mapper';
 import { SetBanStatusForUserUseCaseCommand } from '../../application/sa/use-cases/set-ban-status-for-user-use-case';
 import { BanUserDto } from './dto/BanUserDto';
+import { UsersQueryRepository } from '../../repositories/sa/query-repository/users.query.repository';
 
 @Controller('sa/users')
 export class UsersSaController {

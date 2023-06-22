@@ -9,7 +9,6 @@ import { UsersService } from './modules/users_module/users/application/users.ser
 import { TestingService } from './modules/testing/testing.service';
 import { TestingRepository } from './modules/testing/repositories/repository/testing.repository';
 import { TestingController } from './modules/testing/controllers/testing.controller';
-import { UsersQueryRepository } from './modules/users_module/users/repositories/sa/query-repository/users-query-repository';
 import {
   IsUserEmailAlreadyExist,
   IsUserLoginAlreadyExist,
@@ -20,6 +19,7 @@ import { PasswordHashAdapter } from './modules/users_module/adapters/passwordHas
 import { UsersRepository } from './modules/users_module/users/repositories/users.repository';
 import { DeleteUserUseCase } from './modules/users_module/users/application/sa/use-cases/delete-user-use-case';
 import { SetBanStatusForUserUseCase } from './modules/users_module/users/application/sa/use-cases/set-ban-status-for-user-use-case';
+import { UsersQueryRepository } from './modules/users_module/users/repositories/sa/query-repository/users.query.repository';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [CreateUserUseCase, DeleteUserUseCase];
