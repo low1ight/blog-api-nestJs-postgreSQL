@@ -20,6 +20,8 @@ import { UsersRepository } from './modules/users_module/users/repositories/users
 import { DeleteUserUseCase } from './modules/users_module/users/application/sa/use-cases/delete-user-use-case';
 import { SetBanStatusForUserUseCase } from './modules/users_module/users/application/sa/use-cases/set-ban-status-for-user-use-case';
 import { UsersQueryRepository } from './modules/users_module/users/repositories/sa/query-repository/users.query.repository';
+import { PassportModule } from '@nestjs/passport';
+import { BasicStrategy } from './modules/users_module/auth/strategies/basic.strategy';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [CreateUserUseCase, DeleteUserUseCase];
@@ -39,9 +41,11 @@ const useCases = [CreateUserUseCase, DeleteUserUseCase];
       synchronize: false,
     }),
     CqrsModule,
+    PassportModule,
   ],
   controllers: [AppController, UsersSaController, TestingController],
   providers: [
+    BasicStrategy,
     AppService,
     UsersQueryRepository,
     UsersService,

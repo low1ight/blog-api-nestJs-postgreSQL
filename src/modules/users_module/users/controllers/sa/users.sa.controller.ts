@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/CreateUserDto';
 import { CommandBus } from '@nestjs/cqrs';
@@ -22,6 +23,7 @@ import {
 import { SetBanStatusForUserUseCaseCommand } from '../../application/sa/use-cases/set-ban-status-for-user-use-case';
 import { BanUserDto } from './dto/BanUserDto';
 import { UsersQueryRepository } from '../../repositories/sa/query-repository/users.query.repository';
+import { BasicAuthGuard } from '../../../auth/guards/basic.auth.guard';
 
 @Controller('sa/users')
 export class UsersSaController {
@@ -31,6 +33,7 @@ export class UsersSaController {
   ) {}
 
   @Get()
+  @UseGuards(BasicAuthGuard)
   async getUsers(@Query() query: UserInputQueryType) {
     const mappedQuery = userQueryMapper(query);
 
