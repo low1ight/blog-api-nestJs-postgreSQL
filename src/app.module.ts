@@ -22,6 +22,7 @@ import { SetBanStatusForUserUseCase } from './modules/users_module/users/applica
 import { UsersQueryRepository } from './modules/users_module/users/repositories/sa/query-repository/users.query.repository';
 import { PassportModule } from '@nestjs/passport';
 import { BasicStrategy } from './modules/users_module/auth/strategies/basic.strategy';
+import { JwtModule } from '@nestjs/jwt';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [CreateUserUseCase, DeleteUserUseCase];
@@ -39,6 +40,10 @@ const useCases = [CreateUserUseCase, DeleteUserUseCase];
       database: 'Blog',
       autoLoadEntities: false,
       synchronize: false,
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
     }),
     CqrsModule,
     PassportModule,
