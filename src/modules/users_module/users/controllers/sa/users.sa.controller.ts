@@ -8,12 +8,17 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
 } from '@nestjs/common';
 import { UsersQueryRepository } from '../../repositories/sa/query-repository/users-query-repository';
 import { CreateUserDto } from './dto/CreateUserDto';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateUserUseCaseCommand } from '../../application/sa/use-cases/create-user-use-case';
 import { DeleteUserUseCaseCommand } from '../../application/sa/use-cases/delete-user-use-case';
+import {
+  UserInputQueryType,
+  userQueryMapper,
+} from '../../../../../utils/querryMapper/user-query-mapper';
 
 @Controller('sa/users')
 export class UsersSaController {
@@ -23,8 +28,10 @@ export class UsersSaController {
   ) {}
 
   @Get()
-  async getUsers() {
-    return this.usersQueryRepository.getUsers();
+  async getUsers(@Query() query: UserInputQueryType) {
+    const mappedQuery = userQueryMapper(query);
+
+    return this.usersQueryRepository.getUsers(mappedQuery);
   }
 
   @Post('')
