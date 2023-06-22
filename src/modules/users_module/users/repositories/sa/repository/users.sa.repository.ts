@@ -35,8 +35,8 @@ export class UsersSaRepository {
     // creating a new userConfirmation entry for createdUser
     await this.dataSource.query(`
     
-        INSERT INTO public."UsersEmailConfirmation"("ownerId", "confirmationCode", "expirationDate")
-        VALUES(${createdUser.id}, 'auto-confirmed', now());
+        INSERT INTO public."UsersEmailConfirmation"("ownerId", "confirmationCode", "expirationDate","isConfirmed")
+        VALUES(${createdUser.id}, null,null,true);
     
     `);
 
