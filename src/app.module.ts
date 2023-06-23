@@ -26,8 +26,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtAdapter } from './modules/users_module/auth/adapters/jwt.adapter';
 import { AuthPublicController } from './modules/users_module/auth/controllers/auth.public.controller';
 import { LocalStrategy } from './modules/users_module/auth/strategies/local.strategy';
-import { AuthPublicService } from './modules/users_module/auth/application/public/auth-public.service';
 import { LoginUseCase } from './modules/users_module/auth/application/public/useCase/login-use-case';
+import { DevicesPublicRepository } from './modules/users_module/auth/repositories/public/devices.public.repository.service';
+import { AuthPublicService } from './modules/users_module/auth/application/public/auth.public.service';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [CreateUserUseCase, DeleteUserUseCase, LoginUseCase];
@@ -67,6 +68,7 @@ const useCases = [CreateUserUseCase, DeleteUserUseCase, LoginUseCase];
     UsersService,
     UsersSaRepository,
     TestingService,
+    DevicesPublicRepository,
     JwtAdapter,
     PasswordHashAdapter,
     TestingRepository,
