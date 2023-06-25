@@ -34,14 +34,16 @@ import { DevicesPublicRepository } from './modules/users_module/auth/repositorie
 import { DevicesPublicQueryRepository } from './modules/users_module/auth/repositories/public/devices/query-repo/devices.public.query.repository';
 import { RefreshTokenStrategy } from './modules/users_module/auth/strategies/refreshToken.strategy';
 import { DevicesService } from './modules/users_module/auth/application/public/devices/devices.service';
-import { DeleteAllOtherDevices } from './modules/users_module/auth/application/public/devices/use-case/delete-all-other-devices';
+import { DeleteAllOtherDevicesUseCase } from './modules/users_module/auth/application/public/devices/use-case/delete-all-other-devices-use-case';
+import { DeleteDeviceByIdUseCase } from './modules/users_module/auth/application/public/devices/use-case/delete-device-by-id-use-case';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
-  DeleteAllOtherDevices,
+  DeleteAllOtherDevicesUseCase,
   CreateUserUseCase,
   DeleteUserUseCase,
   LoginUseCase,
+  DeleteDeviceByIdUseCase,
 ];
 @Module({
   imports: [

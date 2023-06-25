@@ -41,6 +41,17 @@ export class DevicesPublicRepository {
     );
   }
 
+  async deleteDeviceById(deviceId: number) {
+    return await this.dataSource.query(
+      `
+    
+    DELETE FROM "UsersDevices"  WHERE "id" = $1
+    
+    `,
+      [deviceId],
+    );
+  }
+
   async getDeviceById(deviceId: number): Promise<DeviceDbType | null> {
     const device = await this.dataSource.query(
       `

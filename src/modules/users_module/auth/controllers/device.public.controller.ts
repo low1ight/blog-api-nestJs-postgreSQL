@@ -1,4 +1,12 @@
-import { Controller, Delete, Get, HttpCode, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  ParseIntPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { CurrentUser } from '../../../../common/decorators/currentUser/current.user.decorator';
 import { JwtAuthGuard } from '../guards/jwt.auth.guard';
 import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDataFromAT';
@@ -6,7 +14,10 @@ import { DevicesPublicQueryRepository } from '../repositories/public/devices/que
 import { RefreshTokenGuard } from '../guards/refresh.token.guard.';
 import { UserDataFromRT } from '../../../../common/decorators/currentUser/UserDataFromRT';
 import { CommandBus } from '@nestjs/cqrs';
-import { DeleteAllOtherDevicesCommand } from '../application/public/devices/use-case/delete-all-other-devices';
+import { DeleteAllOtherDevicesUseCaseCommand } from '../application/public/devices/use-case/delete-all-other-devices-use-case';
+import { DeleteDeviceByIdUseCaseCommand } from '../application/public/devices/use-case/delete-device-by-id-use-case';
+import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
+import { Exceptions } from '../../../../utils/throwException';
 
 @Controller('security/devices')
 export class DevicePublicController {
@@ -27,7 +38,21 @@ export class DevicePublicController {
     @CurrentUser() { userId, deviceId }: UserDataFromRT,
   ) {
     await this.commandBus.execute(
-      new DeleteAllOtherDevicesCommand(userId, deviceId),
+      new DeleteAllOtherDevicesUseCaseCommand(userId, deviceId),
     );
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  @UseGuards(RefreshTokenGuard)
+  async deleteDeviceById(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() { userId, deviceId }: UserDataFromRT,
+  ) {
+    const result: CustomResponse<any> = await this.commandBus.execute(
+      new DeleteDeviceByIdUseCaseCommand(deviceId, userId),
+    );
+
+    if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
   }
 }
