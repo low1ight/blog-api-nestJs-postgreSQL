@@ -2,7 +2,7 @@ import { Controller, Ip, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from '../guards/local.auth.guard';
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
-import { LoginUseCaseCommand } from '../application/public/useCase/login-use-case';
+import { LoginUseCaseCommand } from '../application/public/auth/useCase/login-use-case';
 
 @Controller('auth')
 export class AuthPublicController {

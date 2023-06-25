@@ -1,7 +1,7 @@
 import { CreateUserDto } from '../../../controllers/sa/dto/CreateUserDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UsersSaRepository } from '../../../repositories/sa/repository/users.sa.repository';
 import { PasswordHashAdapter } from '../../../../adapters/passwordHash.adapter';
+import { UsersRepository } from '../../../repositories/users.repository';
 
 export class CreateUserUseCaseCommand {
   constructor(public dto: CreateUserDto) {}
@@ -12,7 +12,7 @@ export class CreateUserUseCase
   implements ICommandHandler<CreateUserUseCaseCommand>
 {
   constructor(
-    private usersRepository: UsersSaRepository,
+    private usersRepository: UsersRepository,
     private passwordHashAdapter: PasswordHashAdapter,
   ) {}
   async execute(command: CreateUserUseCaseCommand) {

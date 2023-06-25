@@ -26,15 +26,23 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtAdapter } from './modules/users_module/auth/adapters/jwt.adapter';
 import { AuthPublicController } from './modules/users_module/auth/controllers/auth.public.controller';
 import { LocalStrategy } from './modules/users_module/auth/strategies/local.strategy';
-import { LoginUseCase } from './modules/users_module/auth/application/public/useCase/login-use-case';
-import { AuthPublicService } from './modules/users_module/auth/application/public/auth.public.service';
+import { LoginUseCase } from './modules/users_module/auth/application/public/auth/useCase/login-use-case';
+import { AuthPublicService } from './modules/users_module/auth/application/public/auth/auth.public.service';
 import { DevicePublicController } from './modules/users_module/auth/controllers/device.public.controller';
 import { AccessTokenStrategy } from './modules/users_module/auth/strategies/accessToken.strategy';
 import { DevicesPublicRepository } from './modules/users_module/auth/repositories/public/devices/devices.public.repository';
 import { DevicesPublicQueryRepository } from './modules/users_module/auth/repositories/public/devices/query-repo/devices.public.query.repository';
+import { RefreshTokenStrategy } from './modules/users_module/auth/strategies/refreshToken.strategy';
+import { DevicesService } from './modules/users_module/auth/application/public/devices/devices.service';
+import { DeleteAllOtherDevices } from './modules/users_module/auth/application/public/devices/use-case/delete-all-other-devices';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
-const useCases = [CreateUserUseCase, DeleteUserUseCase, LoginUseCase];
+const useCases = [
+  DeleteAllOtherDevices,
+  CreateUserUseCase,
+  DeleteUserUseCase,
+  LoginUseCase,
+];
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -80,6 +88,8 @@ const useCases = [CreateUserUseCase, DeleteUserUseCase, LoginUseCase];
     TestingRepository,
     UsersRepository,
     AuthPublicService,
+    RefreshTokenStrategy,
+    DevicesService,
     SetBanStatusForUserUseCase,
     ...customValidators,
     ...useCases,

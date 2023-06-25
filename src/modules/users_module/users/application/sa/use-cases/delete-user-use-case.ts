@@ -1,6 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersRepository } from '../../../repositories/users.repository';
-import { UsersSaRepository } from '../../../repositories/sa/repository/users.sa.repository';
 
 export class DeleteUserUseCaseCommand {
   constructor(public userId: number) {}
@@ -10,10 +9,7 @@ export class DeleteUserUseCaseCommand {
 export class DeleteUserUseCase
   implements ICommandHandler<DeleteUserUseCaseCommand>
 {
-  constructor(
-    private readonly usersRepository: UsersRepository,
-    private readonly usersSaRepository: UsersSaRepository,
-  ) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
   async execute(command: DeleteUserUseCaseCommand) {
     const isUserExist = await this.usersRepository.checkIsUserExistByField(
       'id',
@@ -22,7 +18,7 @@ export class DeleteUserUseCase
 
     if (!isUserExist) return false;
 
-    await this.usersSaRepository.deleteUserById(command.userId);
+    await this.usersRepository.deleteUserById(command.userId);
 
     return true;
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { DeviceDbType } from './dto/Device.db.type';
 
 @Injectable()
 export class DevicesPublicRepository {
@@ -33,10 +34,25 @@ export class DevicesPublicRepository {
     return await this.dataSource.query(
       `
     DELETE FROM "UsersDevices" 
-    WHERE "ownerId" = ownerId AND NOT "id" = currentDeviceId
+    WHERE "ownerId" = $1 AND NOT "id" = $2
     
     `,
       [ownerId, currentDeviceId],
     );
+  }
+
+  async getDeviceById(deviceId: number): Promise<DeviceDbType | null> {
+    const device = await this.dataSource.query(
+      `
+    
+    SELECT * FROM "UsersDevices" 
+    WHERE "id" = $1
+    
+    
+    `,
+      [deviceId],
+    );
+
+    return device[0] || null;
   }
 }
