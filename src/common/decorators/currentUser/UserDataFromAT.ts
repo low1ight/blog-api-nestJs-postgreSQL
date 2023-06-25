@@ -1,4 +1,4 @@
-export type CurrentUserType = {
+export type UserDataFromAT = {
   id: number;
   userName: string;
 };
