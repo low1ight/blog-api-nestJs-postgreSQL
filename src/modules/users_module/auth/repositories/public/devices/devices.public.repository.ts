@@ -25,4 +25,18 @@ export class DevicesPublicRepository {
 
     return result[0].id;
   }
+
+  async deleteAllDevicesExceptCurrentDeviceId(
+    ownerId: number,
+    currentDeviceId: number,
+  ) {
+    return await this.dataSource.query(
+      `
+    DELETE FROM "UsersDevices" 
+    WHERE "ownerId" = ownerId AND NOT "id" = currentDeviceId
+    
+    `,
+      [ownerId, currentDeviceId],
+    );
+  }
 }

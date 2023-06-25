@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { JwtAdapter } from '../../../adapters/jwt.adapter';
 import { v4 as uuidv4 } from 'uuid';
-import { DevicesPublicRepository } from '../../../repositories/public/devices.public.repository.service';
+import { DevicesPublicRepository } from '../../../repositories/public/devices/devices.public.repository';
 
 export class LoginUseCaseCommand {
   constructor(public id, public login, public title, public ip) {}

@@ -27,8 +27,11 @@ import { JwtAdapter } from './modules/users_module/auth/adapters/jwt.adapter';
 import { AuthPublicController } from './modules/users_module/auth/controllers/auth.public.controller';
 import { LocalStrategy } from './modules/users_module/auth/strategies/local.strategy';
 import { LoginUseCase } from './modules/users_module/auth/application/public/useCase/login-use-case';
-import { DevicesPublicRepository } from './modules/users_module/auth/repositories/public/devices.public.repository.service';
 import { AuthPublicService } from './modules/users_module/auth/application/public/auth.public.service';
+import { DevicePublicController } from './modules/users_module/auth/controllers/device.public.controller';
+import { AccessTokenStrategy } from './modules/users_module/auth/strategies/accessToken.strategy';
+import { DevicesPublicRepository } from './modules/users_module/auth/repositories/public/devices/devices.public.repository';
+import { DevicesPublicQueryRepository } from './modules/users_module/auth/repositories/public/devices/query-repo/devices.public.query.repository';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [CreateUserUseCase, DeleteUserUseCase, LoginUseCase];
@@ -57,6 +60,7 @@ const useCases = [CreateUserUseCase, DeleteUserUseCase, LoginUseCase];
   controllers: [
     AppController,
     UsersSaController,
+    DevicePublicController,
     TestingController,
     AuthPublicController,
   ],
@@ -66,9 +70,11 @@ const useCases = [CreateUserUseCase, DeleteUserUseCase, LoginUseCase];
     LocalStrategy,
     UsersQueryRepository,
     UsersService,
+    AccessTokenStrategy,
     UsersSaRepository,
     TestingService,
     DevicesPublicRepository,
+    DevicesPublicQueryRepository,
     JwtAdapter,
     PasswordHashAdapter,
     TestingRepository,
