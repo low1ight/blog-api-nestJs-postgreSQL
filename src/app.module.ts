@@ -37,6 +37,7 @@ import { DevicesService } from './modules/users_module/auth/application/public/d
 import { DeleteAllOtherDevicesUseCase } from './modules/users_module/auth/application/public/devices/use-case/delete-all-other-devices-use-case';
 import { DeleteDeviceByIdUseCase } from './modules/users_module/auth/application/public/devices/use-case/delete-device-by-id-use-case';
 import { LogoutUseCase } from './modules/users_module/auth/application/public/auth/useCase/logout-use-case';
+import { AuthQueryRepository } from './modules/users_module/auth/application/public/auth/query-repo/auth.query.repository';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -79,6 +80,7 @@ const useCases = [
   providers: [
     BasicStrategy,
     AppService,
+    AuthQueryRepository,
     LocalStrategy,
     UsersQueryRepository,
     UsersService,
