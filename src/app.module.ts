@@ -36,12 +36,14 @@ import { RefreshTokenStrategy } from './modules/users_module/auth/strategies/ref
 import { DevicesService } from './modules/users_module/auth/application/public/devices/devices.service';
 import { DeleteAllOtherDevicesUseCase } from './modules/users_module/auth/application/public/devices/use-case/delete-all-other-devices-use-case';
 import { DeleteDeviceByIdUseCase } from './modules/users_module/auth/application/public/devices/use-case/delete-device-by-id-use-case';
+import { LogoutUseCase } from './modules/users_module/auth/application/public/auth/useCase/logout-use-case';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
   DeleteAllOtherDevicesUseCase,
   CreateUserUseCase,
   DeleteUserUseCase,
+  LogoutUseCase,
   LoginUseCase,
   DeleteDeviceByIdUseCase,
 ];

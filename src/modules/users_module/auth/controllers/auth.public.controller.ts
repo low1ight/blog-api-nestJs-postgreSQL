@@ -3,6 +3,10 @@ import { LocalAuthGuard } from '../guards/local.auth.guard';
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
 import { LoginUseCaseCommand } from '../application/public/auth/useCase/login-use-case';
+import { RefreshTokenGuard } from '../guards/refresh.token.guard.';
+import { CurrentUser } from '../../../../common/decorators/currentUser/current.user.decorator';
+import { UserDataFromRT } from '../../../../common/decorators/currentUser/UserDataFromRT';
+import { LogoutUseCaseCommand } from '../application/public/auth/useCase/logout-use-case';
 
 @Controller('auth')
 export class AuthPublicController {
@@ -26,5 +30,11 @@ export class AuthPublicController {
     });
 
     return { accessToken };
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Post('logout')
+  async logout(@CurrentUser() { deviceId }: UserDataFromRT) {
+    await this.commandBus.execute(new LogoutUseCaseCommand(deviceId));
   }
 }
