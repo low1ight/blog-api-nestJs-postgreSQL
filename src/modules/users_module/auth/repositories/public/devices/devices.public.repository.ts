@@ -66,4 +66,18 @@ export class DevicesPublicRepository {
 
     return device[0] || null;
   }
+
+  async updateSessionId(sessionId: string, deviceId: number) {
+    await this.dataSource.query(
+      `
+    
+    UPDATE public."UsersDevices"
+    SET "lastActiveDate"=now(), "sessionId"=$1
+    WHERE id=$2;
+    
+    
+    `,
+      [sessionId, deviceId],
+    );
+  }
 }

@@ -1,6 +1,6 @@
 export type UserDataFromRT = {
   userId: number;
-  userName: string;
+  login: string;
   deviceId: number;
   sessionId: string;
 };

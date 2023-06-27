@@ -38,12 +38,14 @@ import { DeleteAllOtherDevicesUseCase } from './modules/users_module/auth/applic
 import { DeleteDeviceByIdUseCase } from './modules/users_module/auth/application/public/devices/use-case/delete-device-by-id-use-case';
 import { LogoutUseCase } from './modules/users_module/auth/application/public/auth/useCase/logout-use-case';
 import { AuthQueryRepository } from './modules/users_module/auth/application/public/auth/query-repo/auth.query.repository';
+import { RefreshRtUseCase } from './modules/users_module/auth/application/public/auth/useCase/refresh-rt-use-case';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
   DeleteAllOtherDevicesUseCase,
   CreateUserUseCase,
   DeleteUserUseCase,
+  RefreshRtUseCase,
   LogoutUseCase,
   LoginUseCase,
   DeleteDeviceByIdUseCase,

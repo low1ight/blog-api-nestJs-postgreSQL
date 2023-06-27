@@ -10,6 +10,7 @@ import { LogoutUseCaseCommand } from '../application/public/auth/useCase/logout-
 import { JwtAuthGuard } from '../guards/jwt.auth.guard';
 import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDataFromAT';
 import { AuthQueryRepository } from '../application/public/auth/query-repo/auth.query.repository';
+import { RefreshRtUseCaseCommand } from '../application/public/auth/useCase/refresh-rt-use-case';
 
 @Controller('auth')
 export class AuthPublicController {
@@ -17,6 +18,7 @@ export class AuthPublicController {
     private commandBus: CommandBus,
     private authQueryRepository: AuthQueryRepository,
   ) {}
+
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(
@@ -42,6 +44,24 @@ export class AuthPublicController {
   @Post('logout')
   async logout(@CurrentUser() { deviceId }: UserDataFromRT) {
     await this.commandBus.execute(new LogoutUseCaseCommand(deviceId));
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Post('refresh-token')
+  async refreshTokens(
+    @CurrentUser() { deviceId, userId, login }: UserDataFromRT,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const { refreshToken, accessToken } = await this.commandBus.execute(
+      new RefreshRtUseCaseCommand(userId, deviceId, login),
+    );
+
+    response.cookie('refreshToken ', refreshToken, {
+      // httpOnly: true,
+      // secure: true,
+    });
+
+    return { accessToken };
   }
 
   @UseGuards(JwtAuthGuard)
