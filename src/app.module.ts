@@ -39,6 +39,8 @@ import { DeleteDeviceByIdUseCase } from './modules/users_module/auth/application
 import { LogoutUseCase } from './modules/users_module/auth/application/public/auth/useCase/logout-use-case';
 import { AuthQueryRepository } from './modules/users_module/auth/application/public/auth/query-repo/auth.query.repository';
 import { RefreshRtUseCase } from './modules/users_module/auth/application/public/auth/useCase/refresh-rt-use-case';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EmailManager } from './adapters/email.manager';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -65,6 +67,21 @@ const useCases = [
       autoLoadEntities: false,
       synchronize: false,
     }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 465,
+        ignoreTLS: true,
+        secure: true,
+        auth: {
+          user: process.env.MAILDEV_INCOMING_USER,
+          pass: process.env.MAILDEV_INCOMING_PASS,
+        },
+      },
+      defaults: {
+        from: '"No Reply" <no-reply@localhost>',
+      },
+    }),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
@@ -81,6 +98,7 @@ const useCases = [
   ],
   providers: [
     BasicStrategy,
+    EmailManager,
     AppService,
     AuthQueryRepository,
     LocalStrategy,
