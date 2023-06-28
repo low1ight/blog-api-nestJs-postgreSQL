@@ -44,12 +44,14 @@ import { EmailManager } from './adapters/email.manager';
 import { UsersEmailConfirmationRepository } from './modules/users_module/users/repositories/public/repository/usersEmailConfirmation.repository';
 import { UsersBanInfoRepository } from './modules/users_module/users/repositories/public/repository/usersBanInfo.repository';
 import { UsersPublicQueryRepository } from './modules/users_module/users/repositories/public/query-repo/users-public-query-repository.service';
+import { RegisterNewUserUseCase } from './modules/users_module/auth/application/public/auth/useCase/register-new-user-use-case';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
   DeleteAllOtherDevicesUseCase,
   CreateUserUseCase,
   DeleteUserUseCase,
+  RegisterNewUserUseCase,
   RefreshRtUseCase,
   LogoutUseCase,
   LoginUseCase,

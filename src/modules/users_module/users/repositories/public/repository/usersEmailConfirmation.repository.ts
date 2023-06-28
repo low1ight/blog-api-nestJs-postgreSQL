@@ -12,13 +12,16 @@ export class UsersEmailConfirmationRepository {
       `
     
         INSERT INTO public."UsersEmailConfirmation"("ownerId", "confirmationCode", "expirationDate","isConfirmed")
-        VALUES($1, null,null,true);
+        VALUES($1, null, null, true);
     
     `,
       [userId],
     );
   }
-  async createUnconfirmedEmailConfirmationFofUser(userId: number) {
+  async createUnconfirmedEmailConfirmationFofUser(
+    userId: number,
+    confirmationCode: string,
+  ) {
     const expirationDate = ExpirationDate.createDateForEmailConfirmation(
       new Date(),
     );
@@ -26,10 +29,10 @@ export class UsersEmailConfirmationRepository {
       `
     
         INSERT INTO public."UsersEmailConfirmation"("ownerId", "confirmationCode", "expirationDate","isConfirmed")
-        VALUES($1, null,$2,false);
+        VALUES($1, $2, $3, false);
     
     `,
-      [userId, expirationDate],
+      [userId, confirmationCode, expirationDate],
     );
   }
 }

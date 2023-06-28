@@ -1,4 +1,14 @@
-import { Controller, Get, Ip, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Ip,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { LocalAuthGuard } from '../guards/local.auth.guard';
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
@@ -11,6 +21,8 @@ import { JwtAuthGuard } from '../guards/jwt.auth.guard';
 import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDataFromAT';
 import { AuthQueryRepository } from '../application/public/auth/query-repo/auth.query.repository';
 import { RefreshRtUseCaseCommand } from '../application/public/auth/useCase/refresh-rt-use-case';
+import { CreateUserDto } from '../../users/controllers/sa/dto/CreateUserDto';
+import { RegisterNewUserUseCaseCommand } from '../application/public/auth/useCase/register-new-user-use-case';
 
 @Controller('auth')
 export class AuthPublicController {
@@ -44,6 +56,12 @@ export class AuthPublicController {
   @Post('logout')
   async logout(@CurrentUser() { deviceId }: UserDataFromRT) {
     await this.commandBus.execute(new LogoutUseCaseCommand(deviceId));
+  }
+
+  @Post('registration')
+  @HttpCode(204)
+  async registration(@Body() dto: CreateUserDto) {
+    await this.commandBus.execute(new RegisterNewUserUseCaseCommand(dto));
   }
 
   @UseGuards(RefreshTokenGuard)

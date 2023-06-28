@@ -11,6 +11,7 @@ export class TestingRepository {
         
           DELETE FROM "UsersBanInfo";
           DELETE FROM "UsersEmailConfirmation";
+          DELETE FROM "UsersDevices";
           DELETE FROM "Users";
     
 
