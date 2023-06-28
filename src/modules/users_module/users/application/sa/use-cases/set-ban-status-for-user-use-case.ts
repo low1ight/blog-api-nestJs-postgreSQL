@@ -1,6 +1,6 @@
 import { BanUserDto } from '../../../controllers/sa/dto/BanUserDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UsersRepository } from '../../../repositories/users.repository';
+import { UsersRepository } from '../../../repositories/public/repository/users.repository';
 
 export class SetBanStatusForUserUseCaseCommand {
   constructor(public userId: number, public dto: BanUserDto) {}

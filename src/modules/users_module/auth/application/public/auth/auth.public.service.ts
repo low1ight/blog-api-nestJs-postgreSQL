@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from '../../../../users/repositories/users.repository';
+import { UsersRepository } from '../../../../users/repositories/public/repository/users.repository';
 import { UserForLoginValidationModel } from '../../../../users/repositories/dto/UserForLoginValidationModel';
 import { PasswordHashAdapter } from '../../../../adapters/passwordHash.adapter';
 

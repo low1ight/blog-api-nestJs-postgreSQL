@@ -16,10 +16,10 @@ import {
 import { CqrsModule } from '@nestjs/cqrs';
 import { CreateUserUseCase } from './modules/users_module/users/application/sa/use-cases/create-user-use-case';
 import { PasswordHashAdapter } from './modules/users_module/adapters/passwordHash.adapter';
-import { UsersRepository } from './modules/users_module/users/repositories/users.repository';
+import { UsersRepository } from './modules/users_module/users/repositories/public/repository/users.repository';
 import { DeleteUserUseCase } from './modules/users_module/users/application/sa/use-cases/delete-user-use-case';
 import { SetBanStatusForUserUseCase } from './modules/users_module/users/application/sa/use-cases/set-ban-status-for-user-use-case';
-import { UsersQueryRepository } from './modules/users_module/users/repositories/sa/query-repository/users.query.repository';
+import { UsersSaQueryRepository } from './modules/users_module/users/repositories/sa/query-repository/users-sa-query-repository.service';
 import { PassportModule } from '@nestjs/passport';
 import { BasicStrategy } from './modules/users_module/auth/strategies/basic.strategy';
 import { JwtModule } from '@nestjs/jwt';
@@ -41,6 +41,9 @@ import { AuthQueryRepository } from './modules/users_module/auth/application/pub
 import { RefreshRtUseCase } from './modules/users_module/auth/application/public/auth/useCase/refresh-rt-use-case';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailManager } from './adapters/email.manager';
+import { UsersEmailConfirmationRepository } from './modules/users_module/users/repositories/public/repository/usersEmailConfirmation.repository';
+import { UsersBanInfoRepository } from './modules/users_module/users/repositories/public/repository/usersBanInfo.repository';
+import { UsersPublicQueryRepository } from './modules/users_module/users/repositories/public/query-repo/users-public-query-repository.service';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -100,9 +103,12 @@ const useCases = [
     BasicStrategy,
     EmailManager,
     AppService,
+    UsersEmailConfirmationRepository,
+    UsersBanInfoRepository,
     AuthQueryRepository,
     LocalStrategy,
-    UsersQueryRepository,
+    UsersSaQueryRepository,
+    UsersPublicQueryRepository,
     UsersService,
     AccessTokenStrategy,
     UsersSaRepository,

@@ -7,7 +7,7 @@ import { calcSkipCount } from '../../../../../../utils/paginatorHelpers/calcSkip
 import { toViwModelWithPaginator } from '../../../../../../utils/paginatorHelpers/toViwModelWithPaginator';
 
 @Injectable()
-export class UsersQueryRepository {
+export class UsersSaQueryRepository {
   constructor(
     @InjectDataSource()
     protected dataSource: DataSource,

@@ -1,21 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { UserForLoginValidationModel } from './dto/UserForLoginValidationModel';
-import { CreateUserDto } from '../controllers/sa/dto/CreateUserDto';
-import { UserSaViewModel } from './sa/query-repository/dto/UserSaViewModel';
-import { UserDbModel } from './dto/User.db.model';
-import { BanUserDto } from '../controllers/sa/dto/BanUserDto';
+import { UserForLoginValidationModel } from '../../dto/UserForLoginValidationModel';
+import { CreateUserDto } from '../../../controllers/sa/dto/CreateUserDto';
+import { UserDbModel } from '../../dto/User.db.model';
+import { BanUserDto } from '../../../controllers/sa/dto/BanUserDto';
 
 @Injectable()
 export class UsersRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource) {}
 
-  async createUser({
-    login,
-    password,
-    email,
-  }: CreateUserDto): Promise<UserSaViewModel> {
+  async createUser({ login, password, email }: CreateUserDto): Promise<number> {
     //create user
     const createdUserData: UserDbModel = await this.dataSource.query(
       `
@@ -29,32 +24,8 @@ export class UsersRepository {
       [login, password, email],
     );
 
-    //get created user from the arr
-    const createdUser = createdUserData[0];
-    //"id","login","email","createdAt"
-
-    // creating a new userConfirmation entry for createdUser
-    await this.dataSource.query(`
-    
-        INSERT INTO public."UsersEmailConfirmation"("ownerId", "confirmationCode", "expirationDate","isConfirmed")
-        VALUES(${createdUser.id}, null,null,true);
-    
-    `);
-
-    // creating a new UsersBanInfo entry for created User
-    await this.dataSource.query(`
-    
-        INSERT INTO public."UsersBanInfo"("userId", "isBanned", "banReason", "banDate")
-	      VALUES (${createdUser.id}, false, null, null);
-    
-    `);
-
-    return new UserSaViewModel({
-      ...createdUser,
-      isBanned: false,
-      banDate: null,
-      banReason: null,
-    });
+    //return created user id
+    return createdUserData[0].id;
   }
 
   async deleteUserById(id: number) {

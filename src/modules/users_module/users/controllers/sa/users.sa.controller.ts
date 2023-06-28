@@ -22,13 +22,15 @@ import {
 } from '../../../../../utils/querryMapper/user-query-mapper';
 import { SetBanStatusForUserUseCaseCommand } from '../../application/sa/use-cases/set-ban-status-for-user-use-case';
 import { BanUserDto } from './dto/BanUserDto';
-import { UsersQueryRepository } from '../../repositories/sa/query-repository/users.query.repository';
+import { UsersSaQueryRepository } from '../../repositories/sa/query-repository/users-sa-query-repository.service';
 import { BasicAuthGuard } from '../../../auth/guards/basic.auth.guard';
+import { UsersPublicQueryRepository } from '../../repositories/public/query-repo/users-public-query-repository.service';
 
 @Controller('sa/users')
 export class UsersSaController {
   constructor(
-    private readonly usersQueryRepository: UsersQueryRepository,
+    private readonly usersSaQueryRepository: UsersSaQueryRepository,
+    private readonly usersPublicQueryRepository: UsersPublicQueryRepository,
     protected commandBus: CommandBus,
   ) {}
 
@@ -37,7 +39,7 @@ export class UsersSaController {
   async getUsers(@Query() query: UserInputQueryType) {
     const mappedQuery = userQueryMapper(query);
 
-    return this.usersQueryRepository.getUsers(mappedQuery);
+    return this.usersSaQueryRepository.getUsers(mappedQuery);
   }
 
   @Post('')
@@ -45,7 +47,11 @@ export class UsersSaController {
     @Body()
     dto: CreateUserDto,
   ) {
-    return await this.commandBus.execute(new CreateUserUseCaseCommand(dto));
+    const createdUserId: number = await this.commandBus.execute(
+      new CreateUserUseCaseCommand(dto),
+    );
+
+    return await this.usersPublicQueryRepository.getUserById(createdUserId);
   }
 
   @Delete(':id')
