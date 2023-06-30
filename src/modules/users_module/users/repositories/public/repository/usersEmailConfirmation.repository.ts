@@ -63,4 +63,34 @@ export class UsersEmailConfirmationRepository {
       [userId],
     );
   }
+
+  async getEmailConfirmedStatusWithId(email: string) {
+    const result = await this.dataSource.query(
+      `
+    
+    SELECT u."id", e."isConfirmed"
+    FROM "Users" u 
+    LEFT JOIN "UsersEmailConfirmation" e ON u."id" = e."ownerId"
+    WHERE "email" = $1
+    
+    
+    `,
+      [email],
+    );
+
+    return result[0] || null;
+  }
+
+  async setNewConfirmationCode(userId: number, code: string) {
+    await this.dataSource.query(
+      `
+    
+    UPDATE public."UsersEmailConfirmation"
+    SET  "confirmationCode"=$2
+    WHERE "ownerId" = $1;
+    
+    `,
+      [userId, code],
+    );
+  }
 }

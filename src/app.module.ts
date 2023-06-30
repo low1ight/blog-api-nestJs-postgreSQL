@@ -46,6 +46,7 @@ import { UsersBanInfoRepository } from './modules/users_module/users/repositorie
 import { UsersPublicQueryRepository } from './modules/users_module/users/repositories/public/query-repo/users-public-query-repository.service';
 import { RegisterNewUserUseCase } from './modules/users_module/auth/application/public/auth/useCase/register-new-user-use-case';
 import { EmailConfirmationUseCase } from './modules/users_module/auth/application/public/auth/useCase/email-confirmation-use-case';
+import { RegistrationEmailResendingUseCase } from './modules/users_module/auth/application/public/auth/useCase/registration-email-resending-use-case';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -57,6 +58,7 @@ const useCases = [
   LogoutUseCase,
   LoginUseCase,
   EmailConfirmationUseCase,
+  RegistrationEmailResendingUseCase,
   DeleteDeviceByIdUseCase,
 ];
 @Module({

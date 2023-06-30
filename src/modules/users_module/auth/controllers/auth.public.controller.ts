@@ -26,6 +26,8 @@ import { RegisterNewUserUseCaseCommand } from '../application/public/auth/useCas
 import { EmailConfirmationUseCaseCommand } from '../application/public/auth/useCase/email-confirmation-use-case';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { Exceptions } from '../../../../utils/throwException';
+import { EmailDto } from './dto/EmailDto';
+import { RegistrationEmailResendingUseCaseCommand } from '../application/public/auth/useCase/registration-email-resending-use-case';
 
 @Controller('auth')
 export class AuthPublicController {
@@ -74,6 +76,19 @@ export class AuthPublicController {
     );
     if (!result.isSuccess)
       Exceptions.throwHttpException(result.errStatusCode, result.content);
+  }
+  @Post('registration-email-resending')
+  @HttpCode(204)
+  async registrationEmailResending(@Body() dto: EmailDto) {
+    const result: CustomResponse<any> = await this.commandBus.execute(
+      new RegistrationEmailResendingUseCaseCommand(dto.email),
+    );
+    if (!result.isSuccess)
+      Exceptions.throwHttpException(
+        result.errStatusCode,
+        result.content,
+        'email',
+      );
   }
 
   @UseGuards(RefreshTokenGuard)
