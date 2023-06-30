@@ -95,6 +95,6 @@ export class UsersRepository {
       [loginOrEmail],
     );
 
-    return result.length > 0 ? result[0] : null;
+    return result[0] || null;
   }
 }

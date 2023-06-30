@@ -23,6 +23,9 @@ import { AuthQueryRepository } from '../application/public/auth/query-repo/auth.
 import { RefreshRtUseCaseCommand } from '../application/public/auth/useCase/refresh-rt-use-case';
 import { CreateUserDto } from '../../users/controllers/sa/dto/CreateUserDto';
 import { RegisterNewUserUseCaseCommand } from '../application/public/auth/useCase/register-new-user-use-case';
+import { EmailConfirmationUseCaseCommand } from '../application/public/auth/useCase/email-confirmation-use-case';
+import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
+import { Exceptions } from '../../../../utils/throwException';
 
 @Controller('auth')
 export class AuthPublicController {
@@ -62,6 +65,15 @@ export class AuthPublicController {
   @HttpCode(204)
   async registration(@Body() dto: CreateUserDto) {
     await this.commandBus.execute(new RegisterNewUserUseCaseCommand(dto));
+  }
+  @Post('registration-confirmation')
+  @HttpCode(204)
+  async registrationConfirmation(@Body() dto: { code: string }) {
+    const result: CustomResponse<string | null> = await this.commandBus.execute(
+      new EmailConfirmationUseCaseCommand(dto.code),
+    );
+    if (!result.isSuccess)
+      Exceptions.throwHttpException(result.errStatusCode, result.content);
   }
 
   @UseGuards(RefreshTokenGuard)

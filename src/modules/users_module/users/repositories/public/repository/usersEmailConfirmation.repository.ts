@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { ExpirationDate } from '../../../../../../utils/expirationDate';
+import { UsersEmailConfirmationDbModel } from '../../dto/UsersEmailConfirmation.db.model';
 
 @Injectable()
 export class UsersEmailConfirmationRepository {
@@ -33,6 +34,33 @@ export class UsersEmailConfirmationRepository {
     
     `,
       [userId, confirmationCode, expirationDate],
+    );
+  }
+
+  async getUserConfirmationDataByCode(
+    code: string,
+  ): Promise<UsersEmailConfirmationDbModel | null> {
+    const result = await this.dataSource.query(
+      `
+    
+    SELECT * FROM "UsersEmailConfirmation"
+    WHERE "confirmationCode" = $1
+    
+    
+    `,
+      [code],
+    );
+
+    return result[0] || null;
+  }
+
+  async confirmEmail(userId: number) {
+    await this.dataSource.query(
+      `
+    UPDATE public."UsersEmailConfirmation"
+    SET "isConfirmed"=true
+    WHERE "ownerId" = $1`,
+      [userId],
     );
   }
 }
