@@ -5,6 +5,7 @@ import { UsersBanInfoRepository } from '../../../../../users/repositories/public
 import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDto } from '../../../../../users/controllers/sa/dto/CreateUserDto';
 import { EmailManager } from '../../../../../../../adapters/email.manager';
+import { PasswordHashAdapter } from '../../../../../adapters/passwordHash.adapter';
 
 export class RegisterNewUserUseCaseCommand {
   constructor(public dto: CreateUserDto) {}
@@ -18,12 +19,20 @@ export class RegisterNewUserUseCase
     private readonly usersEmailConfirmationRepository: UsersEmailConfirmationRepository,
     private readonly usersBanInfoRepository: UsersBanInfoRepository,
     private readonly emailManager: EmailManager,
+    private readonly passwordHashAdapter: PasswordHashAdapter,
   ) {}
 
   async execute({ dto }: RegisterNewUserUseCaseCommand) {
     const emailConfirmationCode = uuidv4();
 
-    const createdUserId = await this.usersRepository.createUser(dto);
+    const hashedPassword = await this.passwordHashAdapter.hashPassword(
+      dto.password,
+    );
+
+    const createdUserId = await this.usersRepository.createUser({
+      ...dto,
+      password: hashedPassword,
+    });
 
     await this.usersBanInfoRepository.createUserBanInfo(createdUserId);
     await this.usersEmailConfirmationRepository.createUnconfirmedEmailConfirmationFofUser(
