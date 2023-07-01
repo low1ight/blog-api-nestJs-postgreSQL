@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { UserForLoginValidationModel } from '../../dto/UserForLoginValidationModel';
-import { CreateUserDto } from '../../../controllers/sa/dto/CreateUserDto';
-import { UserDbModel } from '../../dto/User.db.model';
-import { BanUserDto } from '../../../controllers/sa/dto/BanUserDto';
+import { UserForLoginValidationModel } from '../dto/UserForLoginValidationModel';
+import { CreateUserDto } from '../../controllers/dto/CreateUserDto';
+import { UserDbModel } from '../dto/User.db.model';
+import { BanUserDto } from '../../controllers/dto/BanUserDto';
 
 @Injectable()
 export class UsersRepository {
@@ -96,5 +96,54 @@ export class UsersRepository {
     );
 
     return result[0] || null;
+  }
+
+  async getUserIdByEmail(email: string): Promise<number | null> {
+    const userData = await this.dataSource.query(
+      ` 
+    SELECT "id" 
+    FROM "Users"
+    WHERE "email" = $1  
+    `,
+      [email],
+    );
+
+    return userData[0]?.id || null;
+  }
+
+  async updatePasswordRecoveryCode(userId: number, recoveryCode: string) {
+    await this.dataSource.query(
+      `
+   UPDATE public."Users"
+   SET "passwordRecoveryCode" = $2
+   WHERE "id" = $1;
+    `,
+      [userId, recoveryCode],
+    );
+  }
+
+  async setNewPassword(userId: number, password: string) {
+    await this.dataSource.query(
+      `
+   UPDATE public."Users"
+   SET "password" = $2
+   WHERE "id" = $1;
+    `,
+      [userId, password],
+    );
+  }
+
+  async getUserIdByPasswordRecoveryCode(code: string): Promise<number | null> {
+    const result = await this.dataSource.query(
+      `
+    
+    SELECT "id"
+    FROM "Users"
+    WHERE "passwordRecoveryCode" = $1
+    
+    `,
+      [code],
+    );
+    return result[0]?.id || null;
   }
 }

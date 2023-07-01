@@ -14,32 +14,30 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/CreateUserDto';
 import { CommandBus } from '@nestjs/cqrs';
-import { CreateUserUseCaseCommand } from '../../application/sa/use-cases/create-user-use-case';
-import { DeleteUserUseCaseCommand } from '../../application/sa/use-cases/delete-user-use-case';
+import { CreateUserUseCaseCommand } from '../application/use-cases/create-user-use-case';
+import { DeleteUserUseCaseCommand } from '../application/use-cases/delete-user-use-case';
 import {
   UserInputQueryType,
   userQueryMapper,
-} from '../../../../../utils/querryMapper/user-query-mapper';
-import { SetBanStatusForUserUseCaseCommand } from '../../application/sa/use-cases/set-ban-status-for-user-use-case';
+} from '../../../../utils/querryMapper/user-query-mapper';
+import { SetBanStatusForUserUseCaseCommand } from '../application/use-cases/set-ban-status-for-user-use-case';
 import { BanUserDto } from './dto/BanUserDto';
-import { UsersSaQueryRepository } from '../../repositories/sa/query-repository/users-sa-query-repository.service';
-import { BasicAuthGuard } from '../../../auth/guards/basic.auth.guard';
-import { UsersPublicQueryRepository } from '../../repositories/public/query-repo/users-public-query-repository.service';
+import { BasicAuthGuard } from '../../auth/guards/basic.auth.guard';
+import { UsersQueryRepository } from '../repositories/query-repository/users.query.repository';
 
 @Controller('sa/users')
+@UseGuards(BasicAuthGuard)
 export class UsersSaController {
   constructor(
-    private readonly usersSaQueryRepository: UsersSaQueryRepository,
-    private readonly usersPublicQueryRepository: UsersPublicQueryRepository,
+    private readonly usersQueryRepository: UsersQueryRepository,
     protected commandBus: CommandBus,
   ) {}
 
   @Get()
-  @UseGuards(BasicAuthGuard)
   async getUsers(@Query() query: UserInputQueryType) {
     const mappedQuery = userQueryMapper(query);
 
-    return this.usersSaQueryRepository.getUsers(mappedQuery);
+    return this.usersQueryRepository.getUsers(mappedQuery);
   }
 
   @Post('')
@@ -51,7 +49,7 @@ export class UsersSaController {
       new CreateUserUseCaseCommand(dto),
     );
 
-    return await this.usersPublicQueryRepository.getUserById(createdUserId);
+    return await this.usersQueryRepository.getUserById(createdUserId);
   }
 
   @Delete(':id')

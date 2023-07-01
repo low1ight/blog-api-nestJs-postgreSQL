@@ -8,7 +8,7 @@ import {
 import {
   IsEmailAlreadyExist,
   IsLoginAlreadyExist,
-} from '../../../../../../common/customValidators/IsUserFieldsExist';
+} from '../../../../../common/customValidators/IsUserFieldsExist';
 
 export class CreateUserDto {
   @IsNotEmpty()

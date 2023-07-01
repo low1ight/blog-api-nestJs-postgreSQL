@@ -1,9 +1,9 @@
-import { CreateUserDto } from '../../../controllers/sa/dto/CreateUserDto';
+import { CreateUserDto } from '../../controllers/dto/CreateUserDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { PasswordHashAdapter } from '../../../../adapters/passwordHash.adapter';
-import { UsersRepository } from '../../../repositories/public/repository/users.repository';
-import { UsersBanInfoRepository } from '../../../repositories/public/repository/usersBanInfo.repository';
-import { UsersEmailConfirmationRepository } from '../../../repositories/public/repository/usersEmailConfirmation.repository';
+import { PasswordHashAdapter } from '../../../adapters/passwordHash.adapter';
+import { UsersRepository } from '../../repositories/repository/users.repository';
+import { UsersBanInfoRepository } from '../../repositories/repository/usersBanInfo.repository';
+import { UsersEmailConfirmationRepository } from '../../repositories/repository/usersEmailConfirmation.repository';
 
 export class CreateUserUseCaseCommand {
   constructor(public dto: CreateUserDto) {}

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { ExpirationDate } from '../../../../../../utils/expirationDate';
-import { UsersEmailConfirmationDbModel } from '../../dto/UsersEmailConfirmation.db.model';
+import { ExpirationDate } from '../../../../../utils/expirationDate';
+import { UsersEmailConfirmationDbModel } from '../dto/UsersEmailConfirmation.db.model';
 
 @Injectable()
 export class UsersEmailConfirmationRepository {

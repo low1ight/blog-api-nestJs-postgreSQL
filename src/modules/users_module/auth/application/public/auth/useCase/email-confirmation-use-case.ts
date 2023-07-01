@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersEmailConfirmationDbModel } from '../../../../../users/repositories/dto/UsersEmailConfirmation.db.model';
-import { UsersEmailConfirmationRepository } from '../../../../../users/repositories/public/repository/usersEmailConfirmation.repository';
+import { UsersEmailConfirmationRepository } from '../../../../../users/repositories/repository/usersEmailConfirmation.repository';
 import { CustomResponse } from '../../../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../../../utils/customResponse/CustomResponseEnum';
 

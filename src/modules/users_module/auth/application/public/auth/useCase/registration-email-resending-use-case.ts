@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { EmailManager } from '../../../../../../../adapters/email.manager';
 import { CustomResponseEnum } from '../../../../../../../utils/customResponse/CustomResponseEnum';
 import { UserConfirmedStatusWithId } from '../../../../../users/repositories/dto/User.confirmed.status.withId';
-import { UsersEmailConfirmationRepository } from '../../../../../users/repositories/public/repository/usersEmailConfirmation.repository';
+import { UsersEmailConfirmationRepository } from '../../../../../users/repositories/repository/usersEmailConfirmation.repository';
 
 export class RegistrationEmailResendingUseCaseCommand {
   constructor(public email: string) {}

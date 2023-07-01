@@ -2,9 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { UsersSaController } from './modules/users_module/users/controllers/sa/users.sa.controller';
+import { UsersSaController } from './modules/users_module/users/controllers/users.sa.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersSaRepository } from './modules/users_module/users/repositories/sa/repository/users.sa.repository';
 import { UsersService } from './modules/users_module/users/application/users.service';
 import { TestingService } from './modules/testing/testing.service';
 import { TestingRepository } from './modules/testing/repositories/repository/testing.repository';
@@ -14,12 +13,11 @@ import {
   IsUserLoginAlreadyExist,
 } from './common/customValidators/IsUserFieldsExist';
 import { CqrsModule } from '@nestjs/cqrs';
-import { CreateUserUseCase } from './modules/users_module/users/application/sa/use-cases/create-user-use-case';
+import { CreateUserUseCase } from './modules/users_module/users/application/use-cases/create-user-use-case';
 import { PasswordHashAdapter } from './modules/users_module/adapters/passwordHash.adapter';
-import { UsersRepository } from './modules/users_module/users/repositories/public/repository/users.repository';
-import { DeleteUserUseCase } from './modules/users_module/users/application/sa/use-cases/delete-user-use-case';
-import { SetBanStatusForUserUseCase } from './modules/users_module/users/application/sa/use-cases/set-ban-status-for-user-use-case';
-import { UsersSaQueryRepository } from './modules/users_module/users/repositories/sa/query-repository/users-sa-query-repository.service';
+import { UsersRepository } from './modules/users_module/users/repositories/repository/users.repository';
+import { DeleteUserUseCase } from './modules/users_module/users/application/use-cases/delete-user-use-case';
+import { SetBanStatusForUserUseCase } from './modules/users_module/users/application/use-cases/set-ban-status-for-user-use-case';
 import { PassportModule } from '@nestjs/passport';
 import { BasicStrategy } from './modules/users_module/auth/strategies/basic.strategy';
 import { JwtModule } from '@nestjs/jwt';
@@ -41,12 +39,14 @@ import { AuthQueryRepository } from './modules/users_module/auth/application/pub
 import { RefreshRtUseCase } from './modules/users_module/auth/application/public/auth/useCase/refresh-rt-use-case';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailManager } from './adapters/email.manager';
-import { UsersEmailConfirmationRepository } from './modules/users_module/users/repositories/public/repository/usersEmailConfirmation.repository';
-import { UsersBanInfoRepository } from './modules/users_module/users/repositories/public/repository/usersBanInfo.repository';
-import { UsersPublicQueryRepository } from './modules/users_module/users/repositories/public/query-repo/users-public-query-repository.service';
+import { UsersEmailConfirmationRepository } from './modules/users_module/users/repositories/repository/usersEmailConfirmation.repository';
+import { UsersBanInfoRepository } from './modules/users_module/users/repositories/repository/usersBanInfo.repository';
 import { RegisterNewUserUseCase } from './modules/users_module/auth/application/public/auth/useCase/register-new-user-use-case';
 import { EmailConfirmationUseCase } from './modules/users_module/auth/application/public/auth/useCase/email-confirmation-use-case';
 import { RegistrationEmailResendingUseCase } from './modules/users_module/auth/application/public/auth/useCase/registration-email-resending-use-case';
+import { PasswordRecoveryUseCase } from './modules/users_module/auth/application/public/auth/useCase/password-recovery-use-case';
+import { UsersQueryRepository } from './modules/users_module/users/repositories/query-repository/users.query.repository';
+import { SetNewPasswordUseCase } from './modules/users_module/users/application/use-cases/set-new-password-use-case';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -56,11 +56,14 @@ const useCases = [
   RegisterNewUserUseCase,
   RefreshRtUseCase,
   LogoutUseCase,
+  SetNewPasswordUseCase,
   LoginUseCase,
+  PasswordRecoveryUseCase,
   EmailConfirmationUseCase,
   RegistrationEmailResendingUseCase,
   DeleteDeviceByIdUseCase,
 ];
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -113,11 +116,9 @@ const useCases = [
     UsersBanInfoRepository,
     AuthQueryRepository,
     LocalStrategy,
-    UsersSaQueryRepository,
-    UsersPublicQueryRepository,
+    UsersQueryRepository,
     UsersService,
     AccessTokenStrategy,
-    UsersSaRepository,
     TestingService,
     DevicesPublicRepository,
     DevicesPublicQueryRepository,

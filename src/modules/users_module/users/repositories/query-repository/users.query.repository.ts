@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { UserSaViewModel } from './dto/UserSaViewModel';
-import { UserQueryType } from '../../../../../../utils/querryMapper/user-query-mapper';
-import { calcSkipCount } from '../../../../../../utils/paginatorHelpers/calcSkipCount';
-import { toViwModelWithPaginator } from '../../../../../../utils/paginatorHelpers/toViwModelWithPaginator';
+import { UserQueryType } from '../../../../../utils/querryMapper/user-query-mapper';
+import { calcSkipCount } from '../../../../../utils/paginatorHelpers/calcSkipCount';
+import { toViwModelWithPaginator } from '../../../../../utils/paginatorHelpers/toViwModelWithPaginator';
 
 @Injectable()
-export class UsersSaQueryRepository {
+export class UsersQueryRepository {
   constructor(
     @InjectDataSource()
     protected dataSource: DataSource,
@@ -80,5 +80,23 @@ export class UsersSaQueryRepository {
       pageSize,
       +totalElem[0].count,
     );
+  }
+
+  async getUserById(userId: number) {
+    const user = await this.dataSource.query(
+      `
+    
+    SELECT u."id", "login", "email", "createdAt",
+           b."isBanned", "banReason", "banDate"
+    FROM public."Users" u
+    LEFT JOIN "UsersBanInfo" b ON u.id = b."userId"
+    WHERE "id" = $1
+    
+    
+    `,
+      [userId],
+    );
+
+    return new UserSaViewModel(user[0]);
   }
 }

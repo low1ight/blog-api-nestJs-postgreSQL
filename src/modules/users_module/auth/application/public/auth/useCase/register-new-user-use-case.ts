@@ -1,9 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UsersRepository } from '../../../../../users/repositories/public/repository/users.repository';
-import { UsersEmailConfirmationRepository } from '../../../../../users/repositories/public/repository/usersEmailConfirmation.repository';
-import { UsersBanInfoRepository } from '../../../../../users/repositories/public/repository/usersBanInfo.repository';
+import { UsersRepository } from '../../../../../users/repositories/repository/users.repository';
+import { UsersEmailConfirmationRepository } from '../../../../../users/repositories/repository/usersEmailConfirmation.repository';
+import { UsersBanInfoRepository } from '../../../../../users/repositories/repository/usersBanInfo.repository';
 import { v4 as uuidv4 } from 'uuid';
-import { CreateUserDto } from '../../../../../users/controllers/sa/dto/CreateUserDto';
+import { CreateUserDto } from '../../../../../users/controllers/dto/CreateUserDto';
 import { EmailManager } from '../../../../../../../adapters/email.manager';
 import { PasswordHashAdapter } from '../../../../../adapters/passwordHash.adapter';
 
