@@ -32,8 +32,10 @@ import { PasswordRecoveryUseCaseCommand } from '../application/public/auth/useCa
 import { NewPasswordDto } from '../../users/controllers/dto/NewPasswordDto';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 import { SetNewPasswordUseCaseCommand } from '../../users/application/use-cases/set-new-password-use-case';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
+@Throttle(5, 10)
 export class AuthPublicController {
   constructor(
     private commandBus: CommandBus,

@@ -47,6 +47,8 @@ import { RegistrationEmailResendingUseCase } from './modules/users_module/auth/a
 import { PasswordRecoveryUseCase } from './modules/users_module/auth/application/public/auth/useCase/password-recovery-use-case';
 import { UsersQueryRepository } from './modules/users_module/users/repositories/query-repository/users.query.repository';
 import { SetNewPasswordUseCase } from './modules/users_module/users/application/use-cases/set-new-password-use-case';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -103,6 +105,7 @@ const useCases = [
     }),
     CqrsModule,
     PassportModule,
+    ThrottlerModule.forRoot({}),
   ],
   controllers: [
     AppController,
@@ -135,6 +138,11 @@ const useCases = [
     SetBanStatusForUserUseCase,
     ...customValidators,
     ...useCases,
+
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}
