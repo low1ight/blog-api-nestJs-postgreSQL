@@ -10,8 +10,10 @@ export class AuthPublicService {
     private readonly passwordHashAdapter: PasswordHashAdapter,
   ) {}
   async validateUser(loginOrEmail: string, password: string) {
-    const user: UserForLoginValidationModel =
+    const user: UserForLoginValidationModel | null =
       await this.usersRepository.getUserDataForLogin(loginOrEmail);
+
+    if (!user) return null;
 
     const isPasswordCorrect = await this.passwordHashAdapter.validatePassword(
       password,
