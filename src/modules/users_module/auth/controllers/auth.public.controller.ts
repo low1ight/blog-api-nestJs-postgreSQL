@@ -32,7 +32,7 @@ import { PasswordRecoveryUseCaseCommand } from '../application/public/auth/useCa
 import { NewPasswordDto } from '../../users/controllers/dto/NewPasswordDto';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 import { SetNewPasswordUseCaseCommand } from '../../users/application/use-cases/set-new-password-use-case';
-import { Throttle } from '@nestjs/throttler';
+import { SkipThrottle, Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 @Throttle(5, 10)
@@ -64,6 +64,7 @@ export class AuthPublicController {
   }
 
   @UseGuards(RefreshTokenGuard)
+  @SkipThrottle()
   @Post('logout')
   async logout(@CurrentUser() { deviceId }: UserDataFromRT) {
     await this.commandBus.execute(new LogoutUseCaseCommand(deviceId));
@@ -98,6 +99,7 @@ export class AuthPublicController {
   }
 
   @UseGuards(RefreshTokenGuard)
+  @SkipThrottle()
   @Post('refresh-token')
   async refreshTokens(
     @CurrentUser() { deviceId, userId, login }: UserDataFromRT,
@@ -116,6 +118,7 @@ export class AuthPublicController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @SkipThrottle()
   @Get('me')
   async me(@CurrentUser() { id }: UserDataFromAT) {
     return await this.authQueryRepository.getUserDataForAuthMe(id);
