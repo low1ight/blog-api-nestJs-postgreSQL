@@ -34,6 +34,7 @@
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
     "mysql2": "^3.3.5",
+    "ngrok": "^5.0.0-beta.2",
     "nodemailer": "^6.9.3",
     "passport": "^0.6.0",
     "passport-http": "^0.3.0",

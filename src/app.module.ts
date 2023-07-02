@@ -71,13 +71,16 @@ const useCases = [
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'ep-plain-sky-717396-pooler.eu-central-1.aws.neon.tech',
       port: 5432,
-      username: 'nodeJs',
-      password: 'nodeJs',
+      username: process.env.PGUSER,
+      password: process.env.PGPASSWORD,
       database: 'Blog',
       autoLoadEntities: false,
       synchronize: false,
+      extra: {
+        ssl: true,
+      },
     }),
     MailerModule.forRoot({
       transport: {
