@@ -44,6 +44,7 @@ export class AuthPublicController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  @HttpCode(201)
   async login(
     @Req() req,
     @Ip() ip,
