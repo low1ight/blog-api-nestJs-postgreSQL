@@ -83,7 +83,11 @@ export class AuthPublicController {
       new EmailConfirmationUseCaseCommand(dto.code),
     );
     if (!result.isSuccess)
-      Exceptions.throwHttpException(result.errStatusCode, result.content);
+      Exceptions.throwHttpException(
+        result.errStatusCode,
+        result.content,
+        'code',
+      );
   }
   @Post('registration-email-resending')
   @HttpCode(204)
