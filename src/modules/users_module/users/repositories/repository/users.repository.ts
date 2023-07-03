@@ -4,7 +4,6 @@ import { DataSource } from 'typeorm';
 import { UserForLoginValidationModel } from '../dto/UserForLoginValidationModel';
 import { CreateUserDto } from '../../controllers/dto/CreateUserDto';
 import { UserDbModel } from '../dto/User.db.model';
-import { BanUserDto } from '../../controllers/dto/BanUserDto';
 
 @Injectable()
 export class UsersRepository {
@@ -41,18 +40,23 @@ export class UsersRepository {
     });
   }
 
-  async setBanStatusForUser(userId: number, dto: BanUserDto) {
+  async setBanStatusForUser(
+    userId: number,
+    isBanned: boolean,
+    banReason: string | null,
+    banDate: Date | null,
+  ) {
     await this.dataSource.query(
       `
     
        UPDATE public."UsersBanInfo"
-       SET "isBanned"=$2, "banReason"=$3, "banDate"=CURRENT_DATE
+       SET "isBanned"=$2, "banReason"=$3, "banDate"=$4
        WHERE "userId" = $1;
     
     
     
     `,
-      [userId, dto.isBanned, dto.banReason],
+      [userId, isBanned, banReason, banDate],
     );
   }
 

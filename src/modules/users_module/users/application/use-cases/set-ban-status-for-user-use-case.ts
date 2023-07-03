@@ -11,15 +11,20 @@ export class SetBanStatusForUserUseCase
   implements ICommandHandler<SetBanStatusForUserUseCaseCommand>
 {
   constructor(private readonly usersRepository: UsersRepository) {}
-  async execute(command: SetBanStatusForUserUseCaseCommand) {
+  async execute({ userId, dto }: SetBanStatusForUserUseCaseCommand) {
     const isUserExist = await this.usersRepository.checkIsUserExistByField(
       'id',
-      command.userId,
+      userId,
     );
 
     if (!isUserExist) return false;
 
-    await this.usersRepository.setBanStatusForUser(command.userId, command.dto);
+    await this.usersRepository.setBanStatusForUser(
+      userId,
+      dto.isBanned,
+      dto.isBanned ? dto.banReason : null,
+      dto.isBanned ? new Date() : null,
+    );
 
     return true;
   }
