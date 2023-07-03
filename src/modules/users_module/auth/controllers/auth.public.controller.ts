@@ -19,7 +19,6 @@ import { UserDataFromRT } from '../../../../common/decorators/currentUser/UserDa
 import { LogoutUseCaseCommand } from '../application/public/auth/useCase/logout-use-case';
 import { JwtAuthGuard } from '../guards/jwt.auth.guard';
 import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDataFromAT';
-import { AuthQueryRepository } from '../application/public/auth/query-repo/auth.query.repository';
 import { RefreshRtUseCaseCommand } from '../application/public/auth/useCase/refresh-rt-use-case';
 import { CreateUserDto } from '../../users/controllers/dto/CreateUserDto';
 import { RegisterNewUserUseCaseCommand } from '../application/public/auth/useCase/register-new-user-use-case';
@@ -33,13 +32,14 @@ import { NewPasswordDto } from '../../users/controllers/dto/NewPasswordDto';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 import { SetNewPasswordUseCaseCommand } from '../../users/application/use-cases/set-new-password-use-case';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import { UsersQueryRepository } from '../../users/repositories/query-repository/users.query.repository';
 
 @Controller('auth')
 @Throttle(5, 10)
 export class AuthPublicController {
   constructor(
     private commandBus: CommandBus,
-    private authQueryRepository: AuthQueryRepository,
+    private usersQueryRepository: UsersQueryRepository,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -127,7 +127,7 @@ export class AuthPublicController {
   @SkipThrottle()
   @Get('me')
   async me(@CurrentUser() { id }: UserDataFromAT) {
-    return await this.authQueryRepository.getUserDataForAuthMe(id);
+    return await this.usersQueryRepository.getUserDataForAuthMe(id);
   }
 
   @Post('password-recovery')

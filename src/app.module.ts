@@ -35,7 +35,6 @@ import { DevicesService } from './modules/users_module/auth/application/public/d
 import { DeleteAllOtherDevicesUseCase } from './modules/users_module/auth/application/public/devices/use-case/delete-all-other-devices-use-case';
 import { DeleteDeviceByIdUseCase } from './modules/users_module/auth/application/public/devices/use-case/delete-device-by-id-use-case';
 import { LogoutUseCase } from './modules/users_module/auth/application/public/auth/useCase/logout-use-case';
-import { AuthQueryRepository } from './modules/users_module/auth/application/public/auth/query-repo/auth.query.repository';
 import { RefreshRtUseCase } from './modules/users_module/auth/application/public/auth/useCase/refresh-rt-use-case';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailManager } from './adapters/email.manager';
@@ -120,7 +119,6 @@ const useCases = [
     AppService,
     UsersEmailConfirmationRepository,
     UsersBanInfoRepository,
-    AuthQueryRepository,
     LocalStrategy,
     UsersQueryRepository,
     UsersService,

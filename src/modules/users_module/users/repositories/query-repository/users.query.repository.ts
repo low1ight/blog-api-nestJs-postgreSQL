@@ -5,6 +5,8 @@ import { UserSaViewModel } from './dto/UserSaViewModel';
 import { UserQueryType } from '../../../../../utils/querryMapper/user-query-mapper';
 import { calcSkipCount } from '../../../../../utils/paginatorHelpers/calcSkipCount';
 import { toViwModelWithPaginator } from '../../../../../utils/paginatorHelpers/toViwModelWithPaginator';
+import { MeViewModel } from './dto/MeViewModel';
+import { MeType } from './dto/MeType';
 
 @Injectable()
 export class UsersQueryRepository {
@@ -97,5 +99,20 @@ export class UsersQueryRepository {
     );
 
     return new UserSaViewModel(user[0]);
+  }
+
+  async getUserDataForAuthMe(id): Promise<MeViewModel> {
+    const userData: MeType[] = await this.dataSource.query(
+      `
+    
+    SELECT "email","login","id" as "userId"
+    FROM "Users"    
+    WHERE "id" = $1
+    
+    `,
+      [id],
+    );
+
+    return new MeViewModel(userData[0]);
   }
 }
