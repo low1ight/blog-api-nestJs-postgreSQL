@@ -66,6 +66,7 @@ export class AuthPublicController {
 
   @UseGuards(RefreshTokenGuard)
   @SkipThrottle()
+  @HttpCode(204)
   @Post('logout')
   async logout(@CurrentUser() { deviceId }: UserDataFromRT) {
     await this.commandBus.execute(new LogoutUseCaseCommand(deviceId));
