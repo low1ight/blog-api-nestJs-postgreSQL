@@ -24,6 +24,7 @@ import { SetBanStatusForUserUseCaseCommand } from '../application/use-cases/set-
 import { BanUserDto } from './dto/BanUserDto';
 import { BasicAuthGuard } from '../../auth/guards/basic.auth.guard';
 import { UsersQueryRepository } from '../repositories/query-repository/users.query.repository';
+import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 
 @Controller('sa/users')
 @UseGuards(BasicAuthGuard)
@@ -54,7 +55,7 @@ export class UsersSaController {
 
   @Delete(':id')
   @HttpCode(204)
-  async deleteUser(@Param('id', ParseIntPipe) id: number) {
+  async deleteUser(@Param('id', CustomParseInt) id: number) {
     const isDeleted = await this.commandBus.execute(
       new DeleteUserUseCaseCommand(id),
     );

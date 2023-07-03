@@ -4,7 +4,6 @@ import {
   Get,
   HttpCode,
   Param,
-  ParseIntPipe,
   UseGuards,
 } from '@nestjs/common';
 import { CurrentUser } from '../../../../common/decorators/currentUser/current.user.decorator';
@@ -18,6 +17,7 @@ import { DeleteAllOtherDevicesUseCaseCommand } from '../application/public/devic
 import { DeleteDeviceByIdUseCaseCommand } from '../application/public/devices/use-case/delete-device-by-id-use-case';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { Exceptions } from '../../../../utils/throwException';
+import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 
 @Controller('security/devices')
 export class DevicePublicController {
@@ -46,7 +46,7 @@ export class DevicePublicController {
   @HttpCode(204)
   @UseGuards(RefreshTokenGuard)
   async deleteDeviceById(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', CustomParseInt) id: number,
     @CurrentUser() { userId, deviceId }: UserDataFromRT,
   ) {
     const result: CustomResponse<any> = await this.commandBus.execute(

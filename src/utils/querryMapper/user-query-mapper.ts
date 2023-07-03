@@ -11,7 +11,7 @@ export const userQueryMapper = ({
     searchLoginTerm: searchLoginTerm || null,
     searchEmailTerm: searchEmailTerm || null,
     sortBy: sortBy || 'createdAt',
-    sortDirection: sortDirection || 'desc',
+    sortDirection: sortDirection || 'DESC',
     pageNumber: Number(pageNumber) || 1,
     pageSize: Number(pageSize) || 10,
     banStatus: banStatus || 'all',

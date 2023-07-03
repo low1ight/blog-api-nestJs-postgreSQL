@@ -19,11 +19,13 @@ export class UsersQueryRepository {
     searchLoginTerm,
     searchEmailTerm,
     banStatus,
+    sortDirection,
+    sortBy,
   }: UserQueryType) {
     const offset = calcSkipCount(pageNumber, pageSize);
-
-    const loginTerm = searchLoginTerm || '';
-    const emailTerm = searchEmailTerm || '';
+    const direction = sortDirection.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+    const loginTerm = `%${searchLoginTerm || ''}%`;
+    const emailTerm = `%${searchEmailTerm || ''}%`;
     const banStatusObj = {
       banned: true,
       notBanned: false,
@@ -38,19 +40,18 @@ export class UsersQueryRepository {
            
     FROM (
     SELECT * FROM "Users" 
-    WHERE "login" like $1 and "email" like $2
+    WHERE "login" ILIKE $1 OR "email" ILIKE $2
+    ORDER BY "${sortBy}" ${direction}
     LIMIT ${pageSize}
     OFFSET ${offset}
-    ) u
-    LEFT JOIN "UsersBanInfo" b
+    ) AS u
+    LEFT JOIN "UsersBanInfo" AS b
     ON u."id" = b."userId"
     WHERE "isBanned" IN(${isBanned})
-    ORDER BY "id" desc
+    ORDER BY "${sortBy}" ${direction}
      
-    
-        
     `,
-      [`%${loginTerm}%`, `%${emailTerm}%`],
+      [loginTerm, emailTerm],
     );
 
     const totalElem = await this.dataSource.query(
@@ -59,15 +60,13 @@ export class UsersQueryRepository {
            
     FROM (
     SELECT * FROM "Users" 
-    WHERE "login" like $1 and "email" like $2
-    LIMIT ${pageSize}
-    OFFSET ${offset}
+    WHERE "login" ILIKE $1 OR "email" ILIKE $2
     ) u
     LEFT JOIN "UsersBanInfo" b
     ON u."id" = b."userId"
     WHERE "isBanned" IN(${isBanned})
     `,
-      [`%${loginTerm}%`, `%${emailTerm}%`],
+      [loginTerm, emailTerm],
     );
 
     const userViewModel: UserSaViewModel[] = result.map(
