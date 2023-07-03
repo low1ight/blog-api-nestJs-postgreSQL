@@ -57,8 +57,8 @@ export class AuthPublicController {
     );
 
     response.cookie('refreshToken ', refreshToken, {
-      // httpOnly: true,
-      // secure: true,
+      httpOnly: true,
+      secure: true,
     });
 
     return { accessToken };
@@ -105,6 +105,7 @@ export class AuthPublicController {
 
   @UseGuards(RefreshTokenGuard)
   @SkipThrottle()
+  @HttpCode(200)
   @Post('refresh-token')
   async refreshTokens(
     @CurrentUser() { deviceId, userId, login }: UserDataFromRT,
@@ -115,8 +116,8 @@ export class AuthPublicController {
     );
 
     response.cookie('refreshToken ', refreshToken, {
-      // httpOnly: true,
-      // secure: true,
+      httpOnly: true,
+      secure: true,
     });
 
     return { accessToken };
