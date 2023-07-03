@@ -7,8 +7,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CurrentUser } from '../../../../common/decorators/currentUser/current.user.decorator';
-import { JwtAuthGuard } from '../guards/jwt.auth.guard';
-import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDataFromAT';
 import { DevicesPublicQueryRepository } from '../repositories/public/devices/query-repo/devices.public.query.repository';
 import { RefreshTokenGuard } from '../guards/refresh.token.guard.';
 import { UserDataFromRT } from '../../../../common/decorators/currentUser/UserDataFromRT';
@@ -19,19 +17,19 @@ import { CustomResponse } from '../../../../utils/customResponse/CustomResponse'
 import { Exceptions } from '../../../../utils/throwException';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 
-@Controller('security/devices')
+@Controller('security')
 export class DevicePublicController {
   constructor(
     private readonly deviceQueryRepository: DevicesPublicQueryRepository,
     private readonly commandBus: CommandBus,
   ) {}
-  @Get()
-  @UseGuards(JwtAuthGuard)
-  async getAllCurrentUserDevices(@CurrentUser() { id }: UserDataFromAT) {
-    return await this.deviceQueryRepository.getAllUsersByOwnerId(id);
+  @Get('/devices')
+  @UseGuards(RefreshTokenGuard)
+  async getAllCurrentUserDevices(@CurrentUser() { userId }: UserDataFromRT) {
+    return await this.deviceQueryRepository.getAllUsersByOwnerId(userId);
   }
 
-  @Delete()
+  @Delete('/devices')
   @HttpCode(204)
   @UseGuards(RefreshTokenGuard)
   async terminateAllOtherDevicesExcludeCurrent(
@@ -42,15 +40,15 @@ export class DevicePublicController {
     );
   }
 
-  @Delete(':id')
+  @Delete('/devices/:id')
   @HttpCode(204)
   @UseGuards(RefreshTokenGuard)
   async deleteDeviceById(
     @Param('id', CustomParseInt) id: number,
-    @CurrentUser() { userId, deviceId }: UserDataFromRT,
+    @CurrentUser() { userId }: UserDataFromRT,
   ) {
     const result: CustomResponse<any> = await this.commandBus.execute(
-      new DeleteDeviceByIdUseCaseCommand(deviceId, userId),
+      new DeleteDeviceByIdUseCaseCommand(id, userId),
     );
 
     if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
