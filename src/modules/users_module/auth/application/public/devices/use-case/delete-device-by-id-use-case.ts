@@ -19,7 +19,7 @@ export class DeleteDeviceByIdUseCase
 
     if (!device) return new CustomResponse(false, CustomResponseEnum.notExist);
     if (device.ownerId !== currentUserId)
-      return new CustomResponse(false, CustomResponseEnum.notExist);
+      return new CustomResponse(false, CustomResponseEnum.forbidden);
 
     await this.devicesRepository.deleteDeviceById(deviceId);
 

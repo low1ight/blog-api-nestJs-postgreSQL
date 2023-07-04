@@ -15,7 +15,6 @@ import { DeleteAllOtherDevicesUseCaseCommand } from '../application/public/devic
 import { DeleteDeviceByIdUseCaseCommand } from '../application/public/devices/use-case/delete-device-by-id-use-case';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { Exceptions } from '../../../../utils/throwException';
-import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 
 @Controller('security')
 export class DevicePublicController {
@@ -44,7 +43,7 @@ export class DevicePublicController {
   @HttpCode(204)
   @UseGuards(RefreshTokenGuard)
   async deleteDeviceById(
-    @Param('id', CustomParseInt) id: number,
+    @Param('id') id: number,
     @CurrentUser() { userId }: UserDataFromRT,
   ) {
     const result: CustomResponse<any> = await this.commandBus.execute(

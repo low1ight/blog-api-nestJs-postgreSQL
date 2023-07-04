@@ -10,6 +10,6 @@ export class DeviceViewModel {
     this.title = title;
     this.lastActiveDate = lastActiveDate.toISOString();
     this.ip = ip;
-    this.deviceId = id.toString();
+    this.deviceId = id;
   }
 }

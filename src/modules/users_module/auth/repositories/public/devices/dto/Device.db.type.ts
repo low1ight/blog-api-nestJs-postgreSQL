@@ -1,5 +1,5 @@
 export type DeviceDbType = {
-  id: number;
+  id: string;
   ownerId: number;
   ip: string;
   title: string;
