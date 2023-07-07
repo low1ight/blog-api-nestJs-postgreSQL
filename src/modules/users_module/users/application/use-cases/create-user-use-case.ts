@@ -1,9 +1,6 @@
 import { CreateUserDto } from '../../controllers/dto/CreateUserDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { PasswordHashAdapter } from '../../../adapters/passwordHash.adapter';
-import { UsersRepository } from '../../repositories/repository/users.repository';
-import { UsersBanInfoRepository } from '../../repositories/repository/usersBanInfo.repository';
-import { UsersEmailConfirmationRepository } from '../../repositories/repository/usersEmailConfirmation.repository';
+import { UsersService } from '../users.service';
 
 export class CreateUserUseCaseCommand {
   constructor(public dto: CreateUserDto) {}
@@ -13,30 +10,8 @@ export class CreateUserUseCaseCommand {
 export class CreateUserUseCase
   implements ICommandHandler<CreateUserUseCaseCommand>
 {
-  constructor(
-    private usersRepository: UsersRepository,
-    private passwordHashAdapter: PasswordHashAdapter,
-    private userBanInfoRepository: UsersBanInfoRepository,
-    private userEmailConfirmationRepository: UsersEmailConfirmationRepository,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
   async execute(command: CreateUserUseCaseCommand) {
-    //hashing user password
-    const hashedPassword = await this.passwordHashAdapter.hashPassword(
-      command.dto.password,
-    );
-    const userDtoWithHashedPassword: CreateUserDto = {
-      ...command.dto,
-      password: hashedPassword,
-    };
-
-    const userId: number = await this.usersRepository.createUser(
-      userDtoWithHashedPassword,
-    );
-    await this.userBanInfoRepository.createUserBanInfo(userId);
-    await this.userEmailConfirmationRepository.createAutoConfirmedEmailConfirmationFofUser(
-      userId,
-    );
-
-    return userId;
+    return await this.usersService.createUser(command.dto, true);
   }
 }
