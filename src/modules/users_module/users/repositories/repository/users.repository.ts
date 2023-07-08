@@ -31,16 +31,7 @@ export class UsersRepository {
   }
 
   async deleteUserById(id: number) {
-    await this.dataSource.transaction(async (manager) => {
-      await manager.query(
-        `DELETE FROM "UsersEmailConfirmation" WHERE "ownerId" = $1`,
-        [id],
-      );
-      await manager.query(` DELETE FROM "UsersBanInfo" WHERE "userId" = $1`, [
-        id,
-      ]);
-      await manager.query(`DELETE FROM "Users" WHERE id = $1`, [id]);
-    });
+    await this.dataSource.query(`DELETE FROM "Users" WHERE id = $1`, [id]);
   }
 
   async setBanStatusForUser(
