@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { DataSource, QueryRunner } from 'typeorm';
 import { ExpirationDate } from '../../../../../utils/expirationDate';
 import { UsersEmailConfirmationDbModel } from '../dto/UsersEmailConfirmation.db.model';
 
@@ -8,8 +8,11 @@ import { UsersEmailConfirmationDbModel } from '../dto/UsersEmailConfirmation.db.
 export class UsersEmailConfirmationRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource) {}
 
-  async createAutoConfirmedEmailConfirmationFofUser(userId: number) {
-    await this.dataSource.query(
+  async createAutoConfirmedEmailConfirmationFofUser(
+    userId: number,
+    queryRunner: QueryRunner,
+  ) {
+    await queryRunner.query(
       `
     
         INSERT INTO public."UsersEmailConfirmation"("ownerId", "confirmationCode", "expirationDate","isConfirmed")
@@ -22,11 +25,12 @@ export class UsersEmailConfirmationRepository {
   async createUnconfirmedEmailConfirmationFofUser(
     userId: number,
     confirmationCode: string,
+    queryRunner: QueryRunner,
   ) {
     const expirationDate = ExpirationDate.createDateForEmailConfirmation(
       new Date(),
     );
-    await this.dataSource.query(
+    await queryRunner.query(
       `
     
         INSERT INTO public."UsersEmailConfirmation"("ownerId", "confirmationCode", "expirationDate","isConfirmed")
