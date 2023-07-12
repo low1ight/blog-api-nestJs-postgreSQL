@@ -113,7 +113,7 @@ describe('users controller testing', () => {
       });
   });
 
-  it('should unban user', () => {
+  it('should ban user', () => {
     console.log(createdUserId);
     return request(app.getHttpServer())
       .put(`/sa/users/${createdUserId}/ban`)
@@ -142,7 +142,7 @@ describe('users controller testing', () => {
       });
   });
 
-  it('should ban user', () => {
+  it('should unban user', () => {
     return request(app.getHttpServer())
       .put(`/sa/users/${createdUserId}/ban`)
       .auth(process.env.HTTP_BASIC_LOGIN, process.env.HTTP_BASIC_PASS, {
