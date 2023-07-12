@@ -50,6 +50,7 @@ describe('users controller testing', () => {
   let recoveryCode;
   let cookie;
   let newCookie;
+  let accessToken;
 
   const newPassword = '321321';
 
@@ -152,28 +153,19 @@ describe('users controller testing', () => {
   });
 
   it('should successful login and return AT in body and RT in cookie', () => {
-    return (
-      request(app.getHttpServer())
-        .post('/auth/login')
-        .send(loginDto)
-        .expect(200)
-        // .expect('refreshToken', expect.any(String))
-        .then((response) => {
-          expect(response.body).toEqual({
-            accessToken: expect.any(String),
-          });
+    return request(app.getHttpServer())
+      .post('/auth/login')
+      .send(loginDto)
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toEqual({
+          accessToken: expect.any(String),
+        });
 
-          const refreshTokenCookie = response.headers['set-cookie']
-            .map((cookie) => cookie.split(';')[0]) // Extract the cookie value only
-            .find((cookie) => cookie.includes('refreshToken'))
-            .split('=')[1];
+        accessToken = response.body.accessToken;
 
-          cookie = response.headers['set-cookie'];
-
-          refreshToken = refreshTokenCookie;
-          accessToken = response.body.accessToken;
-        })
-    );
+        cookie = response.headers['set-cookie'];
+      });
   });
 
   it('should successful return me data', () => {
