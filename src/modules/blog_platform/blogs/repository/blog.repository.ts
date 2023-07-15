@@ -61,4 +61,17 @@ export class BlogRepository {
       [blogId, name, description, websiteUrl],
     );
   }
+
+  async deleteBlogById(blogId: number) {
+    return await this.dataSource.query(
+      `
+    
+    DELETE FROM public."Blogs"
+    WHERE id=$1;
+    
+    
+    `,
+      [blogId],
+    );
+  }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   Param,
   Post,
@@ -18,6 +19,7 @@ import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 import { UpdateBlogUseCaseCommand } from '../application/use-cases/updateBlogUseCase';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { Exceptions } from '../../../../utils/throwException';
+import { DeleteBlogUseCaseCommand } from '../application/use-cases/deleteBlogUseCase';
 
 @Controller('blogger')
 export class BlogsBloggerController {
@@ -42,6 +44,20 @@ export class BlogsBloggerController {
   ) {
     const result: CustomResponse<any> = await this.commandBus.execute(
       new UpdateBlogUseCaseCommand(dto, userData.id, id),
+    );
+    if (!result.isSuccess)
+      return Exceptions.throwHttpException(result.errStatusCode);
+  }
+
+  @Delete('blogs/:id')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  async deleteBlog(
+    @Param('id', CustomParseInt) id: number,
+    @CurrentUser() userData: UserDataFromAT,
+  ) {
+    const result: CustomResponse<any> = await this.commandBus.execute(
+      new DeleteBlogUseCaseCommand(userData.id, id),
     );
     if (!result.isSuccess)
       return Exceptions.throwHttpException(result.errStatusCode);
