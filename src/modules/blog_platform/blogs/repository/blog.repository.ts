@@ -3,6 +3,7 @@ import { CreateBlogDto } from '../controllers/dto/CreateBlogDto';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { BlogViewModel } from './dto/BlogViewModel';
+import { UpdateBlogDto } from '../controllers/dto/UpdateBlogDto';
 
 @Injectable()
 export class BlogRepository {
@@ -18,7 +19,7 @@ export class BlogRepository {
     const result = await this.dataSource.query(
       `
     
-        INSERT INTO public."Blog"(
+        INSERT INTO public."Blogs"(
          "ownerId", "name", "description", "websiteUrl", "isMembership", "createdAt")
         VALUES ( $1, $2, $3, $4, $5, now())
         RETURNING "id", "name", "description", "websiteUrl", "isMembership", "createdAt"
@@ -28,5 +29,36 @@ export class BlogRepository {
     );
 
     return result[0];
+  }
+
+  async getBlogById(blogId) {
+    const blog = await this.dataSource.query(
+      `
+    
+    SELECT * FROM "Blogs"
+    WHERE "id" = $1
+    
+    `,
+      [blogId],
+    );
+
+    return blog[0] || null;
+  }
+
+  async updateBlog(
+    blogId: number,
+    { name, description, websiteUrl }: UpdateBlogDto,
+  ) {
+    return await this.dataSource.query(
+      `
+
+    UPDATE public."Blogs"
+    SET name=$2, description=$3, "websiteUrl"=$4
+    WHERE "id" = $1;
+    
+    
+    `,
+      [blogId, name, description, websiteUrl],
+    );
   }
 }

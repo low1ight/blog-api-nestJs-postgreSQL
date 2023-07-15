@@ -51,6 +51,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { BlogsBloggerController } from './modules/blog_platform/blogs/controllers/blogs.blogger.controller';
 import { CreateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/createBlogUseCase';
 import { BlogRepository } from './modules/blog_platform/blogs/repository/blog.repository';
+import { UpdateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/updateBlogUseCase';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -59,6 +60,7 @@ const useCases = [
   DeleteUserUseCase,
   RegisterNewUserUseCase,
   RefreshRtUseCase,
+  UpdateBlogUseCase,
   LogoutUseCase,
   SetNewPasswordUseCase,
   LoginUseCase,
