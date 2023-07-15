@@ -48,6 +48,9 @@ import { UsersQueryRepository } from './modules/users_module/users/repositories/
 import { SetNewPasswordUseCase } from './modules/users_module/users/application/use-cases/set-new-password-use-case';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { BlogsBloggerController } from './modules/blog_platform/blogs/controllers/blogs.blogger.controller';
+import { CreateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/createBlogUseCase';
+import { BlogRepository } from './modules/blog_platform/blogs/repository/blog.repository';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -63,6 +66,7 @@ const useCases = [
   EmailConfirmationUseCase,
   RegistrationEmailResendingUseCase,
   DeleteDeviceByIdUseCase,
+  CreateBlogUseCase,
 ];
 
 @Module({
@@ -112,6 +116,7 @@ const useCases = [
     DevicePublicController,
     TestingController,
     AuthPublicController,
+    BlogsBloggerController,
   ],
   providers: [
     BasicStrategy,
@@ -124,6 +129,7 @@ const useCases = [
     UsersService,
     AccessTokenStrategy,
     TestingService,
+    BlogRepository,
     DevicesPublicRepository,
     DevicesPublicQueryRepository,
     JwtAdapter,
