@@ -52,6 +52,10 @@ import { BlogsBloggerController } from './modules/blog_platform/blogs/controller
 import { CreateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/createBlogUseCase';
 import { BlogRepository } from './modules/blog_platform/blogs/repository/blog.repository';
 import { UpdateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/updateBlogUseCase';
+import { DeleteBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/deleteBlogUseCase';
+import { PostsRepository } from './modules/blog_platform/posts/repository/posts.repository';
+import { CreatePostForBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/createPostForBlogUseCase';
+import { PostsQueryRepository } from './modules/blog_platform/posts/repository/posts-query-repository.service';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -66,9 +70,11 @@ const useCases = [
   LoginUseCase,
   PasswordRecoveryUseCase,
   EmailConfirmationUseCase,
+  CreatePostForBlogUseCase,
   RegistrationEmailResendingUseCase,
   DeleteDeviceByIdUseCase,
   CreateBlogUseCase,
+  DeleteBlogUseCase,
 ];
 
 @Module({
@@ -130,11 +136,13 @@ const useCases = [
     UsersQueryRepository,
     UsersService,
     AccessTokenStrategy,
+    PostsRepository,
     TestingService,
     BlogRepository,
     DevicesPublicRepository,
     DevicesPublicQueryRepository,
     JwtAdapter,
+    PostsQueryRepository,
     PasswordHashAdapter,
     TestingRepository,
     UsersRepository,

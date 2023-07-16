@@ -20,13 +20,19 @@ import { UpdateBlogUseCaseCommand } from '../application/use-cases/updateBlogUse
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { Exceptions } from '../../../../utils/throwException';
 import { DeleteBlogUseCaseCommand } from '../application/use-cases/deleteBlogUseCase';
+import { CreatePostForBlogDto } from './dto/createPostForBlogDto';
+import { CreatePostForBlogUseCaseCommand } from '../application/use-cases/createPostForBlogUseCase';
+import { PostsQueryRepository } from '../../posts/repository/posts-query-repository.service';
 
-@Controller('blogger')
+@Controller('blogger/blogs')
+@UseGuards(JwtAuthGuard)
 export class BlogsBloggerController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly postsQueryRepository: PostsQueryRepository,
+  ) {}
 
-  @Post('blogs')
-  @UseGuards(JwtAuthGuard)
+  @Post('')
   async createBlog(
     @Body() dto: CreateBlogInputDto,
     @CurrentUser() { id }: UserDataFromAT,
@@ -34,8 +40,7 @@ export class BlogsBloggerController {
     return await this.commandBus.execute(new CreateBlogUseCaseCommand(dto, id));
   }
 
-  @Put('blogs/:id')
-  @UseGuards(JwtAuthGuard)
+  @Put('/:id')
   @HttpCode(204)
   async updateBlog(
     @Body() dto: UpdateBlogDto,
@@ -49,8 +54,7 @@ export class BlogsBloggerController {
       return Exceptions.throwHttpException(result.errStatusCode);
   }
 
-  @Delete('blogs/:id')
-  @UseGuards(JwtAuthGuard)
+  @Delete('/:id')
   @HttpCode(204)
   async deleteBlog(
     @Param('id', CustomParseInt) id: number,
@@ -61,5 +65,19 @@ export class BlogsBloggerController {
     );
     if (!result.isSuccess)
       return Exceptions.throwHttpException(result.errStatusCode);
+  }
+  @Post(':id/posts')
+  async createPost(
+    @Param('id', CustomParseInt) id: number,
+    @Body() dto: CreatePostForBlogDto,
+    @CurrentUser() user: UserDataFromAT,
+  ) {
+    const result: CustomResponse<number | null> = await this.commandBus.execute(
+      new CreatePostForBlogUseCaseCommand(id, user.id, dto),
+    );
+
+    if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
+
+    return await this.postsQueryRepository.getPostById(result.content);
   }
 }
