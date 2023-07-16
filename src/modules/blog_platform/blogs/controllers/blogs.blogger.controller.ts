@@ -21,8 +21,10 @@ import { CustomResponse } from '../../../../utils/customResponse/CustomResponse'
 import { Exceptions } from '../../../../utils/throwException';
 import { DeleteBlogUseCaseCommand } from '../application/use-cases/deleteBlogUseCase';
 import { CreatePostForBlogDto } from './dto/createPostForBlogDto';
-import { CreatePostForBlogUseCaseCommand } from '../application/use-cases/createPostForBlogUseCase';
+import { CreatePostForBlogUseCaseCommand } from '../../posts/application/use-cases/createPostForBlogUseCase';
 import { PostsQueryRepository } from '../../posts/repository/posts-query-repository.service';
+import { UpdatePostDto } from './dto/UpdatePostDto';
+import { UpdatePostUseCaseCommand } from '../../posts/application/use-cases/updatePostUseCase';
 
 @Controller('blogger/blogs')
 @UseGuards(JwtAuthGuard)
@@ -79,5 +81,22 @@ export class BlogsBloggerController {
     if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
 
     return await this.postsQueryRepository.getPostById(result.content);
+  }
+
+  @Put(':blogId/posts/:postId')
+  @HttpCode(204)
+  async editBlog(
+    @Param('blogId', CustomParseInt) blogId: number,
+    @Param('postId', CustomParseInt) postId: number,
+    @Body() dto: UpdatePostDto,
+    @CurrentUser() user: UserDataFromAT,
+  ) {
+    const result: CustomResponse<number | null> = await this.commandBus.execute(
+      new UpdatePostUseCaseCommand(postId, blogId, user.id, dto),
+    );
+
+    if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
+
+    return;
   }
 }

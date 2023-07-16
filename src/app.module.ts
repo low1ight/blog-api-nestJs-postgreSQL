@@ -54,8 +54,9 @@ import { BlogRepository } from './modules/blog_platform/blogs/repository/blog.re
 import { UpdateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/updateBlogUseCase';
 import { DeleteBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/deleteBlogUseCase';
 import { PostsRepository } from './modules/blog_platform/posts/repository/posts.repository';
-import { CreatePostForBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/createPostForBlogUseCase';
+import { CreatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/createPostForBlogUseCase';
 import { PostsQueryRepository } from './modules/blog_platform/posts/repository/posts-query-repository.service';
+import { UpdatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/updatePostUseCase';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -74,6 +75,7 @@ const useCases = [
   RegistrationEmailResendingUseCase,
   DeleteDeviceByIdUseCase,
   CreateBlogUseCase,
+  UpdatePostForBlogUseCase,
   DeleteBlogUseCase,
 ];
 

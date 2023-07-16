@@ -1,10 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BlogRepository } from '../../repository/blog.repository';
-import { CreatePostForBlogDto } from '../../controllers/dto/createPostForBlogDto';
-import { BlogDbModel } from '../../repository/dto/BlogDbModel';
+import { BlogRepository } from '../../../blogs/repository/blog.repository';
+import { CreatePostForBlogDto } from '../../../blogs/controllers/dto/createPostForBlogDto';
+import { BlogDbModel } from '../../../blogs/repository/dto/BlogDbModel';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
-import { PostsRepository } from '../../../posts/repository/posts.repository';
+import { PostsRepository } from '../../repository/posts.repository';
 
 export class CreatePostForBlogUseCaseCommand {
   constructor(
