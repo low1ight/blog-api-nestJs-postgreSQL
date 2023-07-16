@@ -48,16 +48,27 @@ export class PostsRepository {
     );
   }
 
-  async getPostDataForUpdating(postId: number, blogId: number) {
+  async deletePost(postId: number) {
+    return await this.dataSource.query(
+      `
+    DELETE FROM "Posts" 
+    WHERE "id" = $1
+    
+    `,
+      [postId],
+    );
+  }
+
+  async getPostDataWithBlogOwnerId(postId: number) {
     const result = await this.dataSource.query(
       `
     SELECT *,
-    (SELECT "ownerId" FROM "Blogs" WHERE "id" = $2)
+    (SELECT "ownerId" FROM "Blogs" WHERE "id" = p."blogId")
     FROM "Posts" p
     WHERE "id" = $1
     
     `,
-      [postId, blogId],
+      [postId],
     );
 
     return result[0] ? result[0] : null;

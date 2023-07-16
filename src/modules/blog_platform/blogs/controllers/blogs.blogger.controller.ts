@@ -25,6 +25,7 @@ import { CreatePostForBlogUseCaseCommand } from '../../posts/application/use-cas
 import { PostsQueryRepository } from '../../posts/repository/posts-query-repository.service';
 import { UpdatePostDto } from './dto/UpdatePostDto';
 import { UpdatePostUseCaseCommand } from '../../posts/application/use-cases/updatePostUseCase';
+import { DeletePostUseCaseCommand } from '../../posts/application/use-cases/deletePostUseCase';
 
 @Controller('blogger/blogs')
 @UseGuards(JwtAuthGuard)
@@ -93,6 +94,22 @@ export class BlogsBloggerController {
   ) {
     const result: CustomResponse<number | null> = await this.commandBus.execute(
       new UpdatePostUseCaseCommand(postId, blogId, user.id, dto),
+    );
+
+    if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
+
+    return;
+  }
+
+  @Delete(':blogId/posts/:postId')
+  @HttpCode(204)
+  async deletePost(
+    @Param('blogId', CustomParseInt) blogId: number,
+    @Param('postId', CustomParseInt) postId: number,
+    @CurrentUser() user: UserDataFromAT,
+  ) {
+    const result: CustomResponse<number | null> = await this.commandBus.execute(
+      new DeletePostUseCaseCommand(postId, blogId, user.id),
     );
 
     if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);

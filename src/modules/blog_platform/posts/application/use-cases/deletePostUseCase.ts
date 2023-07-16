@@ -1,29 +1,22 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { CreatePostForBlogDto } from '../../../blogs/controllers/dto/createPostForBlogDto';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
 import { PostsRepository } from '../../repository/posts.repository';
 
-export class UpdatePostUseCaseCommand {
+export class DeletePostUseCaseCommand {
   constructor(
     public postId: number,
     public blogId: number,
     public currentUserId: number,
-    public dto: CreatePostForBlogDto,
   ) {}
 }
-@CommandHandler(UpdatePostUseCaseCommand)
-export class UpdatePostForBlogUseCase
-  implements ICommandHandler<UpdatePostUseCaseCommand>
+@CommandHandler(DeletePostUseCaseCommand)
+export class DeletePostForBlogUseCase
+  implements ICommandHandler<DeletePostUseCaseCommand>
 {
   constructor(private postsRepository: PostsRepository) {}
 
-  async execute({
-    postId,
-    blogId,
-    dto,
-    currentUserId,
-  }: UpdatePostUseCaseCommand) {
+  async execute({ postId, blogId, currentUserId }: DeletePostUseCaseCommand) {
     const post = await this.postsRepository.getPostDataWithBlogOwnerId(postId);
 
     if (!post || post.blogId !== blogId)
@@ -32,7 +25,7 @@ export class UpdatePostForBlogUseCase
     if (post.ownerId !== currentUserId)
       return new CustomResponse(false, CustomResponseEnum.forbidden);
 
-    await this.postsRepository.updatePost(postId, dto);
+    await this.postsRepository.deletePost(postId);
 
     return new CustomResponse(true);
   }
