@@ -3,10 +3,35 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { PostDbModelWithBlogName } from './dto/PostDbModelWithBlogName';
 import { PostViewModel } from './dto/postViewModel';
+import { PostsPaginator } from '../../../../utils/paginatorHelpers/Paginator';
 
 @Injectable()
 export class PostsQueryRepository {
   constructor(@InjectDataSource() private dataSource: DataSource) {}
+
+  async getBlogPosts(blogId: number, paginator: PostsPaginator) {
+    const posts = await this.dataSource.query(
+      `
+    
+    SELECT id, "blogId", "title", "shortDescription", "content", "createdAt",
+     (SELECT "name" AS "blogName" FROM "Blogs"  WHERE "id" = p."blogId"  )
+     
+
+      FROM public."Posts" p WHERE "blogId" = $1
+      ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
+      LIMIT ${paginator.getPageSize()}
+      OFFSET ${paginator.getOffset()}
+    
+    `,
+      [blogId],
+    );
+
+    const postsViewModels: PostViewModel[] = posts.map(
+      (post) => new PostViewModel(post),
+    );
+
+    return paginator.paginate(postsViewModels, 5);
+  }
 
   async getPostById(postId: number) {
     const post: PostDbModelWithBlogName = await this.dataSource.query(

@@ -2,10 +2,12 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
@@ -26,6 +28,8 @@ import { PostsQueryRepository } from '../../posts/repository/posts-query-reposit
 import { UpdatePostDto } from './dto/UpdatePostDto';
 import { UpdatePostUseCaseCommand } from '../../posts/application/use-cases/updatePostUseCase';
 import { DeletePostUseCaseCommand } from '../../posts/application/use-cases/deletePostUseCase';
+import { PostsPaginator } from '../../../../utils/paginatorHelpers/Paginator';
+import { PostsQueryDto } from './dto/queryDto/PostsQueryDto';
 
 @Controller('blogger/blogs')
 @UseGuards(JwtAuthGuard)
@@ -115,5 +119,14 @@ export class BlogsBloggerController {
     if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
 
     return;
+  }
+  @Get(':id/posts')
+  async getBlogPosts(
+    @Param('id', CustomParseInt) id: number,
+    @Query() query: PostsQueryDto,
+  ) {
+    const paginator = new PostsPaginator(query);
+
+    return await this.postsQueryRepository.getBlogPosts(id, paginator);
   }
 }
