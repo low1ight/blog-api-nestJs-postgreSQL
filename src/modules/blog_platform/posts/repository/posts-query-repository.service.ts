@@ -26,11 +26,22 @@ export class PostsQueryRepository {
       [blogId],
     );
 
+    const totalCount = await this.dataSource.query(
+      `
+    SELECT Count(*)
+     
+
+      FROM public."Posts" p WHERE "blogId" = $1
+    
+    `,
+      [blogId],
+    );
+
     const postsViewModels: PostViewModel[] = posts.map(
       (post) => new PostViewModel(post),
     );
 
-    return paginator.paginate(postsViewModels, 5);
+    return paginator.paginate(postsViewModels, Number(totalCount[0].count));
   }
 
   async getPostById(postId: number) {
