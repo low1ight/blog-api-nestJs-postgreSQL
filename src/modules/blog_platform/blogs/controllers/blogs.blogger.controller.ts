@@ -28,8 +28,11 @@ import { PostsQueryRepository } from '../../posts/repository/posts-query-reposit
 import { UpdatePostDto } from './dto/UpdatePostDto';
 import { UpdatePostUseCaseCommand } from '../../posts/application/use-cases/updatePostUseCase';
 import { DeletePostUseCaseCommand } from '../../posts/application/use-cases/deletePostUseCase';
-import { PostsQueryDto } from '../../posts/controllers/dto/queryDto/PostsQueryDto';
-import { PostsPaginator } from '../../posts/controllers/dto/queryDto/PostsPaginator';
+import { PostsQueryDto } from '../../posts/controllers/dto/query/PostsQueryDto';
+import { PostsPaginator } from '../../posts/controllers/dto/query/PostsPaginator';
+import { BlogQueryInputDto } from './dto/query/BlogQueryInputDto';
+import { BlogPaginator } from './dto/query/BlogPaginator';
+import { BlogsQueryRepository } from '../repository/blogs-query-repository';
 
 @Controller('blogger/blogs')
 @UseGuards(JwtAuthGuard)
@@ -37,6 +40,7 @@ export class BlogsBloggerController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly postsQueryRepository: PostsQueryRepository,
+    private readonly blogsQueryRepository: BlogsQueryRepository,
   ) {}
 
   @Post('')
@@ -128,5 +132,15 @@ export class BlogsBloggerController {
     const paginator = new PostsPaginator(query);
 
     return await this.postsQueryRepository.getBlogPosts(id, paginator);
+  }
+
+  @Get('')
+  async getAllCurrentUserBlogs(
+    @Query() dto: BlogQueryInputDto,
+    @CurrentUser() { id }: UserDataFromAT,
+  ) {
+    const paginator = new BlogPaginator(dto);
+
+    return await this.blogsQueryRepository.getUserBlogs(id, paginator);
   }
 }

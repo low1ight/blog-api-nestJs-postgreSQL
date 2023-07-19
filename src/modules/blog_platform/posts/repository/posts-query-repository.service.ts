@@ -3,7 +3,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { PostDbModelWithBlogName } from './dto/PostDbModelWithBlogName';
 import { PostViewModel } from './dto/postViewModel';
-import { PostsPaginator } from '../controllers/dto/queryDto/PostsPaginator';
+import { PostsPaginator } from '../controllers/dto/query/PostsPaginator';
 
 @Injectable()
 export class PostsQueryRepository {

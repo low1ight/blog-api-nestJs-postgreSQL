@@ -58,6 +58,7 @@ import { CreatePostForBlogUseCase } from './modules/blog_platform/posts/applicat
 import { PostsQueryRepository } from './modules/blog_platform/posts/repository/posts-query-repository.service';
 import { UpdatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/updatePostUseCase';
 import { DeletePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/deletePostUseCase';
+import { BlogsQueryRepository } from './modules/blog_platform/blogs/repository/blogs-query-repository';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -147,6 +148,7 @@ const useCases = [
     DevicesPublicQueryRepository,
     JwtAdapter,
     PostsQueryRepository,
+    BlogsQueryRepository,
     PasswordHashAdapter,
     TestingRepository,
     UsersRepository,
