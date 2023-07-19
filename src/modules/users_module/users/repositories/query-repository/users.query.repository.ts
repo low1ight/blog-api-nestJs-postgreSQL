@@ -2,11 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { UserSaViewModel } from './dto/UserSaViewModel';
-import { UserQueryType } from '../../../../../utils/querryMapper/user-query-mapper';
-import { calcSkipCount } from '../../../../../utils/paginatorHelpers/calcSkipCount';
-import { toViwModelWithPaginator } from '../../../../../utils/paginatorHelpers/toViwModelWithPaginator';
 import { MeViewModel } from './dto/MeViewModel';
 import { MeType } from './dto/MeType';
+import { UsersPaginator } from '../../controllers/dto/query/UsersPaginator';
 
 @Injectable()
 export class UsersQueryRepository {
@@ -15,25 +13,15 @@ export class UsersQueryRepository {
     protected dataSource: DataSource,
   ) {}
 
-  async getUsers({
-    pageSize,
-    pageNumber,
-    searchLoginTerm,
-    searchEmailTerm,
-    banStatus,
-    sortDirection,
-    sortBy,
-  }: UserQueryType) {
-    const offset = calcSkipCount(pageNumber, pageSize);
-    const direction = sortDirection.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
-    const loginTerm = `%${searchLoginTerm || ''}%`;
-    const emailTerm = `%${searchEmailTerm || ''}%`;
+  async getUsers(paginator: UsersPaginator) {
+    const loginTerm = `%${paginator.getSearchLoginTerm()}%`;
+    const emailTerm = `%${paginator.getSearchEmailTerm()}%`;
     const banStatusObj = {
-      banned: true,
-      notBanned: false,
+      banned: 'true',
+      notbanned: 'false',
+      all: 'true,false',
     };
-    let isBanned = banStatusObj[banStatus];
-    if (!(typeof isBanned === 'boolean')) isBanned = 'false,true';
+    const isBanned = banStatusObj[paginator.getUsersBanStatus()];
     const result = await this.dataSource.query(
       `
 
@@ -43,14 +31,14 @@ export class UsersQueryRepository {
     FROM (
     SELECT * FROM "Users" 
     WHERE "login" ILIKE $1 OR "email" ILIKE $2
-    ORDER BY "${sortBy}" ${direction}
-    LIMIT ${pageSize}
-    OFFSET ${offset}
+    ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
+    LIMIT ${paginator.getPageSize()}
+    OFFSET ${paginator.getOffset()}
     ) AS u
     LEFT JOIN "UsersBanInfo" AS b
     ON u."id" = b."userId"
     WHERE "isBanned" IN(${isBanned})
-    ORDER BY "${sortBy}" ${direction}
+    ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
      
     `,
       [loginTerm, emailTerm],
@@ -75,12 +63,7 @@ export class UsersQueryRepository {
       (user) => new UserSaViewModel(user),
     );
 
-    return toViwModelWithPaginator(
-      userViewModel,
-      pageNumber,
-      pageSize,
-      +totalElem[0].count,
-    );
+    return paginator.paginate(userViewModel, Number(totalElem[0].count));
   }
 
   async getUserById(userId: number) {

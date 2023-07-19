@@ -16,15 +16,13 @@ import { CreateUserDto } from './dto/CreateUserDto';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateUserUseCaseCommand } from '../application/use-cases/create-user-use-case';
 import { DeleteUserUseCaseCommand } from '../application/use-cases/delete-user-use-case';
-import {
-  UserInputQueryType,
-  userQueryMapper,
-} from '../../../../utils/querryMapper/user-query-mapper';
 import { SetBanStatusForUserUseCaseCommand } from '../application/use-cases/set-ban-status-for-user-use-case';
 import { BanUserDto } from './dto/BanUserDto';
 import { BasicAuthGuard } from '../../auth/guards/basic.auth.guard';
 import { UsersQueryRepository } from '../repositories/query-repository/users.query.repository';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
+import { UsersPaginator } from './dto/query/UsersPaginator';
+import { UserInputQueryDto } from './dto/query/UsersInputQueryDto';
 
 @Controller('sa/users')
 @UseGuards(BasicAuthGuard)
@@ -35,10 +33,10 @@ export class UsersSaController {
   ) {}
 
   @Get()
-  async getUsers(@Query() query: UserInputQueryType) {
-    const mappedQuery = userQueryMapper(query);
+  async getUsers(@Query() query: UserInputQueryDto) {
+    const paginator = new UsersPaginator(query);
 
-    return this.usersQueryRepository.getUsers(mappedQuery);
+    return this.usersQueryRepository.getUsers(paginator);
   }
 
   @Post('')
