@@ -28,8 +28,8 @@ import { PostsQueryRepository } from '../../posts/repository/posts-query-reposit
 import { UpdatePostDto } from './dto/UpdatePostDto';
 import { UpdatePostUseCaseCommand } from '../../posts/application/use-cases/updatePostUseCase';
 import { DeletePostUseCaseCommand } from '../../posts/application/use-cases/deletePostUseCase';
-import { PostsPaginator } from '../../../../utils/paginatorHelpers/Paginator';
-import { PostsQueryDto } from './dto/queryDto/PostsQueryDto';
+import { PostsQueryDto } from '../../posts/controllers/dto/queryDto/PostsQueryDto';
+import { PostsPaginator } from '../../posts/controllers/dto/queryDto/PostsPaginator';
 
 @Controller('blogger/blogs')
 @UseGuards(JwtAuthGuard)

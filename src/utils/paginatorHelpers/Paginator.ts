@@ -1,5 +1,4 @@
 import { QueryDto } from './QueryDto';
-import { PostsQueryDto } from '../../modules/blog_platform/blogs/controllers/dto/queryDto/PostsQueryDto';
 
 export class Paginator {
   protected defaultValues = {
@@ -55,11 +54,5 @@ export class Paginator {
       totalCount: totalElemCount,
       items,
     };
-  }
-}
-
-export class PostsPaginator extends Paginator {
-  constructor({ pageNumber, pageSize, sortBy, sortDirection }: PostsQueryDto) {
-    super({ pageNumber, pageSize, sortBy, sortDirection });
   }
 }
