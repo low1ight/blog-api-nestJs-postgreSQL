@@ -144,4 +144,21 @@ export class UsersRepository {
     );
     return result[0]?.id || null;
   }
+
+  async isUserExist(userId: number) {
+    const result = await this.dataSource.query(
+      `
+    
+         SELECT Count(*)
+         FROM "Users" 
+         WHERE "id" = $1
+    
+    `,
+      [userId],
+    );
+
+    return result[0].count === '1';
+  }
+
+  r;
 }

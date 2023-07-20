@@ -50,7 +50,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { BlogsBloggerController } from './modules/blog_platform/blogs/controllers/blogs.blogger.controller';
 import { CreateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/createBlogUseCase';
-import { BlogRepository } from './modules/blog_platform/blogs/repository/blog.repository';
+import { BlogsRepository } from './modules/blog_platform/blogs/repository/blogs.repository';
 import { UpdateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/updateBlogUseCase';
 import { DeleteBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/deleteBlogUseCase';
 import { PostsRepository } from './modules/blog_platform/posts/repository/posts.repository';
@@ -59,6 +59,9 @@ import { PostsQueryRepository } from './modules/blog_platform/posts/repository/p
 import { UpdatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/updatePostUseCase';
 import { DeletePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/deletePostUseCase';
 import { BlogsQueryRepository } from './modules/blog_platform/blogs/repository/blogs-query-repository';
+import { BlogsBannedUsersRepository } from './modules/blog_platform/blogs/repository/blogsBannedUsers.repository';
+import { UsersBloggerController } from './modules/users_module/users/controllers/users.blogger.controller';
+import { BanUserForBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/banUserForBlogUseCase';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -69,6 +72,8 @@ const useCases = [
   DeletePostForBlogUseCase,
   RefreshRtUseCase,
   UpdateBlogUseCase,
+  SetBanStatusForUserUseCase,
+  BanUserForBlogUseCase,
   LogoutUseCase,
   SetNewPasswordUseCase,
   LoginUseCase,
@@ -130,6 +135,7 @@ const useCases = [
     TestingController,
     AuthPublicController,
     BlogsBloggerController,
+    UsersBloggerController,
   ],
   providers: [
     BasicStrategy,
@@ -143,7 +149,7 @@ const useCases = [
     AccessTokenStrategy,
     PostsRepository,
     TestingService,
-    BlogRepository,
+    BlogsRepository,
     DevicesPublicRepository,
     DevicesPublicQueryRepository,
     JwtAdapter,
@@ -151,11 +157,11 @@ const useCases = [
     BlogsQueryRepository,
     PasswordHashAdapter,
     TestingRepository,
+    BlogsBannedUsersRepository,
     UsersRepository,
     AuthPublicService,
     RefreshTokenStrategy,
     DevicesService,
-    SetBanStatusForUserUseCase,
     ...customValidators,
     ...useCases,
 

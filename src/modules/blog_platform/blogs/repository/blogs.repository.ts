@@ -6,7 +6,7 @@ import { BlogViewModel } from './dto/BlogViewModel';
 import { UpdateBlogDto } from '../controllers/dto/UpdateBlogDto';
 
 @Injectable()
-export class BlogRepository {
+export class BlogsRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource) {}
 
   async createBlog({
