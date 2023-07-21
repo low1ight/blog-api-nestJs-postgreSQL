@@ -63,6 +63,8 @@ import { BannedUsersForBlogsRepository } from './modules/users_module/users/repo
 import { UsersBloggerController } from './modules/users_module/users/controllers/users.blogger.controller';
 import { BanUserForBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/banUserForBlogUseCase';
 import { BannedUsersForBlogsQueryRepository } from './modules/users_module/users/repositories/query-repository/bannedUsersForBlogs.query.repository';
+import { BindBlogUseCase } from './modules/blog_platform/blogs/application/bindBlogUseCase';
+import { BlogsSaController } from './modules/blog_platform/blogs/controllers/blogs.sa.controller';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -75,6 +77,7 @@ const useCases = [
   UpdateBlogUseCase,
   SetBanStatusForUserUseCase,
   BanUserForBlogUseCase,
+  BindBlogUseCase,
   LogoutUseCase,
   SetNewPasswordUseCase,
   LoginUseCase,
@@ -136,6 +139,7 @@ const useCases = [
     TestingController,
     AuthPublicController,
     BlogsBloggerController,
+    BlogsSaController,
     UsersBloggerController,
   ],
   providers: [

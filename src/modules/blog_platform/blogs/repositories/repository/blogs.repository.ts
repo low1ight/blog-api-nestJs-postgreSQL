@@ -74,4 +74,32 @@ export class BlogsRepository {
       [blogId],
     );
   }
+
+  async getBlogOwnerId(blogId: number): Promise<number | null> {
+    const result = await this.dataSource.query(
+      `
+    
+    SELECT "ownerId" FROM "Blogs" WHERE "id" = $1
+    
+    
+    
+    `,
+      [blogId],
+    );
+
+    return result[0]?.ownerId || null;
+  }
+
+  async bindUserForBlog(blogId: number, userId: number) {
+    await this.dataSource.query(
+      `
+    
+   UPDATE public."Blogs"
+   SET "ownerId"=$2
+   WHERE "id" = $1;
+    
+    `,
+      [blogId, userId],
+    );
+  }
 }
