@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm';
 import { UserSaViewModel } from './dto/UserSaViewModel';
 import { MeViewModel } from './dto/MeViewModel';
 import { MeType } from './dto/MeType';
-import { UsersPaginator } from '../../controllers/dto/query/UsersPaginator';
+import { UsersPaginator } from '../../controllers/dto/query/users/UsersPaginator';
 
 @Injectable()
 export class UsersQueryRepository {

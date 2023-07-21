@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BlogsRepository } from '../../../blogs/repository/blogs.repository';
+import { BlogsRepository } from '../../../blogs/repositories/repository/blogs.repository';
 import { CreatePostForBlogDto } from '../../../blogs/controllers/dto/createPostForBlogDto';
-import { BlogDbModel } from '../../../blogs/repository/dto/BlogDbModel';
+import { BlogDbModel } from '../../../blogs/repositories/dto/BlogDbModel';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
 import { PostsRepository } from '../../repository/posts.repository';

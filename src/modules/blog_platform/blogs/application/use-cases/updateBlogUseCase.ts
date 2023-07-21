@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BlogsRepository } from '../../repository/blogs.repository';
+import { BlogsRepository } from '../../repositories/repository/blogs.repository';
 import { CreateBlogInputDto } from '../../controllers/dto/CreateBlogInputDto';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
-import { BlogDbModel } from '../../repository/dto/BlogDbModel';
+import { BlogDbModel } from '../../repositories/dto/BlogDbModel';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
 
 export class UpdateBlogUseCaseCommand {

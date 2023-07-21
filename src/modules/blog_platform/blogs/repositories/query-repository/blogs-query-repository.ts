@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BlogPaginator } from '../controllers/dto/query/BlogPaginator';
+import { BlogPaginator } from '../../controllers/dto/query/BlogPaginator';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 

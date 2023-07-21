@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   Param,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
@@ -15,11 +17,17 @@ import { CurrentUser } from '../../../../common/decorators/currentUser/current.u
 import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDataFromAT';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { Exceptions } from '../../../../utils/throwException';
+import { BannedUsersInputQueryDto } from './dto/query/bannedUsers/BannedUsersInputQueryDto';
+import { BannedUsersPaginator } from './dto/query/bannedUsers/BannedUsersPaginator';
+import { BannedUsersForBlogsQueryRepository } from '../repositories/query-repository/bannedUsersForBlogs.query.repository';
 
 @Controller('blogger/users')
 @UseGuards(JwtAuthGuard)
 export class UsersBloggerController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly bannedUsersForBlogsQueryRepository: BannedUsersForBlogsQueryRepository,
+  ) {}
   @Put(':id/ban')
   @HttpCode(204)
   async banUserForBlog(
@@ -32,5 +40,17 @@ export class UsersBloggerController {
     );
 
     if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
+  }
+  @Get('blog/:id')
+  async getBannedUsersForBlog(
+    @Param('id', CustomParseInt) id: number,
+    @Query() query: BannedUsersInputQueryDto,
+  ) {
+    const paginator = new BannedUsersPaginator(query);
+
+    return await this.bannedUsersForBlogsQueryRepository.getAllBannedUsersForBlog(
+      id,
+      paginator,
+    );
   }
 }

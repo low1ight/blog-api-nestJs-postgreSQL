@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BlogsRepository } from '../../repository/blogs.repository';
+import { BlogsRepository } from '../../repositories/repository/blogs.repository';
 import { CreateBlogInputDto } from '../../controllers/dto/CreateBlogInputDto';
 import { CreateBlogDto } from '../../controllers/dto/CreateBlogDto';
-import { BlogViewModel } from '../../repository/dto/BlogViewModel';
+import { BlogViewModel } from '../../repositories/dto/BlogViewModel';
 
 export class CreateBlogUseCaseCommand {
   constructor(public dto: CreateBlogInputDto, public userId: number) {}

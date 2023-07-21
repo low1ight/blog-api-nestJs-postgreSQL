@@ -21,8 +21,8 @@ import { BanUserDto } from './dto/BanUserDto';
 import { BasicAuthGuard } from '../../auth/guards/basic.auth.guard';
 import { UsersQueryRepository } from '../repositories/query-repository/users.query.repository';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
-import { UsersPaginator } from './dto/query/UsersPaginator';
-import { UserInputQueryDto } from './dto/query/UsersInputQueryDto';
+import { UsersPaginator } from './dto/query/users/UsersPaginator';
+import { UserInputQueryDto } from './dto/query/users/UsersInputQueryDto';
 
 @Controller('sa/users')
 @UseGuards(BasicAuthGuard)

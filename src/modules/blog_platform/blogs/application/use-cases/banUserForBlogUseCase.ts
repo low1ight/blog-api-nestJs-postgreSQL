@@ -1,9 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BanUserForBlogDto } from '../../controllers/dto/banUserForBlogDto';
-import { BlogsRepository } from '../../repository/blogs.repository';
+import { BlogsRepository } from '../../repositories/repository/blogs.repository';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
-import { BlogsBannedUsersRepository } from '../../repository/blogsBannedUsers.repository';
+import { BannedUsersForBlogsRepository } from '../../../../users_module/users/repositories/repository/bannedUsersForBlogs.repository';
 import { UsersRepository } from '../../../../users_module/users/repositories/repository/users.repository';
 
 export class BanUserForBlogUseCaseCommand {
@@ -20,7 +20,7 @@ export class BanUserForBlogUseCase
   constructor(
     private blogsRepository: BlogsRepository,
     private usersRepository: UsersRepository,
-    private blogsBannedUsersRepository: BlogsBannedUsersRepository,
+    private blogsBannedUsersRepository: BannedUsersForBlogsRepository,
   ) {}
 
   async execute({

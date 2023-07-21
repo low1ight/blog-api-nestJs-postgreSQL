@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBlogDto } from '../controllers/dto/CreateBlogDto';
+import { CreateBlogDto } from '../../controllers/dto/CreateBlogDto';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { BlogViewModel } from './dto/BlogViewModel';
-import { UpdateBlogDto } from '../controllers/dto/UpdateBlogDto';
+import { BlogViewModel } from '../dto/BlogViewModel';
+import { UpdateBlogDto } from '../../controllers/dto/UpdateBlogDto';
 
 @Injectable()
 export class BlogsRepository {

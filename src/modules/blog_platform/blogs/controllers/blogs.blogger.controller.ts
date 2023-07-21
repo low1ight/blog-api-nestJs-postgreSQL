@@ -32,7 +32,7 @@ import { PostsQueryDto } from '../../posts/controllers/dto/query/PostsQueryDto';
 import { PostsPaginator } from '../../posts/controllers/dto/query/PostsPaginator';
 import { BlogQueryInputDto } from './dto/query/BlogQueryInputDto';
 import { BlogPaginator } from './dto/query/BlogPaginator';
-import { BlogsQueryRepository } from '../repository/blogs-query-repository';
+import { BlogsQueryRepository } from '../repositories/query-repository/blogs-query-repository';
 
 @Controller('blogger/blogs')
 @UseGuards(JwtAuthGuard)

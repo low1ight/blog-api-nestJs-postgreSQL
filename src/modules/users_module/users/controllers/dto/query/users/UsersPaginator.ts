@@ -1,4 +1,4 @@
-import { Paginator } from '../../../../../../utils/paginatorHelpers/Paginator';
+import { Paginator } from '../../../../../../../utils/paginatorHelpers/Paginator';
 import { UserInputQueryDto } from './UsersInputQueryDto';
 
 export class UsersPaginator extends Paginator {

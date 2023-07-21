@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class BlogsBannedUsersRepository {
+export class BannedUsersForBlogsRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource) {}
 
   async banUserForBlog(blogId: number, userId: number, banReason: string) {
@@ -11,8 +11,8 @@ export class BlogsBannedUsersRepository {
       `
     
     INSERT INTO public."BannedUsersForBlogs"(
-    "blogId", "userId", "banReason")
-    VALUES ( $1, $2, $3);
+    "blogId", "userId", "banReason","banDate")
+    VALUES ( $1, $2, $3, now());
      
     `,
       [blogId, userId, banReason],
