@@ -9,7 +9,7 @@ import { PostsPaginator } from '../controllers/dto/query/PostsPaginator';
 export class PostsQueryRepository {
   constructor(@InjectDataSource() private dataSource: DataSource) {}
 
-  async getBlogPosts(blogId: number, paginator: PostsPaginator) {
+  async getPosts(blogId: number | null, paginator: PostsPaginator) {
     const posts = await this.dataSource.query(
       `
     
@@ -17,7 +17,7 @@ export class PostsQueryRepository {
      (SELECT "name" AS "blogName" FROM "Blogs"  WHERE "id" = p."blogId"  )
      
 
-      FROM public."Posts" p WHERE "blogId" = $1
+      FROM public."Posts" p WHERE "blogId" = $1 OR $1 IS NULL
       ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
       LIMIT ${paginator.getPageSize()}
       OFFSET ${paginator.getOffset()}

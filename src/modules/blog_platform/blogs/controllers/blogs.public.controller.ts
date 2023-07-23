@@ -29,7 +29,7 @@ export class BlogsPublicController {
   ) {
     const paginator = new PostsPaginator(query);
 
-    return await this.postsQueryRepository.getBlogPosts(id, paginator);
+    return await this.postsQueryRepository.getPosts(id, paginator);
   }
 
   @Get(':id')
