@@ -67,6 +67,7 @@ import { BindBlogUseCase } from './modules/blog_platform/blogs/application/bindB
 import { BlogsSaController } from './modules/blog_platform/blogs/controllers/blogs.sa.controller';
 import { PostsPublicController } from './modules/blog_platform/posts/controllers/posts.public.controller';
 import { BanBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/banBlogUseCase';
+import { BlogsPublicController } from './modules/blog_platform/blogs/controllers/blogs.public.controller';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -142,6 +143,7 @@ const useCases = [
     TestingController,
     PostsPublicController,
     AuthPublicController,
+    BlogsPublicController,
     BlogsBloggerController,
     BlogsSaController,
     UsersBloggerController,
