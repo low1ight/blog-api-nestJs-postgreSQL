@@ -10,6 +10,7 @@ export class TestingRepository {
     await this.dataSource.query(`
         
           DELETE FROM "Users";
+          DELETE FROM "Blogs";
     
 
     `);
