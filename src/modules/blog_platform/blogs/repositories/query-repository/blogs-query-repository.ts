@@ -4,6 +4,8 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { BlogDbModeForSa } from '../dto/BlogDbModeForSa';
 import { BlogSaViewModel } from '../dto/BlogSaViewModel';
+import { BlogDbModel } from '../dto/BlogDbModel';
+import { BlogViewModel } from '../dto/BlogViewModel';
 
 @Injectable()
 export class BlogsQueryRepository {
@@ -11,7 +13,7 @@ export class BlogsQueryRepository {
   async getAllBlogs(userId: number | null, paginator: BlogPaginator) {
     const nameSearchTerm = `%${paginator.getSearchNameTerm()}%`;
 
-    const blogs = await this.dataSource.query(
+    const blogs: BlogDbModel[] = await this.dataSource.query(
       `
     SELECT "id",  "name", "description", "websiteUrl", "isMembership", "createdAt"
     FROM public."Blogs"
@@ -24,6 +26,8 @@ export class BlogsQueryRepository {
       [userId, nameSearchTerm],
     );
 
+    const blogViewModel = blogs.map((blog) => new BlogViewModel(blog));
+
     const totalBlogsCount = await this.dataSource.query(
       `
     
@@ -35,7 +39,7 @@ export class BlogsQueryRepository {
       [userId, nameSearchTerm],
     );
 
-    return paginator.paginate(blogs, Number(totalBlogsCount[0].count));
+    return paginator.paginate(blogViewModel, Number(totalBlogsCount[0].count));
   }
 
   async getBlogsForSa(paginator: BlogPaginator) {
@@ -94,6 +98,6 @@ export class BlogsQueryRepository {
       [blogId],
     );
 
-    return blog[0] || null;
+    return blog[0] ? new BlogViewModel(blog[0]) : null;
   }
 }

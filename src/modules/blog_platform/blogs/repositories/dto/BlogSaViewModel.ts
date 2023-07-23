@@ -10,24 +10,28 @@ export class BlogSaViewModel extends BlogViewModel {
     isBanned: boolean;
     banDate: Date | null;
   };
-  constructor(dto: BlogDbModeForSa) {
-    super(
-      dto.id,
-      dto.name,
-      dto.description,
-      dto.websiteUrl,
-      dto.isMembership,
-      dto.createdAt,
-    );
+  constructor({
+    id,
+    name,
+    description,
+    websiteUrl,
+    isMembership,
+    createdAt,
+    userLogin,
+    userId,
+    isBanned,
+    banDate,
+  }: BlogDbModeForSa) {
+    super({ id, name, description, websiteUrl, isMembership, createdAt });
 
     this.blogOwnerInfo = {
-      userId: dto.userId,
-      userLogin: dto.userLogin,
+      userId,
+      userLogin,
     };
 
     this.banInfo = {
-      isBanned: dto.isBanned,
-      banDate: dto.banDate,
+      isBanned,
+      banDate,
     };
   }
 }
