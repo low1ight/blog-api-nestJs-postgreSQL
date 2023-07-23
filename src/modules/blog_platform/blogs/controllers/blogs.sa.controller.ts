@@ -1,4 +1,12 @@
-import { Body, Controller, Param, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 import { BasicAuthGuard } from '../../../users_module/auth/guards/basic.auth.guard';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
@@ -7,11 +15,17 @@ import { BindBlogUseCaseCommand } from '../application/bindBlogUseCase';
 import { Exceptions } from '../../../../utils/throwException';
 import { BanBlogDto } from './dto/BanBlogDto';
 import { BanBlogUseCaseCommand } from '../application/use-cases/banBlogUseCase';
+import { BlogQueryInputDto } from './dto/query/BlogQueryInputDto';
+import { BlogPaginator } from './dto/query/BlogPaginator';
+import { BlogsQueryRepository } from '../repositories/query-repository/blogs-query-repository';
 
 @Controller('sa/blogs')
 @UseGuards(BasicAuthGuard)
 export class BlogsSaController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly blogsQueryRepository: BlogsQueryRepository,
+  ) {}
   @Put(':blogId/bind-with-user/:userId')
   async bingUserForBlog(
     @Param('blogId', CustomParseInt) blogId: number,
@@ -37,5 +51,12 @@ export class BlogsSaController {
       new BanBlogUseCaseCommand(id, dto),
     );
     if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
+  }
+
+  @Get()
+  async getBlogs(@Query() query: BlogQueryInputDto) {
+    const paginator = new BlogPaginator(query);
+
+    return this.blogsQueryRepository.getBlogsForSa(paginator);
   }
 }

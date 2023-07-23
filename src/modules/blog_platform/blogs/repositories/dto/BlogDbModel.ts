@@ -5,5 +5,5 @@ export type BlogDbModel = {
   description: string;
   websiteUrl: string;
   isMembership: boolean;
-  createdAt: string;
+  createdAt: Date;
 };

@@ -141,6 +141,6 @@ export class BlogsBloggerController {
   ) {
     const paginator = new BlogPaginator(dto);
 
-    return await this.blogsQueryRepository.getUserBlogs(id, paginator);
+    return await this.blogsQueryRepository.getAllUserBlogs(id, paginator);
   }
 }
