@@ -6,6 +6,9 @@ import { PostsPaginator } from '../../posts/controllers/dto/query/PostsPaginator
 import { PostsQueryDto } from '../../posts/controllers/dto/query/PostsQueryDto';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 import { PostsQueryRepository } from '../../posts/repository/posts-query-repository.service';
+import { BlogViewModel } from '../repositories/dto/BlogViewModel';
+import { Exceptions } from '../../../../utils/throwException';
+import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 @Controller('blogs')
 export class BlogsPublicController {
   constructor(
@@ -27,5 +30,14 @@ export class BlogsPublicController {
     const paginator = new PostsPaginator(query);
 
     return await this.postsQueryRepository.getBlogPosts(id, paginator);
+  }
+
+  @Get(':id')
+  async getBlogById(@Param('id', CustomParseInt) id: number) {
+    const blog: BlogViewModel | null =
+      await this.blogsQueryRepository.getBlogById(id);
+    if (!blog)
+      return Exceptions.throwHttpException(CustomResponseEnum.notExist);
+    return blog;
   }
 }

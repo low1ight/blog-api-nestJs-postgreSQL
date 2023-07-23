@@ -82,4 +82,18 @@ export class BlogsQueryRepository {
 
     return paginator.paginate(blogsViewModel, Number(totalCount[0].count));
   }
+
+  async getBlogById(blogId: number) {
+    const blog = await this.dataSource.query(
+      `
+    SELECT "id",  "name", "description", "websiteUrl", "isMembership", "createdAt"
+    FROM public."Blogs"
+    WHERE "id" = $1
+    
+    `,
+      [blogId],
+    );
+
+    return blog[0] || null;
+  }
 }
