@@ -6,7 +6,7 @@ export type BannedUserBloggerDbModel = {
 };
 
 export class BannedUsersBloggerViewModel {
-  id: number;
+  id: string;
   login: string;
   banInfo: {
     isBanned: boolean;
@@ -14,7 +14,7 @@ export class BannedUsersBloggerViewModel {
     banReason: string;
   };
   constructor({ id, banDate, login, banReason }: BannedUserBloggerDbModel) {
-    this.id = id;
+    this.id = id.toString();
     this.login = login;
     this.banInfo = {
       isBanned: true,
