@@ -101,4 +101,17 @@ export class BlogsQueryRepository {
 
     return blog[0] ? new BlogViewModel(blog[0]) : null;
   }
+
+  async getBlogOwnerId(blogId: number): Promise<number | null> {
+    const blog = await this.dataSource.query(
+      `
+         SELECT "ownerId"
+         FROM "Blogs"
+         WHERE "id" = $1
+         `,
+      [blogId],
+    );
+
+    return blog[0]?.ownerId || null;
+  }
 }

@@ -20,12 +20,15 @@ import { Exceptions } from '../../../../utils/throwException';
 import { BannedUsersInputQueryDto } from './dto/query/bannedUsers/BannedUsersInputQueryDto';
 import { BannedUsersPaginator } from './dto/query/bannedUsers/BannedUsersPaginator';
 import { BannedUsersForBlogsQueryRepository } from '../repositories/query-repository/bannedUsersForBlogs.query.repository';
+import { BlogsQueryRepository } from '../../../blog_platform/blogs/repositories/query-repository/blogs-query-repository';
+import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 
 @Controller('blogger/users')
 @UseGuards(JwtAuthGuard)
 export class UsersBloggerController {
   constructor(
     private readonly commandBus: CommandBus,
+    private readonly blogsQueryRepository: BlogsQueryRepository,
     private readonly bannedUsersForBlogsQueryRepository: BannedUsersForBlogsQueryRepository,
   ) {}
   @Put(':id/ban')
@@ -45,7 +48,17 @@ export class UsersBloggerController {
   async getBannedUsersForBlog(
     @Param('id', CustomParseInt) id: number,
     @Query() query: BannedUsersInputQueryDto,
+    @CurrentUser() user: UserDataFromAT,
   ) {
+    const blogOwnerId: number | null =
+      await this.blogsQueryRepository.getBlogOwnerId(id);
+
+    if (!blogOwnerId)
+      return Exceptions.throwHttpException(CustomResponseEnum.notExist);
+
+    if (blogOwnerId !== user.id)
+      return Exceptions.throwHttpException(CustomResponseEnum.forbidden);
+
     const paginator = new BannedUsersPaginator(query);
 
     return await this.bannedUsersForBlogsQueryRepository.getAllBannedUsersForBlog(
