@@ -12,12 +12,13 @@ export class BlogsQueryRepository {
   constructor(@InjectDataSource() private dataSource: DataSource) {}
   async getAllBlogs(userId: number | null, paginator: BlogPaginator) {
     const nameSearchTerm = `%${paginator.getSearchNameTerm()}%`;
+    console.log(nameSearchTerm);
 
     const blogs: BlogDbModel[] = await this.dataSource.query(
       `
     SELECT "id",  "name", "description", "websiteUrl", "isMembership", "createdAt"
     FROM public."Blogs"
-    WHERE "ownerId" = $1 OR $1 IS NULL AND "name" ILIKE $2
+    WHERE ("ownerId" = $1 OR $1 IS NULL) AND "name" ILIKE $2
     ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
       LIMIT ${paginator.getPageSize()}
       OFFSET ${paginator.getOffset()}
@@ -33,7 +34,7 @@ export class BlogsQueryRepository {
     
     SELECT Count(*)
     FROM public."Blogs"
-    WHERE 'ownerId' = $1 OR $1 IS NULL AND "name" ILIKE $2
+    WHERE ("ownerId" = $1 OR $1 IS NULL) AND "name" ILIKE $2
     
     `,
       [userId, nameSearchTerm],

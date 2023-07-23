@@ -1,11 +1,11 @@
 import { PostDbModelWithBlogName } from './PostDbModelWithBlogName';
 
 export class PostViewModel {
-  id: number;
+  id: string;
   title: string;
   shortDescription: string;
   content: string;
-  blogId: number;
+  blogId: string;
   blogName: string;
   createdAt: string;
   extendedLikesInfo: {
@@ -27,11 +27,11 @@ export class PostViewModel {
     blogName,
     createdAt,
   }: PostDbModelWithBlogName) {
-    this.id = id;
+    this.id = id.toString();
     this.title = title;
     this.content = content;
     this.shortDescription = shortDescription;
-    this.blogId = blogId;
+    this.blogId = blogId.toString();
     this.blogName = blogName;
     this.createdAt = createdAt;
     this.extendedLikesInfo = {

@@ -28,7 +28,7 @@ export class BlogsRepository {
       [ownerId, name, description, websiteUrl, isMembership],
     );
 
-    return result[0];
+    return new BlogViewModel(result[0]);
   }
 
   async getBlogById(blogId) {

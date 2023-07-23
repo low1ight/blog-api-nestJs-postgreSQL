@@ -41,7 +41,7 @@ export class PostsRepository {
       `
 
     UPDATE public."Posts"
-    SET  title=$2, "shortDescription"=$3, content=$4
+    SET  title=$2, "shortDescription"=$4, content=$3
     WHERE "id" = $1;
     `,
       [postId, title, content, shortDescription],
