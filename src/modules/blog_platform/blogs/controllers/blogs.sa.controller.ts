@@ -1,10 +1,12 @@
-import { Controller, Param, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Param, Put, UseGuards } from '@nestjs/common';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 import { BasicAuthGuard } from '../../../users_module/auth/guards/basic.auth.guard';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { CommandBus } from '@nestjs/cqrs';
 import { BindBlogUseCaseCommand } from '../application/bindBlogUseCase';
 import { Exceptions } from '../../../../utils/throwException';
+import { BanBlogDto } from './dto/BanBlogDto';
+import { BanBlogUseCaseCommand } from '../application/use-cases/banBlogUseCase';
 
 @Controller('sa/blogs')
 @UseGuards(BasicAuthGuard)
@@ -24,5 +26,16 @@ export class BlogsSaController {
         result.errStatusCode,
         result.content,
       );
+  }
+
+  @Put(':id/ban')
+  async banBlog(
+    @Param('id', CustomParseInt) id: number,
+    @Body() dto: BanBlogDto,
+  ) {
+    const result: CustomResponse<any> = await this.commandBus.execute(
+      new BanBlogUseCaseCommand(id, dto),
+    );
+    if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
   }
 }

@@ -102,4 +102,31 @@ export class BlogsRepository {
       [blogId, userId],
     );
   }
+
+  async getBlogBanStatusById(blogId: number) {
+    const blog = await this.dataSource.query(
+      `
+    
+    SELECT "isBanned" FROM "Blogs"
+    WHERE "id" = $1
+    
+    `,
+      [blogId],
+    );
+
+    return blog[0] || null;
+  }
+
+  async setBanStatusForBlog(banStatus: boolean, blogId: number) {
+    await this.dataSource.query(
+      `
+    
+    UPDATE public."Blogs"
+    SET "isBanned"=$1, "banDate"=${banStatus ? 'now()' : null}
+    WHERE "id" = $2;
+    
+    `,
+      [banStatus, blogId],
+    );
+  }
 }

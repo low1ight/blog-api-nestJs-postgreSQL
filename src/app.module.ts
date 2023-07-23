@@ -65,11 +65,14 @@ import { BanUserForBlogUseCase } from './modules/blog_platform/blogs/application
 import { BannedUsersForBlogsQueryRepository } from './modules/users_module/users/repositories/query-repository/bannedUsersForBlogs.query.repository';
 import { BindBlogUseCase } from './modules/blog_platform/blogs/application/bindBlogUseCase';
 import { BlogsSaController } from './modules/blog_platform/blogs/controllers/blogs.sa.controller';
+import { PostsPublicController } from './modules/blog_platform/posts/controllers/posts.public.controller';
+import { BanBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/banBlogUseCase';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
   DeleteAllOtherDevicesUseCase,
   CreateUserUseCase,
+  BanBlogUseCase,
   DeleteUserUseCase,
   RegisterNewUserUseCase,
   DeletePostForBlogUseCase,
@@ -137,6 +140,7 @@ const useCases = [
     UsersSaController,
     DevicePublicController,
     TestingController,
+    PostsPublicController,
     AuthPublicController,
     BlogsBloggerController,
     BlogsSaController,
