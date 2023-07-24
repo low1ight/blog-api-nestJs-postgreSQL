@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   Param,
   Put,
   Query,
@@ -43,6 +44,7 @@ export class BlogsSaController {
   }
 
   @Put(':id/ban')
+  @HttpCode(204)
   async banBlog(
     @Param('id', CustomParseInt) id: number,
     @Body() dto: BanBlogDto,

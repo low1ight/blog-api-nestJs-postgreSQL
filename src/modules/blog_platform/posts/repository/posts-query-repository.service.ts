@@ -48,10 +48,14 @@ export class PostsQueryRepository {
     const post: PostDbModelWithBlogName = await this.dataSource.query(
       `
     
-     SELECT id, "blogId", "title", "shortDescription", "content", "createdAt",
-     (SELECT "name" AS "blogName" FROM "Blogs"  WHERE "id" = p."blogId"  )
-
-      FROM public."Posts" p WHERE "id" = $1;
+     SELECT p."id", p."blogId", p."title", p."shortDescription", p."content", p."createdAt",
+       b."name" as "blogName"
+       
+     FROM public."Posts" p
+     
+     JOIN "Blogs" b ON b."id" = p."blogId"
+     
+     WHERE p."id" = $1 AND b."isBanned" = false
     
     
     `,
