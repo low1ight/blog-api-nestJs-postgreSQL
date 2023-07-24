@@ -10,15 +10,14 @@ import { BlogViewModel } from '../dto/BlogViewModel';
 @Injectable()
 export class BlogsQueryRepository {
   constructor(@InjectDataSource() private dataSource: DataSource) {}
-  async getAllBlogs(userId: number | null, paginator: BlogPaginator) {
+  async getAllUserBlogs(userId: number, paginator: BlogPaginator) {
     const nameSearchTerm = `%${paginator.getSearchNameTerm()}%`;
-    console.log(nameSearchTerm);
 
     const blogs: BlogDbModel[] = await this.dataSource.query(
       `
     SELECT "id",  "name", "description", "websiteUrl", "isMembership", "createdAt"
     FROM public."Blogs"
-    WHERE ("ownerId" = $1 OR $1 IS NULL) AND "name" ILIKE $2
+    WHERE "ownerId" = $1 AND "name" ILIKE $2
     ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
       LIMIT ${paginator.getPageSize()}
       OFFSET ${paginator.getOffset()}
@@ -34,10 +33,42 @@ export class BlogsQueryRepository {
     
     SELECT Count(*)
     FROM public."Blogs"
-    WHERE ("ownerId" = $1 OR $1 IS NULL) AND "name" ILIKE $2
+    WHERE "ownerId" = $1 AND "name" ILIKE $2
     
     `,
       [userId, nameSearchTerm],
+    );
+
+    return paginator.paginate(blogViewModel, Number(totalBlogsCount[0].count));
+  }
+
+  async getAllBLogForPublic(paginator: BlogPaginator) {
+    const nameSearchTerm = `%${paginator.getSearchNameTerm()}%`;
+
+    const blogs: BlogDbModel[] = await this.dataSource.query(
+      `
+    SELECT "id",  "name", "description", "websiteUrl", "isMembership", "createdAt"
+    FROM public."Blogs"
+    WHERE "name" ILIKE $1 AND "isBanned" = false
+    ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
+      LIMIT ${paginator.getPageSize()}
+      OFFSET ${paginator.getOffset()}
+    
+    `,
+      [nameSearchTerm],
+    );
+
+    const blogViewModel = blogs.map((blog) => new BlogViewModel(blog));
+
+    const totalBlogsCount = await this.dataSource.query(
+      `
+    
+    SELECT Count(*)
+    FROM public."Blogs"
+    WHERE "name" ILIKE $1 AND "isBanned" = false
+    
+    `,
+      [nameSearchTerm],
     );
 
     return paginator.paginate(blogViewModel, Number(totalBlogsCount[0].count));

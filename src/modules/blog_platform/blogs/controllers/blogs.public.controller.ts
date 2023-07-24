@@ -19,7 +19,7 @@ export class BlogsPublicController {
   async getBlogs(@Query() query: BlogQueryInputDto) {
     const paginator = new BlogPaginator(query);
 
-    return await this.blogsQueryRepository.getAllBlogs(null, paginator);
+    return await this.blogsQueryRepository.getAllBLogForPublic(paginator);
   }
 
   @Get(':id/posts')
