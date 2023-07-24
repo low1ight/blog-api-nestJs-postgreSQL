@@ -3,7 +3,7 @@ import { BlogViewModel } from './BlogViewModel';
 
 export class BlogSaViewModel extends BlogViewModel {
   public blogOwnerInfo: {
-    userId: number;
+    userId: string;
     userLogin: string;
   };
   public banInfo: {
@@ -25,7 +25,7 @@ export class BlogSaViewModel extends BlogViewModel {
     super({ id, name, description, websiteUrl, isMembership, createdAt });
 
     this.blogOwnerInfo = {
-      userId,
+      userId: userId.toString(),
       userLogin,
     };
 
