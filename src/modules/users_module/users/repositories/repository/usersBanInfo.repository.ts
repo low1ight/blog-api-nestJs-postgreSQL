@@ -16,4 +16,18 @@ export class UsersBanInfoRepository {
       [userId],
     );
   }
+
+  async getUserBanStatusById(userId: number) {
+    const result = await this.dataSource.query(
+      `
+    SELECT "isBanned" 
+    FROM "UsersBanInfo"
+    WHERE "userId" = $1
+    
+    `,
+      [userId],
+    );
+
+    return result[0] || null;
+  }
 }

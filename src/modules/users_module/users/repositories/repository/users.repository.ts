@@ -159,6 +159,4 @@ export class UsersRepository {
 
     return result[0].count === '1';
   }
-
-  r;
 }

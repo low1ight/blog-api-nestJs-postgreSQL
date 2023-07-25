@@ -73,4 +73,21 @@ export class PostsRepository {
 
     return result[0] ? result[0] : null;
   }
+
+  async getPostBlogId(postId: number): Promise<number | null> {
+    const result = await this.dataSource.query(
+      `
+    
+    SELECT "blogId" 
+    FROM "Posts"
+    WHERE "id" = $1
+  
+    
+    
+    `,
+      [postId],
+    );
+
+    return result[0]?.blogId || null;
+  }
 }

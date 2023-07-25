@@ -68,6 +68,12 @@ import { BlogsSaController } from './modules/blog_platform/blogs/controllers/blo
 import { PostsPublicController } from './modules/blog_platform/posts/controllers/posts.public.controller';
 import { BanBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/banBlogUseCase';
 import { BlogsPublicController } from './modules/blog_platform/blogs/controllers/blogs.public.controller';
+import { CreateCommentForPostUseCase } from './modules/blog_platform/comments/application/use-cases/createCommentForPostUseCase';
+import { CommentsRepository } from './modules/blog_platform/comments/repositories/repository/comments.repository';
+import { BlogsService } from './modules/blog_platform/blogs/application/blogs.service';
+import { CommentsQueryRepository } from './modules/blog_platform/comments/repositories/query-repository/comments.query.repository';
+import { PostsLikesRepository } from './modules/blog_platform/posts/repository/postsLikes.repository';
+import { SetLikeStatusForPostUseCase } from './modules/blog_platform/posts/application/use-cases/setLikeStatusForPostUseCase';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -78,6 +84,7 @@ const useCases = [
   RegisterNewUserUseCase,
   DeletePostForBlogUseCase,
   RefreshRtUseCase,
+  CreateCommentForPostUseCase,
   UpdateBlogUseCase,
   SetBanStatusForUserUseCase,
   BanUserForBlogUseCase,
@@ -91,6 +98,7 @@ const useCases = [
   RegistrationEmailResendingUseCase,
   DeleteDeviceByIdUseCase,
   CreateBlogUseCase,
+  SetLikeStatusForPostUseCase,
   UpdatePostForBlogUseCase,
   DeleteBlogUseCase,
 ];
@@ -155,9 +163,13 @@ const useCases = [
     UsersEmailConfirmationRepository,
     UsersBanInfoRepository,
     LocalStrategy,
+    CommentsRepository,
     UsersQueryRepository,
     UsersService,
+    BlogsService,
+    PostsLikesRepository,
     AccessTokenStrategy,
+    CommentsQueryRepository,
     PostsRepository,
     TestingService,
     BlogsRepository,
