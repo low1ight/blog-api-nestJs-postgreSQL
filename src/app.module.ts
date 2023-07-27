@@ -74,6 +74,9 @@ import { BlogsService } from './modules/blog_platform/blogs/application/blogs.se
 import { CommentsQueryRepository } from './modules/blog_platform/comments/repositories/query-repository/comments.query.repository';
 import { PostsLikesRepository } from './modules/blog_platform/posts/repository/postsLikes.repository';
 import { SetLikeStatusForPostUseCase } from './modules/blog_platform/posts/application/use-cases/setLikeStatusForPostUseCase';
+import { CommentLikesRepository } from './modules/blog_platform/comments/repositories/repository/commentLikes.repository';
+import { SerLikeStatusForCommentUseCase } from './modules/blog_platform/comments/application/use-cases/serLikeStatusForCommentUseCase';
+import { CommentsPublicController } from './modules/blog_platform/comments/controllers/comments.public.controller';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -88,6 +91,7 @@ const useCases = [
   UpdateBlogUseCase,
   SetBanStatusForUserUseCase,
   BanUserForBlogUseCase,
+  SerLikeStatusForCommentUseCase,
   BindBlogUseCase,
   LogoutUseCase,
   SetNewPasswordUseCase,
@@ -153,6 +157,7 @@ const useCases = [
     AuthPublicController,
     BlogsPublicController,
     BlogsBloggerController,
+    CommentsPublicController,
     BlogsSaController,
     UsersBloggerController,
   ],
@@ -175,6 +180,7 @@ const useCases = [
     BlogsRepository,
     DevicesPublicRepository,
     DevicesPublicQueryRepository,
+    CommentLikesRepository,
     JwtAdapter,
     PostsQueryRepository,
     BlogsQueryRepository,

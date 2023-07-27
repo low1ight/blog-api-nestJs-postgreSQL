@@ -10,7 +10,7 @@ export class CommentsRepository {
     postId: number,
     ownerId: number,
     { content }: CreateCommentInputDto,
-  ) {
+  ): Promise<number> {
     const result = await this.dataSource.query(
       `
     
@@ -24,5 +24,17 @@ export class CommentsRepository {
       [postId, content, ownerId],
     );
     return result[0].id;
+  }
+
+  async getPostIdOfComment(commentId: number): Promise<number | null> {
+    const result = await this.dataSource.query(
+      `
+    SELECT "postId" FROM "Comments" 
+    WHERE "id" = $1
+    `,
+      [commentId],
+    );
+
+    return result[0]?.postId || null;
   }
 }
