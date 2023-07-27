@@ -1,4 +1,5 @@
-import { PostDbModelWithBlogName } from './PostDbModelWithBlogName';
+import { PostsWithBlogDataAndLikesRaw } from './PostDbModelWithBlogName';
+import { LikeForPostViewModel } from './LikeForPostViewModel';
 
 export class PostViewModel {
   id: string;
@@ -7,16 +8,12 @@ export class PostViewModel {
   content: string;
   blogId: string;
   blogName: string;
-  createdAt: string;
+  createdAt: Date;
   extendedLikesInfo: {
     likesCount: number;
     dislikesCount: number;
     myStatus: string;
-    newestLikes: {
-      addedAt: Date;
-      userId: number;
-      login: string;
-    }[];
+    newestLikes: LikeForPostViewModel[];
   };
   constructor({
     id,
@@ -26,7 +23,10 @@ export class PostViewModel {
     blogId,
     blogName,
     createdAt,
-  }: PostDbModelWithBlogName) {
+    totalLikesCount,
+    totalDislikesCount,
+    myStatus,
+  }: PostsWithBlogDataAndLikesRaw) {
     this.id = id.toString();
     this.title = title;
     this.content = content;
@@ -35,9 +35,9 @@ export class PostViewModel {
     this.blogName = blogName;
     this.createdAt = createdAt;
     this.extendedLikesInfo = {
-      likesCount: 0,
-      dislikesCount: 0,
-      myStatus: 'None',
+      likesCount: Number(totalLikesCount),
+      dislikesCount: Number(totalDislikesCount),
+      myStatus: myStatus || 'None',
       newestLikes: [],
     };
   }
