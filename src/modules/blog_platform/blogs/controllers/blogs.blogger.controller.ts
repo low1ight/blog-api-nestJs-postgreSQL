@@ -89,7 +89,7 @@ export class BlogsBloggerController {
 
     if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
 
-    return await this.postsQueryRepository.getPostById(result.content);
+    return await this.postsQueryRepository.getPostById(result.content, null);
   }
 
   @Put(':blogId/posts/:postId')

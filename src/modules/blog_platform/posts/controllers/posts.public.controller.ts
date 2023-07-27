@@ -50,9 +50,13 @@ export class PostsPublicController {
   }
 
   @Get(':id')
-  async getPostById(@Param('id', CustomParseInt) id: number) {
+  @UseGuards(OptionalJwtAuthGuard)
+  async getPostById(
+    @Param('id', CustomParseInt) id: number,
+    @CurrentUser() user: UserDataFromAT | null,
+  ) {
     const post: PostViewModel | null =
-      await this.postsQueryRepository.getPostById(id);
+      await this.postsQueryRepository.getPostById(id, user?.id || null);
     if (!post) Exceptions.throwHttpException(CustomResponseEnum.notExist);
     return post;
   }
