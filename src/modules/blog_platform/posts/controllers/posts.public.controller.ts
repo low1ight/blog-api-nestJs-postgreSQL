@@ -25,6 +25,7 @@ import { CreateCommentForPostUseCaseCommand } from '../../comments/application/u
 import { SetLikeStatusForPostDto } from './dto/SetLikeStatusForPostDto';
 import { CommentsQueryRepository } from '../../comments/repositories/query-repository/comments.query.repository';
 import { SetLikeStatusForPostUseCaseCommand } from '../application/use-cases/setLikeStatusForPostUseCase';
+import { OptionalJwtAuthGuard } from '../../../users_module/auth/guards/optional.jwt.guard';
 
 @Controller('posts')
 export class PostsPublicController {
@@ -34,10 +35,18 @@ export class PostsPublicController {
     private readonly commandBus: CommandBus,
   ) {}
   @Get('')
-  async getAllPosts(@Query() query: PostsQueryDto) {
+  @UseGuards(OptionalJwtAuthGuard)
+  async getAllPosts(
+    @Query() query: PostsQueryDto,
+    @CurrentUser() user: UserDataFromAT | null,
+  ) {
     const paginator = new PostsPaginator(query);
 
-    return await this.postsQueryRepository.getPosts(null, paginator);
+    return await this.postsQueryRepository.getPosts(
+      null,
+      paginator,
+      user?.id || null,
+    );
   }
 
   @Get(':id')
