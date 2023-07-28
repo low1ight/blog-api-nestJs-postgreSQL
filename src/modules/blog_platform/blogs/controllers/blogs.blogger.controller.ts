@@ -29,9 +29,9 @@ import { UpdatePostDto } from './dto/UpdatePostDto';
 import { UpdatePostUseCaseCommand } from '../../posts/application/use-cases/updatePostUseCase';
 import { DeletePostUseCaseCommand } from '../../posts/application/use-cases/deletePostUseCase';
 import { PostsQueryDto } from '../../posts/controllers/dto/query/PostsQueryDto';
-import { PostsPaginator } from '../../posts/controllers/dto/query/PostsPaginator';
+import { PostQueryMapper } from '../../posts/controllers/dto/query/PostQueryMapper';
 import { BlogQueryInputDto } from './dto/query/BlogQueryInputDto';
-import { BlogPaginator } from './dto/query/BlogPaginator';
+import { BlogQueryMapper } from './dto/query/BlogQueryMapper';
 import { BlogsQueryRepository } from '../repositories/query-repository/blogs-query-repository';
 
 @Controller('blogger/blogs')
@@ -129,9 +129,9 @@ export class BlogsBloggerController {
     @Param('id', CustomParseInt) id: number,
     @Query() query: PostsQueryDto,
   ) {
-    const paginator = new PostsPaginator(query);
+    const mappedQuery = new PostQueryMapper(query);
 
-    return await this.postsQueryRepository.getPosts(id, paginator);
+    return await this.postsQueryRepository.getPosts(id, mappedQuery);
   }
 
   @Get('')
@@ -139,8 +139,8 @@ export class BlogsBloggerController {
     @Query() dto: BlogQueryInputDto,
     @CurrentUser() { id }: UserDataFromAT,
   ) {
-    const paginator = new BlogPaginator(dto);
+    const mappedQuery = new BlogQueryMapper(dto);
 
-    return await this.blogsQueryRepository.getAllUserBlogs(id, paginator);
+    return await this.blogsQueryRepository.getAllUserBlogs(id, mappedQuery);
   }
 }

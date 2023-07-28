@@ -17,7 +17,7 @@ import { Exceptions } from '../../../../utils/throwException';
 import { BanBlogDto } from './dto/BanBlogDto';
 import { BanBlogUseCaseCommand } from '../application/use-cases/banBlogUseCase';
 import { BlogQueryInputDto } from './dto/query/BlogQueryInputDto';
-import { BlogPaginator } from './dto/query/BlogPaginator';
+import { BlogQueryMapper } from './dto/query/BlogQueryMapper';
 import { BlogsQueryRepository } from '../repositories/query-repository/blogs-query-repository';
 
 @Controller('sa/blogs')
@@ -57,8 +57,8 @@ export class BlogsSaController {
 
   @Get()
   async getBlogs(@Query() query: BlogQueryInputDto) {
-    const paginator = new BlogPaginator(query);
+    const mappedQuery = new BlogQueryMapper(query);
 
-    return this.blogsQueryRepository.getBlogsForSa(paginator);
+    return this.blogsQueryRepository.getBlogsForSa(mappedQuery);
   }
 }

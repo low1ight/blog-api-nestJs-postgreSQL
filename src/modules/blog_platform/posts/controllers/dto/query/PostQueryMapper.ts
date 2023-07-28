@@ -1,7 +1,7 @@
 import { PostsQueryDto } from './PostsQueryDto';
-import { Paginator } from '../../../../../../utils/paginatorHelpers/Paginator';
+import { QueryMapper } from '../../../../../../utils/paginatorHelpers/QueryMapper';
 
-export class PostsPaginator extends Paginator {
+export class PostQueryMapper extends QueryMapper {
   constructor({ pageNumber, pageSize, sortBy, sortDirection }: PostsQueryDto) {
     super({ pageNumber, pageSize, sortBy, sortDirection });
   }

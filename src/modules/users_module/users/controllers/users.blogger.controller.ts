@@ -18,7 +18,7 @@ import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDa
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { Exceptions } from '../../../../utils/throwException';
 import { BannedUsersInputQueryDto } from './dto/query/bannedUsers/BannedUsersInputQueryDto';
-import { BannedUsersPaginator } from './dto/query/bannedUsers/BannedUsersPaginator';
+import { BannedUsersQueryMapper } from './dto/query/bannedUsers/BannedUsersQueryMapper';
 import { BannedUsersForBlogsQueryRepository } from '../repositories/query-repository/bannedUsersForBlogs.query.repository';
 import { BlogsQueryRepository } from '../../../blog_platform/blogs/repositories/query-repository/blogs-query-repository';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
@@ -59,7 +59,7 @@ export class UsersBloggerController {
     if (blogOwnerId !== user.id)
       return Exceptions.throwHttpException(CustomResponseEnum.forbidden);
 
-    const paginator = new BannedUsersPaginator(query);
+    const paginator = new BannedUsersQueryMapper(query);
 
     return await this.bannedUsersForBlogsQueryRepository.getAllBannedUsersForBlog(
       id,

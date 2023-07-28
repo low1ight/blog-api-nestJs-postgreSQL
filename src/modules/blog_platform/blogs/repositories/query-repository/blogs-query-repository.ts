@@ -1,26 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { BlogPaginator } from '../../controllers/dto/query/BlogPaginator';
+import { BlogQueryMapper } from '../../controllers/dto/query/BlogQueryMapper';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { BlogDbModeForSa } from '../dto/BlogDbModeForSa';
 import { BlogSaViewModel } from '../dto/BlogSaViewModel';
 import { BlogDbModel } from '../dto/BlogDbModel';
 import { BlogViewModel } from '../dto/BlogViewModel';
+import { Paginator } from '../../../../../utils/paginatorHelpers/Paginator';
 
 @Injectable()
 export class BlogsQueryRepository {
   constructor(@InjectDataSource() private dataSource: DataSource) {}
-  async getAllUserBlogs(userId: number, paginator: BlogPaginator) {
-    const nameSearchTerm = `%${paginator.getSearchNameTerm()}%`;
+  async getAllUserBlogs(userId: number, mappedQuery: BlogQueryMapper) {
+    const nameSearchTerm = `%${mappedQuery.getSearchNameTerm()}%`;
 
     const blogs: BlogDbModel[] = await this.dataSource.query(
       `
     SELECT "id",  "name", "description", "websiteUrl", "isMembership", "createdAt"
     FROM public."Blogs"
     WHERE "ownerId" = $1 AND "name" ILIKE $2
-    ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
-      LIMIT ${paginator.getPageSize()}
-      OFFSET ${paginator.getOffset()}
+    ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
+      LIMIT ${mappedQuery.getPageSize()}
+      OFFSET ${mappedQuery.getOffset()}
     
     `,
       [userId, nameSearchTerm],
@@ -39,20 +40,25 @@ export class BlogsQueryRepository {
       [userId, nameSearchTerm],
     );
 
+    const paginator = new Paginator(
+      mappedQuery.getPageSize(),
+      mappedQuery.getPageNumber(),
+    );
+
     return paginator.paginate(blogViewModel, Number(totalBlogsCount[0].count));
   }
 
-  async getAllBLogForPublic(paginator: BlogPaginator) {
-    const nameSearchTerm = `%${paginator.getSearchNameTerm()}%`;
+  async getAllBLogForPublic(mappedQuery: BlogQueryMapper) {
+    const nameSearchTerm = `%${mappedQuery.getSearchNameTerm()}%`;
 
     const blogs: BlogDbModel[] = await this.dataSource.query(
       `
     SELECT "id",  "name", "description", "websiteUrl", "isMembership", "createdAt"
     FROM public."Blogs"
     WHERE "name" ILIKE $1 AND "isBanned" = false
-    ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
-      LIMIT ${paginator.getPageSize()}
-      OFFSET ${paginator.getOffset()}
+    ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
+      LIMIT ${mappedQuery.getPageSize()}
+      OFFSET ${mappedQuery.getOffset()}
     
     `,
       [nameSearchTerm],
@@ -71,11 +77,16 @@ export class BlogsQueryRepository {
       [nameSearchTerm],
     );
 
+    const paginator = new Paginator(
+      mappedQuery.getPageSize(),
+      mappedQuery.getPageNumber(),
+    );
+
     return paginator.paginate(blogViewModel, Number(totalBlogsCount[0].count));
   }
 
-  async getBlogsForSa(paginator: BlogPaginator) {
-    const nameSearchTerm = `%${paginator.getSearchNameTerm()}%`;
+  async getBlogsForSa(mappedQuery: BlogQueryMapper) {
+    const nameSearchTerm = `%${mappedQuery.getSearchNameTerm()}%`;
 
     const blogs: BlogDbModeForSa[] = await this.dataSource.query(
       `
@@ -90,9 +101,9 @@ export class BlogsQueryRepository {
    
     JOIN "Users" u ON u."id" = b."ownerId"
      WHERE "name" ILIKE $1
-    ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
-      LIMIT ${paginator.getPageSize()}
-      OFFSET ${paginator.getOffset()}
+    ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
+      LIMIT ${mappedQuery.getPageSize()}
+      OFFSET ${mappedQuery.getOffset()}
     
     
     `,
@@ -114,6 +125,11 @@ export class BlogsQueryRepository {
     
     `,
       [nameSearchTerm],
+    );
+
+    const paginator = new Paginator(
+      mappedQuery.getPageSize(),
+      mappedQuery.getPageNumber(),
     );
 
     return paginator.paginate(blogsViewModel, Number(totalCount[0].count));

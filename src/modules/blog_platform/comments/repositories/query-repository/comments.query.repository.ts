@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { CommentViewModel } from './dto/CommentViewModel';
-import { CommentPaginator } from '../../controllers/dto/query/CommentPaginator';
+import { CommentQueryMapper } from '../../controllers/dto/query/CommentQueryMapper';
+import { Paginator } from '../../../../../utils/paginatorHelpers/Paginator';
 
 @Injectable()
 export class CommentsQueryRepository {
@@ -10,7 +11,7 @@ export class CommentsQueryRepository {
 
   async getComments(
     postId: number | null,
-    paginator: CommentPaginator,
+    mappedQuery: CommentQueryMapper,
     currentUserId: number | null,
   ) {
     const comments = await this.dataSource.query(
@@ -30,9 +31,9 @@ export class CommentsQueryRepository {
     FROM "Comments" c
     JOIN "Users" u ON u."id" = c."ownerId"
     WHERE c."postId" = $1 OR $1 IS NULL
-    ORDER BY c."${paginator.getSortBy()}" ${paginator.getSortDirection()}
-      LIMIT ${paginator.getPageSize()}
-      OFFSET ${paginator.getOffset()}
+    ORDER BY c."${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
+      LIMIT ${mappedQuery.getPageSize()}
+      OFFSET ${mappedQuery.getOffset()}
     
     
     
@@ -53,6 +54,10 @@ export class CommentsQueryRepository {
 
     const commentsViewModel: CommentViewModel[] = comments.map(
       (item) => new CommentViewModel(item),
+    );
+    const paginator = new Paginator(
+      mappedQuery.getPageSize(),
+      mappedQuery.getPageNumber(),
     );
 
     return paginator.paginate(commentsViewModel, Number(totalCount[0].count));

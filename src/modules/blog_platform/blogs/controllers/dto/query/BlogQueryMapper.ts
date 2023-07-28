@@ -1,7 +1,7 @@
-import { Paginator } from '../../../../../../utils/paginatorHelpers/Paginator';
+import { QueryMapper } from '../../../../../../utils/paginatorHelpers/QueryMapper';
 import { BlogQueryInputDto } from './BlogQueryInputDto';
 
-export class BlogPaginator extends Paginator {
+export class BlogQueryMapper extends QueryMapper {
   searchNameTerm: string;
   constructor({
     pageNumber,

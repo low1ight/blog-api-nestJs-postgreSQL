@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PostsQueryDto } from './dto/query/PostsQueryDto';
-import { PostsPaginator } from './dto/query/PostsPaginator';
+import { PostQueryMapper } from './dto/query/PostQueryMapper';
 import { PostsQueryRepository } from '../repository/posts-query-repository.service';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 import { PostViewModel } from '../repository/dto/postViewModel';
@@ -26,7 +26,7 @@ import { SetLikeStatusForPostDto } from './dto/SetLikeStatusForPostDto';
 import { CommentsQueryRepository } from '../../comments/repositories/query-repository/comments.query.repository';
 import { SetLikeStatusForPostUseCaseCommand } from '../application/use-cases/setLikeStatusForPostUseCase';
 import { OptionalJwtAuthGuard } from '../../../users_module/auth/guards/optional.jwt.guard';
-import { CommentPaginator } from '../../comments/controllers/dto/query/CommentPaginator';
+import { CommentQueryMapper } from '../../comments/controllers/dto/query/CommentQueryMapper';
 import { CommentInputQueryDto } from '../../comments/controllers/dto/query/CommentInputQueryType';
 
 @Controller('posts')
@@ -42,11 +42,11 @@ export class PostsPublicController {
     @Query() query: PostsQueryDto,
     @CurrentUser() user: UserDataFromAT | null,
   ) {
-    const paginator = new PostsPaginator(query);
+    const mappedQuery = new PostQueryMapper(query);
 
     return await this.postsQueryRepository.getPosts(
       null,
-      paginator,
+      mappedQuery,
       user?.id || null,
     );
   }
@@ -90,11 +90,11 @@ export class PostsPublicController {
     @Query() query: CommentInputQueryDto,
     @CurrentUser() user: UserDataFromAT | null,
   ) {
-    const paginator = new CommentPaginator(query);
+    const mappedQuery = new CommentQueryMapper(query);
 
     return await this.commentsQueryRepository.getComments(
       null,
-      paginator,
+      mappedQuery,
       user?.id || null,
     );
   }

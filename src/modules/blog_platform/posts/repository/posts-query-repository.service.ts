@@ -3,8 +3,9 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { PostsWithBlogDataAndLikesRaw } from './dto/PostDbModelWithBlogName';
 import { PostViewModel } from './dto/postViewModel';
-import { PostsPaginator } from '../controllers/dto/query/PostsPaginator';
+import { PostQueryMapper } from '../controllers/dto/query/PostQueryMapper';
 import { LikeForPostViewModel } from './dto/LikeForPostViewModel';
+import { Paginator } from '../../../../utils/paginatorHelpers/Paginator';
 
 @Injectable()
 export class PostsQueryRepository {
@@ -12,7 +13,7 @@ export class PostsQueryRepository {
 
   async getPosts(
     blogId: number | null,
-    paginator: PostsPaginator,
+    mappedQuery: PostQueryMapper,
     currentUserId: number | null = null,
   ) {
     const posts = await this.dataSource.query(
@@ -47,9 +48,9 @@ export class PostsQueryRepository {
       
       WHERE "blogId" = $1 OR $1 IS NULL
      
-      ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
-      LIMIT ${paginator.getPageSize()}
-      OFFSET ${paginator.getOffset()}
+      ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
+      LIMIT ${mappedQuery.getPageSize()}
+      OFFSET ${mappedQuery.getOffset()}
     
     `,
       [blogId, currentUserId],
@@ -67,6 +68,11 @@ export class PostsQueryRepository {
     );
 
     const postsViewModels: PostViewModel[] = this.toViewModelWithLikes(posts);
+
+    const paginator = new Paginator(
+      mappedQuery.getPageSize(),
+      mappedQuery.getPageNumber(),
+    );
 
     return paginator.paginate(postsViewModels, Number(totalCount[0].count));
   }

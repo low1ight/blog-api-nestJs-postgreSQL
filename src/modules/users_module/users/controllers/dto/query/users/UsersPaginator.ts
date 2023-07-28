@@ -1,7 +1,7 @@
-import { Paginator } from '../../../../../../../utils/paginatorHelpers/Paginator';
 import { UserInputQueryDto } from './UsersInputQueryDto';
+import { QueryMapper } from '../../../../../../../utils/paginatorHelpers/QueryMapper';
 
-export class UsersPaginator extends Paginator {
+export class UsersQueryMapper extends QueryMapper {
   searchEmailTerm: string;
   searchLoginTerm: string;
   banStatus: string;

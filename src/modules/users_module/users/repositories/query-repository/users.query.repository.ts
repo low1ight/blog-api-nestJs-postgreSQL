@@ -4,7 +4,8 @@ import { DataSource } from 'typeorm';
 import { UserSaViewModel } from './dto/UserSaViewModel';
 import { MeViewModel } from './dto/MeViewModel';
 import { MeType } from './dto/MeType';
-import { UsersPaginator } from '../../controllers/dto/query/users/UsersPaginator';
+import { UsersQueryMapper } from '../../controllers/dto/query/users/UsersPaginator';
+import { Paginator } from '../../../../../utils/paginatorHelpers/Paginator';
 
 @Injectable()
 export class UsersQueryRepository {
@@ -13,15 +14,15 @@ export class UsersQueryRepository {
     protected dataSource: DataSource,
   ) {}
 
-  async getUsers(paginator: UsersPaginator) {
-    const loginTerm = `%${paginator.getSearchLoginTerm()}%`;
-    const emailTerm = `%${paginator.getSearchEmailTerm()}%`;
+  async getUsers(mappedQuery: UsersQueryMapper) {
+    const loginTerm = `%${mappedQuery.getSearchLoginTerm()}%`;
+    const emailTerm = `%${mappedQuery.getSearchEmailTerm()}%`;
     const banStatusObj = {
       banned: 'true',
       notbanned: 'false',
       all: 'true,false',
     };
-    const isBanned = banStatusObj[paginator.getUsersBanStatus()];
+    const isBanned = banStatusObj[mappedQuery.getUsersBanStatus()];
     const result = await this.dataSource.query(
       `
 
@@ -31,14 +32,14 @@ export class UsersQueryRepository {
     FROM (
     SELECT * FROM "Users" 
     WHERE "login" ILIKE $1 OR "email" ILIKE $2
-    ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
-    LIMIT ${paginator.getPageSize()}
-    OFFSET ${paginator.getOffset()}
+    ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
+    LIMIT ${mappedQuery.getPageSize()}
+    OFFSET ${mappedQuery.getOffset()}
     ) AS u
     LEFT JOIN "UsersBanInfo" AS b
     ON u."id" = b."userId"
     WHERE "isBanned" IN(${isBanned})
-    ORDER BY "${paginator.getSortBy()}" ${paginator.getSortDirection()}
+    ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
      
     `,
       [loginTerm, emailTerm],
@@ -61,6 +62,11 @@ export class UsersQueryRepository {
 
     const userViewModel: UserSaViewModel[] = result.map(
       (user) => new UserSaViewModel(user),
+    );
+
+    const paginator = new Paginator(
+      mappedQuery.getPageSize(),
+      mappedQuery.getPageNumber(),
     );
 
     return paginator.paginate(userViewModel, Number(totalElem[0].count));

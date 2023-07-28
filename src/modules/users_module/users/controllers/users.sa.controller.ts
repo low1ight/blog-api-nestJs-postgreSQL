@@ -21,7 +21,7 @@ import { BanUserDto } from './dto/BanUserDto';
 import { BasicAuthGuard } from '../../auth/guards/basic.auth.guard';
 import { UsersQueryRepository } from '../repositories/query-repository/users.query.repository';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
-import { UsersPaginator } from './dto/query/users/UsersPaginator';
+import { UsersQueryMapper } from './dto/query/users/UsersPaginator';
 import { UserInputQueryDto } from './dto/query/users/UsersInputQueryDto';
 
 @Controller('sa/users')
@@ -34,9 +34,9 @@ export class UsersSaController {
 
   @Get()
   async getUsers(@Query() query: UserInputQueryDto) {
-    const paginator = new UsersPaginator(query);
+    const mappedQuery = new UsersQueryMapper(query);
 
-    return this.usersQueryRepository.getUsers(paginator);
+    return this.usersQueryRepository.getUsers(mappedQuery);
   }
 
   @Post('')
