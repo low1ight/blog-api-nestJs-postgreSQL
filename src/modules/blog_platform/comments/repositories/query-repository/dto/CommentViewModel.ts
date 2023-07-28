@@ -1,4 +1,4 @@
-import { CommentDbModel } from './CommentDbModel';
+import { CommentDbModelWithLikes } from './CommentDbModel';
 
 export class CommentViewModel {
   id: string;
@@ -14,7 +14,15 @@ export class CommentViewModel {
     myStatus: string;
   };
 
-  constructor({ id, content, userLogin, userId }: CommentDbModel) {
+  constructor({
+    id,
+    content,
+    userLogin,
+    userId,
+    totalLikesCount,
+    totalDislikesCount,
+    myStatus,
+  }: CommentDbModelWithLikes) {
     this.id = id.toString();
     this.content = content;
     this.commentatorInfo = {
@@ -22,9 +30,9 @@ export class CommentViewModel {
       userLogin,
     };
     this.likeInfo = {
-      likesCount: 0,
-      dislikesCount: 0,
-      myStatus: 'None',
+      likesCount: Number(totalLikesCount),
+      dislikesCount: Number(totalDislikesCount),
+      myStatus: myStatus || 'None',
     };
   }
 }

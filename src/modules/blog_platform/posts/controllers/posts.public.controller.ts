@@ -26,6 +26,8 @@ import { SetLikeStatusForPostDto } from './dto/SetLikeStatusForPostDto';
 import { CommentsQueryRepository } from '../../comments/repositories/query-repository/comments.query.repository';
 import { SetLikeStatusForPostUseCaseCommand } from '../application/use-cases/setLikeStatusForPostUseCase';
 import { OptionalJwtAuthGuard } from '../../../users_module/auth/guards/optional.jwt.guard';
+import { CommentPaginator } from '../../comments/controllers/dto/query/CommentPaginator';
+import { CommentInputQueryDto } from '../../comments/controllers/dto/query/CommentInputQueryType';
 
 @Controller('posts')
 export class PostsPublicController {
@@ -78,6 +80,22 @@ export class PostsPublicController {
 
     return await this.commentsQueryRepository.getCommentById(
       result.content as number,
+    );
+  }
+
+  @Get(':id/comments')
+  @UseGuards(OptionalJwtAuthGuard)
+  async getPostComments(
+    @Param('id', CustomParseInt) id: number,
+    @Query() query: CommentInputQueryDto,
+    @CurrentUser() user: UserDataFromAT | null,
+  ) {
+    const paginator = new CommentPaginator(query);
+
+    return await this.commentsQueryRepository.getComments(
+      null,
+      paginator,
+      user?.id || null,
     );
   }
 
