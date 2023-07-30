@@ -63,20 +63,28 @@ export class CommentsQueryRepository {
     return paginator.paginate(commentsViewModel, Number(totalCount[0].count));
   }
 
-  async getCommentById(commentId: number) {
+  async getCommentById(commentId: number, userId: number | null) {
     const result = await this.dataSource.query(
       `
     
-    SELECT c."id",c."content", u."id" AS "userId", u."login" AS "userLogin"
+    SELECT c."id",c."content", u."id" AS "userId", u."login" AS "userLogin",
+    (SELECT Count(*) AS "totalLikesCount" FROM public."CommentsLikes" l
+   WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
+   
+   (SELECT Count(*) AS "totalDislikesCount" FROM public."CommentsLikes" l
+    WHERE "likeStatus" = 'Dislike' AND c."id" = l."commentId"),
+    
+    (SELECT "likeStatus" AS "myStatus" FROM public."CommentsLikes" l
+    WHERE c."id" = l."commentId" AND l."userId" = $2)
     FROM "Comments" c
     JOIN "Users" u ON u."id" = c."ownerId"
     WHERE c."id" = $1
     
     
     `,
-      [commentId],
+      [commentId, userId],
     );
 
-    return new CommentViewModel(result[0]) || null;
+    return result[0] ? new CommentViewModel(result[0]) : null;
   }
 }

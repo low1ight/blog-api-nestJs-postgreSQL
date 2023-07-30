@@ -6,6 +6,7 @@ import { MeViewModel } from './dto/MeViewModel';
 import { MeType } from './dto/MeType';
 import { UsersQueryMapper } from '../../controllers/dto/query/users/UsersPaginator';
 import { Paginator } from '../../../../../utils/paginatorHelpers/Paginator';
+import { PaginatorModel } from '../../../../../utils/paginatorHelpers/paginator.types';
 
 @Injectable()
 export class UsersQueryRepository {
@@ -14,7 +15,9 @@ export class UsersQueryRepository {
     protected dataSource: DataSource,
   ) {}
 
-  async getUsers(mappedQuery: UsersQueryMapper) {
+  async getUsers(
+    mappedQuery: UsersQueryMapper,
+  ): Promise<PaginatorModel<UserSaViewModel>> {
     const loginTerm = `%${mappedQuery.getSearchLoginTerm()}%`;
     const emailTerm = `%${mappedQuery.getSearchEmailTerm()}%`;
     const banStatusObj = {

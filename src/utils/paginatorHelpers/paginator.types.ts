@@ -3,5 +3,5 @@ export type PaginatorModel<T> = {
   page: number;
   pageSize: number;
   totalCount: number;
-  items: T;
+  items: T[];
 };

@@ -80,6 +80,7 @@ export class PostsPublicController {
 
     return await this.commentsQueryRepository.getCommentById(
       result.content as number,
+      user.id,
     );
   }
 

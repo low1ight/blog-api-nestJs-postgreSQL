@@ -37,4 +37,30 @@ export class CommentsRepository {
 
     return result[0]?.postId || null;
   }
+
+  async getCommentById(commentId: number) {
+    const comment = await this.dataSource.query(
+      `
+    
+    SELECT * FROM "Comments"
+    WHERE "id" = $1
+    
+    `,
+      [commentId],
+    );
+
+    return comment[0] || null;
+  }
+
+  async deleteCommentById(commentId: number) {
+    await this.dataSource.query(
+      `
+    
+    DELETE FROM "Comments"
+    WHERE "id" = $1
+    
+    `,
+      [commentId],
+    );
+  }
 }

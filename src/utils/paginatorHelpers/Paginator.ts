@@ -1,3 +1,5 @@
+import { PaginatorModel } from './paginator.types';
+
 export class Paginator {
   constructor(public pageSize: number, public pageNumber: number) {}
 
@@ -9,7 +11,7 @@ export class Paginator {
     return Math.ceil(defaultCount / pageSize);
   }
 
-  paginate(items: any[], totalElemCount: number) {
+  paginate<T>(items: T[], totalElemCount: number): PaginatorModel<T> {
     return {
       pagesCount: this.calculatePageCount(totalElemCount, this.pageSize),
       page: this.pageNumber,
