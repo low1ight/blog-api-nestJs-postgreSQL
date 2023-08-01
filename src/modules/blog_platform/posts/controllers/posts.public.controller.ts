@@ -94,7 +94,7 @@ export class PostsPublicController {
     const mappedQuery = new CommentQueryMapper(query);
 
     return await this.commentsQueryRepository.getComments(
-      null,
+      id,
       mappedQuery,
       user?.id || null,
     );

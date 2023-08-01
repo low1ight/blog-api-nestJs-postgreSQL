@@ -30,5 +30,7 @@ export class UpdateCommentUseCase
       return new CustomResponse(false, CustomResponseEnum.forbidden);
 
     await this.commentsRepository.updateCommentById(dto.content, commentId);
+
+    return new CustomResponse(true);
   }
 }
