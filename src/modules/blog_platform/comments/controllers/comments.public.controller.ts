@@ -32,6 +32,7 @@ export class CommentsPublicController {
   ) {}
 
   @Put(':commentId/like-status')
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   async setLikeForComment(
     @Param('commentId', CustomParseInt) id: number,

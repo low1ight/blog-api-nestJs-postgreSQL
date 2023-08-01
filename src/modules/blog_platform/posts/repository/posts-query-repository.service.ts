@@ -23,9 +23,11 @@ export class PostsQueryRepository {
    (SELECT "name" AS "blogName" FROM "Blogs"  WHERE "id" = p."blogId"  ),
    
    (SELECT Count(*) AS "totalLikesCount" FROM public."PostsLikes" l
+   JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
    WHERE "likeStatus" = 'Like' AND p."id" = l."postId"),
    
    (SELECT Count(*) AS "totalDislikesCount" FROM public."PostsLikes" l
+   JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
     WHERE "likeStatus" = 'Dislike' AND p."id" = l."postId"),
     
     (SELECT "likeStatus" AS "myStatus" FROM public."PostsLikes" l
@@ -42,8 +44,9 @@ export class PostsQueryRepository {
     l."createdAt" AS "likeAddedAt",
     (SELECT "login" AS "likeUserLogin" FROM "Users" u WHERE u."id" = l."userId" )
      FROM public."PostsLikes" l
+     JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
     WHERE "likeStatus" = 'Like'
-    ORDER BY "createdAt" DESC
+    
     LIMIT 5) l ON l."postId" = p."id"
       
       WHERE "blogId" = $1 OR $1 IS NULL
@@ -86,9 +89,11 @@ export class PostsQueryRepository {
    (SELECT "name" AS "blogName" FROM "Blogs"   WHERE "id" = p."blogId"  ),
    
    (SELECT Count(*) AS "totalLikesCount" FROM public."PostsLikes" l
+   JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
    WHERE "likeStatus" = 'Like' AND p."id" = l."postId"),
    
    (SELECT Count(*) AS "totalDislikesCount" FROM public."PostsLikes" l
+   JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
     WHERE "likeStatus" = 'Dislike' AND p."id" = l."postId"),
     
     (SELECT "likeStatus" AS "myStatus" FROM public."PostsLikes" l
@@ -105,6 +110,7 @@ export class PostsQueryRepository {
     l."createdAt" AS "likeAddedAt",
     (SELECT "login" AS "likeUserLogin" FROM "Users" u WHERE u."id" = l."userId" )
      FROM public."PostsLikes" l
+      JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
     WHERE "likeStatus" = 'Like'
     ORDER BY "createdAt" DESC
     LIMIT 5) l ON l."postId" = p."id"
@@ -134,13 +140,15 @@ export class PostsQueryRepository {
         addedPosts[post.id] = currentPost;
       }
 
-      currentPost.extendedLikesInfo.newestLikes.push(
-        new LikeForPostViewModel(
-          post.likeUserId,
-          post.likeUserLogin,
-          post.likeAddedAt,
-        ),
-      );
+      if (post.likeUserId && post.likeUserLogin && post.likeAddedAt) {
+        currentPost.extendedLikesInfo.newestLikes.push(
+          new LikeForPostViewModel(
+            post.likeUserId,
+            post.likeUserLogin,
+            post.likeAddedAt,
+          ),
+        );
+      }
     }
     return result;
   }

@@ -20,17 +20,20 @@ export class CommentsQueryRepository {
     SELECT c."id",c."content",c."createdAt", u."id" AS "userId", u."login" AS "userLogin",
     
     (SELECT Count(*) AS "totalLikesCount" FROM public."CommentsLikes" l
-   WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
-   
-   (SELECT Count(*) AS "totalDislikesCount" FROM public."CommentsLikes" l
-    WHERE "likeStatus" = 'Dislike' AND c."id" = l."commentId"),
+        JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
+        WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
+
+       (SELECT Count(*) AS "totalDislikesCount" FROM public."CommentsLikes" l
+        JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
+        WHERE "likeStatus" = 'Dislike' AND c."id" = l."commentId"),
     
     (SELECT "likeStatus" AS "myStatus" FROM public."CommentsLikes" l
     WHERE c."id" = l."commentId" AND l."userId" = $2)
     
     FROM "Comments" c
     JOIN "Users" u ON u."id" = c."ownerId"
-    WHERE c."postId" = $1 OR $1 IS NULL
+    JOIN "UsersBanInfo" b ON b."userId" = c."ownerId"
+    WHERE c."postId" = $1 OR $1 IS NULL AND b."isBanned" = false
     ORDER BY c."${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
       LIMIT ${mappedQuery.getPageSize()}
       OFFSET ${mappedQuery.getOffset()}
@@ -68,17 +71,22 @@ export class CommentsQueryRepository {
       `
     
     SELECT c."id",c."content",c."createdAt", u."id" AS "userId", u."login" AS "userLogin",
-    (SELECT Count(*) AS "totalLikesCount" FROM public."CommentsLikes" l
-   WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
-   
-   (SELECT Count(*) AS "totalDislikesCount" FROM public."CommentsLikes" l
-    WHERE "likeStatus" = 'Dislike' AND c."id" = l."commentId"),
+    b."isBanned",
+        (SELECT Count(*) AS "totalLikesCount" FROM public."CommentsLikes" l
+        JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
+        WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
+
+       (SELECT Count(*) AS "totalDislikesCount" FROM public."CommentsLikes" l
+        JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
+        WHERE "likeStatus" = 'Dislike' AND c."id" = l."commentId"),
     
     (SELECT "likeStatus" AS "myStatus" FROM public."CommentsLikes" l
     WHERE c."id" = l."commentId" AND l."userId" = $2)
     FROM "Comments" c
     JOIN "Users" u ON u."id" = c."ownerId"
-    WHERE c."id" = $1
+    JOIN "UsersBanInfo" b ON b."userId" = c."ownerId"
+    WHERE c."id" = $1 AND b."isBanned" = false
+    
     
     
     `,

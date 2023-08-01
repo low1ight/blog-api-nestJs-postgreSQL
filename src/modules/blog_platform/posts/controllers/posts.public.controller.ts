@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   Param,
   Post,
   Put,
@@ -101,6 +102,7 @@ export class PostsPublicController {
   }
 
   @Put(':postId/like-status')
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   async setLikeStatusForPost(
     @Param('postId', CustomParseInt) id: number,

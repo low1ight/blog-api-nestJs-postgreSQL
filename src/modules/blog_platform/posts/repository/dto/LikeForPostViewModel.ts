@@ -1,7 +1,6 @@
 export class LikeForPostViewModel {
-  constructor(
-    public userId: number,
-    public userLogin: string,
-    public addedAt: Date,
-  ) {}
+  public userId: string;
+  constructor(userId: number, public login: string, public addedAt: Date) {
+    this.userId = userId.toString();
+  }
 }
