@@ -63,4 +63,15 @@ export class CommentsRepository {
       [commentId],
     );
   }
+  async updateCommentById(content: string, commentId: number) {
+    await this.dataSource.query(
+      `
+    UPDATE public."Comments"
+    SET content=$1
+    WHERE "id" = $2;
+    
+    `,
+      [content, commentId],
+    );
+  }
 }

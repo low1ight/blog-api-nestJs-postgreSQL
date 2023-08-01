@@ -3,12 +3,12 @@ import { CommentDbModelWithLikes } from './CommentDbModel';
 export class CommentViewModel {
   id: string;
   content: string;
+  createdAt: Date;
   commentatorInfo: {
     userId: string;
     userLogin: string;
   };
-  createdAt: string;
-  likeInfo: {
+  likesInfo: {
     likesCount: number;
     dislikesCount: number;
     myStatus: string;
@@ -19,17 +19,19 @@ export class CommentViewModel {
     content,
     userLogin,
     userId,
+    createdAt,
     totalLikesCount,
     totalDislikesCount,
     myStatus,
   }: CommentDbModelWithLikes) {
     this.id = id.toString();
     this.content = content;
+    this.createdAt = createdAt;
     this.commentatorInfo = {
       userId: userId.toString(),
       userLogin,
     };
-    this.likeInfo = {
+    this.likesInfo = {
       likesCount: Number(totalLikesCount),
       dislikesCount: Number(totalDislikesCount),
       myStatus: myStatus || 'None',

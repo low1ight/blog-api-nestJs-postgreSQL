@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Put,
   UseGuards,
@@ -20,6 +21,8 @@ import { OptionalJwtAuthGuard } from '../../../users_module/auth/guards/optional
 import { CommentsQueryRepository } from '../repositories/query-repository/comments.query.repository';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 import { DeleteCommentForPostUseCaseCommand } from '../application/use-cases/deleteCommentForPostUseCase';
+import { UpdateCommentInputDto } from './dto/UpdateCommentInputDto';
+import { UpdateCommentUseCaseCommand } from '../application/use-cases/updateCommentUseCase';
 
 @Controller('comments')
 export class CommentsPublicController {
@@ -57,7 +60,22 @@ export class CommentsPublicController {
     return result;
   }
 
+  @Put(':commentId')
+  @HttpCode(204)
+  @UseGuards(JwtAuthGuard)
+  async updateComment(
+    @Param('commentId', CustomParseInt) id: number,
+    @Body() dto: UpdateCommentInputDto,
+    @CurrentUser() user: UserDataFromAT,
+  ) {
+    const result: CustomResponse<any> = await this.commandBus.execute(
+      new UpdateCommentUseCaseCommand(dto, user.id, id),
+    );
+    if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
+  }
+
   @Delete(':id')
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   async deleteCommentById(
     @Param('id', CustomParseInt) id: number,

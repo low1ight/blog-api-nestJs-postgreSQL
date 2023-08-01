@@ -17,7 +17,7 @@ export class CommentsQueryRepository {
     const comments = await this.dataSource.query(
       `
     
-    SELECT c."id",c."content", u."id" AS "userId", u."login" AS "userLogin",
+    SELECT c."id",c."content",c."createdAt", u."id" AS "userId", u."login" AS "userLogin",
     
     (SELECT Count(*) AS "totalLikesCount" FROM public."CommentsLikes" l
    WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
@@ -67,7 +67,7 @@ export class CommentsQueryRepository {
     const result = await this.dataSource.query(
       `
     
-    SELECT c."id",c."content", u."id" AS "userId", u."login" AS "userLogin",
+    SELECT c."id",c."content",c."createdAt", u."id" AS "userId", u."login" AS "userLogin",
     (SELECT Count(*) AS "totalLikesCount" FROM public."CommentsLikes" l
    WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
    

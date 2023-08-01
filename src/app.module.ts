@@ -78,6 +78,7 @@ import { CommentLikesRepository } from './modules/blog_platform/comments/reposit
 import { SerLikeStatusForCommentUseCase } from './modules/blog_platform/comments/application/use-cases/serLikeStatusForCommentUseCase';
 import { CommentsPublicController } from './modules/blog_platform/comments/controllers/comments.public.controller';
 import { DeleteCommentForPostUseCase } from './modules/blog_platform/comments/application/use-cases/deleteCommentForPostUseCase';
+import { UpdateCommentUseCase } from './modules/blog_platform/comments/application/use-cases/updateCommentUseCase';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -88,6 +89,7 @@ const useCases = [
   RegisterNewUserUseCase,
   DeletePostForBlogUseCase,
   RefreshRtUseCase,
+  UpdateCommentUseCase,
   CreateCommentForPostUseCase,
   UpdateBlogUseCase,
   SetBanStatusForUserUseCase,
