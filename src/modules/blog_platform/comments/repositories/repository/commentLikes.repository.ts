@@ -50,7 +50,7 @@ export class CommentLikesRepository {
       `
     
     UPDATE public."CommentsLikes"
-    SET  "likeStatus"=$3
+    SET  "likeStatus"=$3 , "createdAt"=now()
     WHERE "commentId"=$1 AND "userId"=$2
     
     `,

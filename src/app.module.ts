@@ -122,9 +122,9 @@ const useCases = [
       port: 5432,
       username: process.env.PGUSER,
       password: process.env.PGPASSWORD,
-      database: 'Blog',
-      autoLoadEntities: false,
-      synchronize: false,
+      database: 'Blog-db',
+      autoLoadEntities: true,
+      synchronize: true,
       extra: {
         ssl: true,
       },

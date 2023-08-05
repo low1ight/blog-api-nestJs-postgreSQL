@@ -128,10 +128,15 @@ export class BlogsBloggerController {
   async getBlogPosts(
     @Param('id', CustomParseInt) id: number,
     @Query() query: PostsQueryDto,
+    @CurrentUser() userData: UserDataFromAT,
   ) {
     const mappedQuery = new PostQueryMapper(query);
 
-    return await this.postsQueryRepository.getPosts(id, mappedQuery);
+    return await this.postsQueryRepository.getPosts(
+      id,
+      mappedQuery,
+      userData.id,
+    );
   }
 
   @Get('')

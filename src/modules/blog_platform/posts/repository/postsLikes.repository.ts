@@ -46,7 +46,7 @@ export class PostsLikesRepository {
       `
     
     UPDATE public."PostsLikes"
-    SET "likeStatus"=$3
+    SET "likeStatus"=$3, "createdAt"=now()
     WHERE "postId"=$1 AND "userId" = $2
     
     

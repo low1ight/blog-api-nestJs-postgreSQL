@@ -42,16 +42,18 @@ export class PostsQueryRepository {
     l."userId" AS "likeUserId",
     l."postId",
     l."createdAt" AS "likeAddedAt",
-    (SELECT "login" AS "likeUserLogin" FROM "Users" u WHERE u."id" = l."userId" )
+    (SELECT "login" AS "likeUserLogin" FROM "Users" u WHERE u."id" = l."userId" ),
+    ROW_NUMBER() OVER (PARTITION BY l."postId" ORDER BY l."createdAt" DESC) AS rn
      FROM public."PostsLikes" l
      JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
-    WHERE "likeStatus" = 'Like'
+     WHERE "likeStatus" = 'Like'
+  
     
-    LIMIT 5) l ON l."postId" = p."id"
+    ) l ON l."postId" = p."id"
       
-      WHERE "blogId" = $1 OR $1 IS NULL
+       WHERE ("blogId" = $1 OR $1 IS NULL) AND (l.rn <= 3 OR l."postId" IS NULL)
      
-      ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
+      ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()},"likeAddedAt" DESC
       LIMIT ${mappedQuery.getPageSize()}
       OFFSET ${mappedQuery.getOffset()}
     
@@ -108,15 +110,16 @@ export class PostsQueryRepository {
     l."userId" AS "likeUserId",
     l."postId",
     l."createdAt" AS "likeAddedAt",
-    (SELECT "login" AS "likeUserLogin" FROM "Users" u WHERE u."id" = l."userId" )
+    (SELECT "login" AS "likeUserLogin" FROM "Users" u WHERE u."id" = l."userId" ),
+    ROW_NUMBER() OVER (PARTITION BY l."postId" ORDER BY l."createdAt" DESC) AS rn
      FROM public."PostsLikes" l
       JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
     WHERE "likeStatus" = 'Like'
-    ORDER BY "createdAt" DESC
-    LIMIT 5) l ON l."postId" = p."id"
+    
+  ) l ON l."postId" = p."id"
     
      
-     WHERE p."id" = $1 
+     WHERE p."id" = $1 AND (l.rn <= 3 OR l."postId" IS NULL)
     
     
     `,
@@ -150,6 +153,7 @@ export class PostsQueryRepository {
         );
       }
     }
+
     return result;
   }
 }
