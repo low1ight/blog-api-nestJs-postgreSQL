@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Blog } from '../../blogs/entity/Blog.entity';
 import { PostLikes } from './PostLikes.entity';
+import { Comment } from '../../comments/entity/Comment.entity';
 
 @Entity('Posts')
 export class Post {
@@ -34,5 +35,8 @@ export class Post {
   blog: Blog;
 
   @OneToMany(() => PostLikes, (l) => l.post)
-  postLikes: PostLikes;
+  postLikes: PostLikes[];
+
+  @OneToMany(() => Comment, (c) => c.post)
+  comments: Comment[];
 }
