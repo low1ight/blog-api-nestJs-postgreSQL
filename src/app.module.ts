@@ -82,6 +82,8 @@ import { UpdateCommentUseCase } from './modules/blog_platform/comments/applicati
 
 import { UserBanInfo } from './modules/users_module/users/entities/UserBanInfo.entity';
 import { User } from './modules/users_module/users/entities/User.entity';
+import { UserDevices } from './modules/users_module/users/entities/UserDevices.entity';
+import { UserEmailConfirmation } from './modules/users_module/users/entities/UserEmailConfirmation.entity';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -132,7 +134,12 @@ const useCases = [
         ssl: true,
       },
     }),
-    TypeOrmModule.forFeature([User, UserBanInfo]),
+    TypeOrmModule.forFeature([
+      User,
+      UserBanInfo,
+      UserDevices,
+      UserEmailConfirmation,
+    ]),
     MailerModule.forRoot({
       transport: {
         host: 'smtp.gmail.com',

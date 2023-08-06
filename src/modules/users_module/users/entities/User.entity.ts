@@ -1,5 +1,13 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserBanInfo } from './UserBanInfo.entity';
+import { UserDevices } from './UserDevices.entity';
+import { UserEmailConfirmation } from './UserEmailConfirmation.entity';
 
 @Entity('Users')
 export class User {
@@ -25,5 +33,11 @@ export class User {
   updatedAt: Date;
 
   @OneToOne(() => UserBanInfo, (b) => b.user)
-  userBanInfo: () => UserBanInfo;
+  userBanInfo: UserBanInfo;
+
+  @OneToOne(() => UserEmailConfirmation, (e) => e.user)
+  userEmailConfirmation: UserBanInfo;
+
+  @OneToMany(() => UserDevices, (d) => d.user)
+  userDevices: UserDevices[];
 }
