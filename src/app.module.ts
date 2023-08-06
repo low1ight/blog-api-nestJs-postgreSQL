@@ -80,6 +80,9 @@ import { CommentsPublicController } from './modules/blog_platform/comments/contr
 import { DeleteCommentForPostUseCase } from './modules/blog_platform/comments/application/use-cases/deleteCommentForPostUseCase';
 import { UpdateCommentUseCase } from './modules/blog_platform/comments/application/use-cases/updateCommentUseCase';
 
+import { UserBanInfo } from './modules/users_module/users/entities/UserBanInfo.entity';
+import { User } from './modules/users_module/users/entities/User.entity';
+
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
   DeleteAllOtherDevicesUseCase,
@@ -129,6 +132,7 @@ const useCases = [
         ssl: true,
       },
     }),
+    TypeOrmModule.forFeature([User, UserBanInfo]),
     MailerModule.forRoot({
       transport: {
         host: 'smtp.gmail.com',
