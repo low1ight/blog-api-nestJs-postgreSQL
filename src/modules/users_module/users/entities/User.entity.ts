@@ -8,6 +8,8 @@ import {
 import { UserBanInfo } from './UserBanInfo.entity';
 import { UserDevices } from './UserDevices.entity';
 import { UserEmailConfirmation } from './UserEmailConfirmation.entity';
+import { Blog } from '../../../blog_platform/blogs/entity/Blog.entity';
+import { BannedUsersForBlog } from '../../../blog_platform/blogs/entity/BannedUsersForBlog.entity';
 
 @Entity('Users')
 export class User {
@@ -40,4 +42,10 @@ export class User {
 
   @OneToMany(() => UserDevices, (d) => d.user)
   userDevices: UserDevices[];
+
+  @OneToMany(() => Blog, (b) => b.user)
+  blogs: Blog[];
+
+  @OneToMany(() => BannedUsersForBlog, (b) => b.blog)
+  bannedUserForBlog: BannedUsersForBlog;
 }
