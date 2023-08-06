@@ -86,6 +86,8 @@ import { UserDevices } from './modules/users_module/users/entities/UserDevices.e
 import { UserEmailConfirmation } from './modules/users_module/users/entities/UserEmailConfirmation.entity';
 import { Blog } from './modules/blog_platform/blogs/entity/Blog.entity';
 import { BannedUsersForBlog } from './modules/blog_platform/blogs/entity/BannedUsersForBlog.entity';
+import { PostLikes } from './modules/blog_platform/posts/entity/PostLikes.entity';
+import { Post } from './modules/blog_platform/posts/entity/Post.entity';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -143,6 +145,8 @@ const useCases = [
       UserEmailConfirmation,
       Blog,
       BannedUsersForBlog,
+      Post,
+      PostLikes,
     ]),
     MailerModule.forRoot({
       transport: {
