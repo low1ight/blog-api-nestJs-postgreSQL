@@ -19,7 +19,7 @@ export class PostsQueryRepository {
     const posts = await this.dataSource.query(
       `
     
-    SELECT id, "blogId", "title", "shortDescription", "content", "createdAt",
+    SELECT p."id", "blogId", "title", "shortDescription", "content", p."createdAt",
    (SELECT "name" AS "blogName" FROM "Blogs"  WHERE "id" = p."blogId"  ),
    
    (SELECT Count(*) AS "totalLikesCount" FROM public."PostsLikes" l
@@ -50,8 +50,11 @@ export class PostsQueryRepository {
   
     
     ) l ON l."postId" = p."id"
+    
+    
+     LEFT JOIN "Blogs" g ON g."id" = p."blogId"
       
-       WHERE ("blogId" = $1 OR $1 IS NULL) AND (l.rn <= 3 OR l."postId" IS NULL)
+       WHERE ("blogId" = $1 OR $1 IS NULL) AND (l.rn <= 3 OR l."postId" IS NULL) AND g."isBanned" = false
      
       ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()},"likeAddedAt" DESC
       LIMIT ${mappedQuery.getPageSize()}
@@ -87,7 +90,7 @@ export class PostsQueryRepository {
       `
     
     
-    SELECT id, "blogId", "title", "shortDescription", "content", "createdAt",
+    SELECT p."id", "blogId", "title", "shortDescription", "content", p."createdAt",
    (SELECT "name" AS "blogName" FROM "Blogs"   WHERE "id" = p."blogId"  ),
    
    (SELECT Count(*) AS "totalLikesCount" FROM public."PostsLikes" l
@@ -117,9 +120,13 @@ export class PostsQueryRepository {
     WHERE "likeStatus" = 'Like'
     
   ) l ON l."postId" = p."id"
-    
-     
-     WHERE p."id" = $1 AND (l.rn <= 3 OR l."postId" IS NULL)
+  
+  
+   LEFT JOIN "Blogs" g ON g."id" = p."blogId"
+  
+  
+ 
+     WHERE p."id" = $1 AND (l.rn <= 3 OR l."postId" IS NULL) AND g."isBanned" = false
     
     
     `,
