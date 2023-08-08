@@ -12,7 +12,7 @@ import { Post } from '../../posts/entity/Post.entity';
 
 @Entity('Blogs')
 export class Blog {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column()
@@ -31,12 +31,12 @@ export class Blog {
   isMembership: boolean;
 
   @Column()
-  createdAt: boolean;
+  createdAt: Date;
 
-  @Column()
+  @Column({ default: false })
   isBanned: boolean;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   banDate: boolean;
 
   @ManyToOne(() => User, (u) => u.blogs, { onDelete: 'CASCADE' })

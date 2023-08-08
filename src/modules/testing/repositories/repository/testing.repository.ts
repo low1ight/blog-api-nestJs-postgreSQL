@@ -8,9 +8,9 @@ export class TestingRepository {
 
   async deleteAllData() {
     await this.dataSource.query(`
-        
-          DELETE FROM "Users";
-          DELETE FROM "Blogs";
+        DELETE FROM "Blogs";
+        DELETE FROM "Users";
+          
     
 
     `);

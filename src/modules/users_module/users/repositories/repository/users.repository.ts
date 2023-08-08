@@ -14,18 +14,17 @@ export class UsersRepository {
     queryRunner: QueryRunner,
   ): Promise<number> {
     //create user
+    console.log('create user');
     const createdUserData: UserDbModel = await queryRunner.query(
       `
-
-
-        INSERT INTO public."Users"("login", "password", "passwordRecoveryCode", "email")
-        VALUES($1, $2, null, $3)
+        INSERT INTO public."Users"("login", "password", "email")
+        VALUES($1, $2, $3)
         
         RETURNING "id","login","email","createdAt" ;
     `,
       [login, password, email],
     );
-
+    console.log(createdUserData);
     //return created user id
     return createdUserData[0].id;
   }

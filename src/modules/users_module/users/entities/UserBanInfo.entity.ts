@@ -6,13 +6,13 @@ export class UserBanInfo {
   @PrimaryColumn()
   userId: number;
 
-  @Column()
+  @Column({ default: false })
   isBanned: boolean;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   banReason: string;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   banDate: Date;
 
   @OneToOne(() => User, (u) => u.userBanInfo, { onDelete: 'CASCADE' })

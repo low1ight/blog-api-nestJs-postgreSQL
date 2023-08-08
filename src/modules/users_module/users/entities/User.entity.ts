@@ -16,7 +16,7 @@ import { CommentLikes } from '../../../blog_platform/comments/entity/CommentLike
 
 @Entity('Users')
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column()
@@ -25,23 +25,23 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: null, nullable: true })
   passwordRecoveryCode: string;
 
   @Column()
   email: string;
 
-  @Column()
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @Column()
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
   @OneToOne(() => UserBanInfo, (b) => b.user)
   userBanInfo: UserBanInfo;
 
   @OneToOne(() => UserEmailConfirmation, (e) => e.user)
-  userEmailConfirmation: UserBanInfo;
+  userEmailConfirmation: UserEmailConfirmation;
 
   @OneToMany(() => UserDevices, (d) => d.user)
   userDevices: UserDevices[];

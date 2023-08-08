@@ -6,10 +6,10 @@ export class UserEmailConfirmation {
   @PrimaryColumn()
   ownerId: number;
 
-  @Column()
+  @Column({ nullable: true })
   confirmationCode: string;
 
-  @Column()
+  @Column({ nullable: true })
   expirationDate: Date;
 
   @Column()

@@ -9,8 +9,8 @@ export class UsersBanInfoRepository {
     await queryRunner.query(
       `
     
-        INSERT INTO public."UsersBanInfo"("userId", "isBanned", "banReason", "banDate")
-	      VALUES ($1, false, null, null);
+        INSERT INTO public."UsersBanInfo"("userId")
+	      VALUES ($1);
     
     `,
       [userId],
