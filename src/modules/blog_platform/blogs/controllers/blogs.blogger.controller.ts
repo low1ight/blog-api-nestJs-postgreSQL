@@ -33,12 +33,16 @@ import { PostQueryMapper } from '../../posts/controllers/dto/query/PostQueryMapp
 import { BlogQueryInputDto } from './dto/query/BlogQueryInputDto';
 import { BlogQueryMapper } from './dto/query/BlogQueryMapper';
 import { BlogsQueryRepository } from '../repositories/query-repository/blogs-query-repository';
+import { CommentsQueryRepository } from '../../comments/repositories/query-repository/comments.query.repository';
+import { CommentQueryMapper } from '../../comments/controllers/dto/query/CommentQueryMapper';
+import { CommentInputQueryDto } from '../../comments/controllers/dto/query/CommentInputQueryType';
 
 @Controller('blogger/blogs')
 @UseGuards(JwtAuthGuard)
 export class BlogsBloggerController {
   constructor(
     private readonly commandBus: CommandBus,
+    private readonly commentsQueryRepository: CommentsQueryRepository,
     private readonly postsQueryRepository: PostsQueryRepository,
     private readonly blogsQueryRepository: BlogsQueryRepository,
   ) {}
@@ -147,5 +151,18 @@ export class BlogsBloggerController {
     const mappedQuery = new BlogQueryMapper(dto);
 
     return await this.blogsQueryRepository.getAllUserBlogs(id, mappedQuery);
+  }
+
+  @Get('comments')
+  async getAllCurrentUserBlogsComments(
+    @Query() dto: CommentInputQueryDto,
+    @CurrentUser() { id }: UserDataFromAT,
+  ) {
+    const mappedQuery = new CommentQueryMapper(dto);
+
+    return await this.commentsQueryRepository.getAllUserBlogsComments(
+      mappedQuery,
+      id,
+    );
   }
 }

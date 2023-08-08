@@ -8,3 +8,10 @@ export type CommentDbModelWithLikes = {
   totalDislikesCount: string;
   myStatus: null | string;
 };
+
+export type CommentDbModelWithLikesAndBlogPostData = {
+  postTitle: string;
+  postId: number;
+  blogId: number;
+  blogName: string;
+} & CommentDbModelWithLikes;

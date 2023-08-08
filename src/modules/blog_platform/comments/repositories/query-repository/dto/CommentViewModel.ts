@@ -1,4 +1,7 @@
-import { CommentDbModelWithLikes } from './CommentDbModel';
+import {
+  CommentDbModelWithLikes,
+  CommentDbModelWithLikesAndBlogPostData,
+} from './CommentDbModel';
 
 export class CommentViewModel {
   id: string;
@@ -35,6 +38,47 @@ export class CommentViewModel {
       likesCount: Number(totalLikesCount),
       dislikesCount: Number(totalDislikesCount),
       myStatus: myStatus || 'None',
+    };
+  }
+}
+
+export class AllBlogsCommentViewModel extends CommentViewModel {
+  postInfo: {
+    id: string;
+    title: string;
+    blogId: string;
+    blogName: string;
+  };
+  constructor({
+    id,
+    content,
+    userLogin,
+    userId,
+    createdAt,
+    totalLikesCount,
+    totalDislikesCount,
+    myStatus,
+    blogId,
+    blogName,
+    postId,
+    postTitle,
+  }: CommentDbModelWithLikesAndBlogPostData) {
+    super({
+      id,
+      content,
+      userLogin,
+      userId,
+      createdAt,
+      totalLikesCount,
+      totalDislikesCount,
+      myStatus,
+    });
+
+    this.postInfo = {
+      id: postId.toString(),
+      title: postTitle,
+      blogId: blogId.toString(),
+      blogName: blogName,
     };
   }
 }
