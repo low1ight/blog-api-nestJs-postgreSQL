@@ -15,7 +15,7 @@ import {
 import { CqrsModule } from '@nestjs/cqrs';
 import { CreateUserUseCase } from './modules/users_module/users/application/use-cases/create-user-use-case';
 import { PasswordHashAdapter } from './modules/users_module/adapters/passwordHash.adapter';
-import { UsersRepository } from './modules/users_module/users/repositories/repository/users.repository';
+import { UsersRepo } from './modules/users_module/users/repositories/repository/users-repo.service';
 import { DeleteUserUseCase } from './modules/users_module/users/application/use-cases/delete-user-use-case';
 import { SetBanStatusForUserUseCase } from './modules/users_module/users/application/use-cases/set-ban-status-for-user-use-case';
 import { PassportModule } from '@nestjs/passport';
@@ -28,7 +28,7 @@ import { LoginUseCase } from './modules/users_module/auth/application/public/aut
 import { AuthPublicService } from './modules/users_module/auth/application/public/auth/auth.public.service';
 import { DevicePublicController } from './modules/users_module/auth/controllers/device.public.controller';
 import { AccessTokenStrategy } from './modules/users_module/auth/strategies/accessToken.strategy';
-import { DevicesPublicRepository } from './modules/users_module/auth/repositories/public/devices/devices.public.repository';
+import { DeviceRepo } from './modules/users_module/auth/repositories/public/devices/device.repo';
 import { DevicesPublicQueryRepository } from './modules/users_module/auth/repositories/public/devices/query-repo/devices.public.query.repository';
 import { RefreshTokenStrategy } from './modules/users_module/auth/strategies/refreshToken.strategy';
 import { DevicesService } from './modules/users_module/auth/application/public/devices/devices.service';
@@ -46,8 +46,8 @@ import { RegistrationEmailResendingUseCase } from './modules/users_module/auth/a
 import { PasswordRecoveryUseCase } from './modules/users_module/auth/application/public/auth/useCase/password-recovery-use-case';
 import { UsersQueryRepository } from './modules/users_module/users/repositories/query-repository/users.query.repository';
 import { SetNewPasswordUseCase } from './modules/users_module/users/application/use-cases/set-new-password-use-case';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerModule } from '@nestjs/throttler';
+
 import { BlogsBloggerController } from './modules/blog_platform/blogs/controllers/blogs.blogger.controller';
 import { CreateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/createBlogUseCase';
 import { BlogsRepository } from './modules/blog_platform/blogs/repositories/repository/blogs.repository';
@@ -205,7 +205,7 @@ const useCases = [
     PostsRepository,
     TestingService,
     BlogsRepository,
-    DevicesPublicRepository,
+    DeviceRepo,
     DevicesPublicQueryRepository,
     CommentLikesRepository,
     JwtAdapter,
@@ -214,7 +214,7 @@ const useCases = [
     PasswordHashAdapter,
     TestingRepository,
     BannedUsersForBlogsRepository,
-    UsersRepository,
+    UsersRepo,
     AuthPublicService,
     BannedUsersForBlogsQueryRepository,
     RefreshTokenStrategy,
