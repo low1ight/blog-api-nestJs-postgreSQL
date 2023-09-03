@@ -17,6 +17,26 @@ export class UsersBanInfoRepository {
     );
   }
 
+  async setBanStatusForUser(
+    userId: number,
+    isBanned: boolean,
+    banReason: string | null,
+    banDate: Date | null,
+  ) {
+    await this.dataSource.query(
+      `
+    
+       UPDATE public."UsersBanInfo"
+       SET "isBanned"=$2, "banReason"=$3, "banDate"=$4
+       WHERE "userId" = $1;
+    
+    
+    
+    `,
+      [userId, isBanned, banReason, banDate],
+    );
+  }
+
   async getUserBanStatusById(userId: number) {
     const result = await this.dataSource.query(
       `

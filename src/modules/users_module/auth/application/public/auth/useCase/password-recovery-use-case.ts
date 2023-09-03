@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { EmailManager } from '../../../../../../../adapters/email.manager';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UsersRepo } from '../../../../../users/repositories/repository/users-repo.service';
+import { UsersRepo } from '../../../../../users/repositories/repository/users.repo';
 
 export class PasswordRecoveryUseCaseCommand {
   constructor(public email: string) {}

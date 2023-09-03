@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepo } from '../repositories/repository/users-repo.service';
+import { UsersRepo } from '../repositories/repository/users.repo';
 import { CreateUserDto } from '../controllers/dto/CreateUserDto';
 import { PasswordHashAdapter } from '../../adapters/passwordHash.adapter';
 import { UsersBanInfoRepository } from '../repositories/repository/usersBanInfo.repository';

@@ -15,7 +15,7 @@ import {
 import { CqrsModule } from '@nestjs/cqrs';
 import { CreateUserUseCase } from './modules/users_module/users/application/use-cases/create-user-use-case';
 import { PasswordHashAdapter } from './modules/users_module/adapters/passwordHash.adapter';
-import { UsersRepo } from './modules/users_module/users/repositories/repository/users-repo.service';
+import { UsersRepo } from './modules/users_module/users/repositories/repository/users.repo';
 import { DeleteUserUseCase } from './modules/users_module/users/application/use-cases/delete-user-use-case';
 import { SetBanStatusForUserUseCase } from './modules/users_module/users/application/use-cases/set-ban-status-for-user-use-case';
 import { PassportModule } from '@nestjs/passport';
@@ -47,7 +47,6 @@ import { PasswordRecoveryUseCase } from './modules/users_module/auth/application
 import { UsersQueryRepository } from './modules/users_module/users/repositories/query-repository/users.query.repository';
 import { SetNewPasswordUseCase } from './modules/users_module/users/application/use-cases/set-new-password-use-case';
 import { ThrottlerModule } from '@nestjs/throttler';
-
 import { BlogsBloggerController } from './modules/blog_platform/blogs/controllers/blogs.blogger.controller';
 import { CreateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/createBlogUseCase';
 import { BlogsRepository } from './modules/blog_platform/blogs/repositories/repository/blogs.repository';

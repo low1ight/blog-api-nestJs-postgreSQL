@@ -4,7 +4,7 @@ import { BlogsRepository } from '../../repositories/repository/blogs.repository'
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
 import { BannedUsersForBlogsRepository } from '../../../../users_module/users/repositories/repository/bannedUsersForBlogs.repository';
-import { UsersRepo } from '../../../../users_module/users/repositories/repository/users-repo.service';
+import { UsersRepo } from '../../../../users_module/users/repositories/repository/users.repo';
 
 export class BanUserForBlogUseCaseCommand {
   constructor(

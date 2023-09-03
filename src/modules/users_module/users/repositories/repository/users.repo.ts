@@ -24,8 +24,6 @@ export class UsersRepo {
 
     const createdUserData = await queryRunner.manager.save(user);
 
-    console.log(createdUserData);
-
     return createdUserData.id;
   }
 
@@ -34,42 +32,18 @@ export class UsersRepo {
     await this.userRepository.delete({ id: id });
   }
 
-  async setBanStatusForUser(
-    userId: number,
-    isBanned: boolean,
-    banReason: string | null,
-    banDate: Date | null,
-  ) {
-    await this.dataSource.query(
-      `
-    
-       UPDATE public."UsersBanInfo"
-       SET "isBanned"=$2, "banReason"=$3, "banDate"=$4
-       WHERE "userId" = $1;
-    
-    
-    
-    `,
-      [userId, isBanned, banReason, banDate],
-    );
-  }
-
   async checkIsUserExistByField(
     findBy: string,
     findStr: string | number,
   ): Promise<boolean> {
     //should return 1 if user exist
-    const isExist = await this.dataSource.query(
-      `
-    SELECT COUNT(1) FROM "Users" WHERE ${findBy} = $1
-    `,
+    const count = await this.userRepository.count({
+      where: {
+        [findBy]: findStr,
+      },
+    });
 
-      [findStr],
-    );
-
-    //transform result to boolean and return
-
-    return !!Number(isExist[0].count);
+    return count > 0;
   }
 
   async getUserDataForLogin(
@@ -97,66 +71,84 @@ export class UsersRepo {
   }
 
   async getUserIdByEmail(email: string): Promise<number | null> {
-    const userData = await this.dataSource.query(
-      ` 
-    SELECT "id" 
-    FROM "Users"
-    WHERE "email" = $1  
-    `,
-      [email],
-    );
+    const user = await this.userRepository.findOneBy({ email });
+    // const userData = await this.dataSource.query(
+    //   `
+    // SELECT "id"
+    // FROM "Users"
+    // WHERE "email" = $1
+    // `,
+    //   [email],
+    // );
 
-    return userData[0]?.id || null;
+    return user.id || null;
   }
 
   async updatePasswordRecoveryCode(userId: number, recoveryCode: string) {
-    await this.dataSource.query(
-      `
-   UPDATE public."Users"
-   SET "passwordRecoveryCode" = $2
-   WHERE "id" = $1;
-    `,
-      [userId, recoveryCode],
-    );
+    const user = await this.userRepository.findOneBy({ id: userId });
+
+    user.passwordRecoveryCode = recoveryCode;
+
+    await this.userRepository.save(user);
+
+    //  await this.dataSource.query(
+    //    `
+    // UPDATE public."Users"
+    // SET "passwordRecoveryCode" = $2
+    // WHERE "id" = $1;
+    //  `,
+    //    [userId, recoveryCode],
+    //  );
   }
 
   async setNewPassword(userId: number, password: string) {
-    await this.dataSource.query(
-      `
-   UPDATE public."Users"
-   SET "password" = $2
-   WHERE "id" = $1;
-    `,
-      [userId, password],
-    );
+    const user = await this.userRepository.findOneBy({ id: userId });
+
+    user.password = password;
+
+    await this.userRepository.save(user);
+    //  await this.dataSource.query(
+    //    `
+    // UPDATE public."Users"
+    // SET "password" = $2
+    // WHERE "id" = $1;
+    //  `,
+    //    [userId, password],
+    //  );
   }
 
   async getUserIdByPasswordRecoveryCode(code: string): Promise<number | null> {
-    const result = await this.dataSource.query(
-      `
-    
-    SELECT "id"
-    FROM "Users"
-    WHERE "passwordRecoveryCode" = $1
-    
-    `,
-      [code],
-    );
-    return result[0]?.id || null;
+    const user = await this.userRepository.findOneBy({
+      passwordRecoveryCode: code,
+    });
+
+    // const result = await this.dataSource.query(
+    //   `
+    //
+    // SELECT "id"
+    // FROM "Users"
+    // WHERE "passwordRecoveryCode" = $1
+    //
+    // `,
+    //   [code],
+    // );
+    return user.id || null;
   }
 
   async isUserExist(userId: number) {
-    const result = await this.dataSource.query(
-      `
-    
-         SELECT Count(*)
-         FROM "Users" 
-         WHERE "id" = $1
-    
-    `,
-      [userId],
-    );
+    const user = await this.userRepository.findOneBy({ id: userId });
 
-    return result[0].count === '1';
+    // const result = await this.dataSource.query(
+    //   `
+    //
+    //      SELECT Count(*)
+    //      FROM "Users"
+    //      WHERE "id" = $1
+    //
+    // `,
+    //   [userId],
+    // );
+
+    return !!user;
   }
 }
