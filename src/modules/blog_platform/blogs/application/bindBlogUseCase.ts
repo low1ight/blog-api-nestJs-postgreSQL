@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UsersRepository } from '../../../users_module/users/repositories/repository/users.repository';
+import { UsersRepo } from '../../../users_module/users/repositories/repository/users-repo.service';
 import { BlogsRepository } from '../repositories/repository/blogs.repository';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
@@ -12,7 +12,7 @@ export class BindBlogUseCase
   implements ICommandHandler<BindBlogUseCaseCommand>
 {
   constructor(
-    private readonly usersRepository: UsersRepository,
+    private readonly usersRepository: UsersRepo,
     public readonly blogsRepository: BlogsRepository,
   ) {}
   async execute({ blogId, userId }: BindBlogUseCaseCommand) {

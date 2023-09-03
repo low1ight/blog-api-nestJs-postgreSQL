@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { DevicesPublicRepository } from '../../../../repositories/public/devices/devices.public.repository';
+import { DeviceRepo } from '../../../../repositories/public/devices/device.repo';
 
 export class DeleteAllOtherDevicesUseCaseCommand {
   constructor(public ownerId: number, public currentDeviceId: number) {}
@@ -9,7 +9,7 @@ export class DeleteAllOtherDevicesUseCaseCommand {
 export class DeleteAllOtherDevicesUseCase
   implements ICommandHandler<DeleteAllOtherDevicesUseCaseCommand>
 {
-  constructor(private readonly devicesRepository: DevicesPublicRepository) {}
+  constructor(private readonly devicesRepository: DeviceRepo) {}
   async execute({
     ownerId,
     currentDeviceId,

@@ -1,36 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource, QueryRunner } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, QueryRunner, Repository } from 'typeorm';
 import { UserForLoginValidationModel } from '../dto/UserForLoginValidationModel';
 import { CreateUserDto } from '../../controllers/dto/CreateUserDto';
-import { UserDbModel } from '../dto/User.db.model';
+import { User } from '../../entities/User.entity';
 
 @Injectable()
-export class UsersRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource) {}
+export class UsersRepo {
+  constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectDataSource() private dataSource: DataSource,
+  ) {}
 
   async createUser(
     { login, password, email }: CreateUserDto,
     queryRunner: QueryRunner,
   ): Promise<number> {
-    //create user
-    console.log('create user');
-    const createdUserData: UserDbModel = await queryRunner.query(
-      `
-        INSERT INTO public."Users"("login", "password", "email")
-        VALUES($1, $2, $3)
-        
-        RETURNING "id","login","email","createdAt" ;
-    `,
-      [login, password, email],
-    );
+    const user = new User();
+
+    user.login = login;
+    user.password = password;
+    user.email = email;
+
+    const createdUserData = await queryRunner.manager.save(user);
+
     console.log(createdUserData);
-    //return created user id
-    return createdUserData[0].id;
+
+    return createdUserData.id;
   }
 
   async deleteUserById(id: number) {
-    await this.dataSource.query(`DELETE FROM "Users" WHERE id = $1`, [id]);
+    // await this.dataSource.query(`DELETE FROM "Users" WHERE id = $1`, [id]);
+    await this.userRepository.delete({ id: id });
   }
 
   async setBanStatusForUser(

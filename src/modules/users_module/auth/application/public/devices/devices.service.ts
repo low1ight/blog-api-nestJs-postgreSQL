@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { DevicesPublicRepository } from '../../../repositories/public/devices/devices.public.repository';
-import { DeviceDbType } from '../../../repositories/public/devices/dto/Device.db.type';
+import { DeviceRepo } from '../../../repositories/public/devices/device.repo';
+import { UserDevices } from '../../../../users/entities/UserDevices.entity';
 
 @Injectable()
 export class DevicesService {
-  constructor(private readonly devicesRepository: DevicesPublicRepository) {}
+  constructor(private readonly devicesRepository: DeviceRepo) {}
   async isSessionIdForDeviceValid(
     deviceId: number,
     sessionId: string,
   ): Promise<boolean> {
-    const device: DeviceDbType | null =
+    const device: UserDevices | null =
       await this.devicesRepository.getDeviceById(deviceId);
 
     if (!device) return false;

@@ -1,6 +1,6 @@
 import { NewPasswordDto } from '../../controllers/dto/NewPasswordDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UsersRepository } from '../../repositories/repository/users.repository';
+import { UsersRepo } from '../../repositories/repository/users-repo.service';
 import { PasswordHashAdapter } from '../../../adapters/passwordHash.adapter';
 
 export class SetNewPasswordUseCaseCommand {
@@ -12,7 +12,7 @@ export class SetNewPasswordUseCase
   implements ICommandHandler<SetNewPasswordUseCaseCommand>
 {
   constructor(
-    private readonly usersRepository: UsersRepository,
+    private readonly usersRepository: UsersRepo,
     private readonly passwordHashAdapter: PasswordHashAdapter,
   ) {}
 

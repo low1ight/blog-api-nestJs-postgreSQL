@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { EmailManager } from '../../../../../../../adapters/email.manager';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UsersRepository } from '../../../../../users/repositories/repository/users.repository';
+import { UsersRepo } from '../../../../../users/repositories/repository/users-repo.service';
 
 export class PasswordRecoveryUseCaseCommand {
   constructor(public email: string) {}
@@ -11,7 +11,7 @@ export class PasswordRecoveryUseCase
   implements ICommandHandler<PasswordRecoveryUseCaseCommand>
 {
   constructor(
-    private usersRepository: UsersRepository,
+    private usersRepository: UsersRepo,
     private emailManager: EmailManager,
   ) {}
 

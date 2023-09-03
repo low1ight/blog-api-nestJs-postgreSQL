@@ -1,8 +1,8 @@
-import { DevicesPublicRepository } from '../../../../repositories/public/devices/devices.public.repository';
+import { DeviceRepo } from '../../../../repositories/public/devices/device.repo';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CustomResponse } from '../../../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../../../utils/customResponse/CustomResponseEnum';
-import { DeviceDbType } from '../../../../repositories/public/devices/dto/Device.db.type';
+import { UserDevices } from '../../../../../users/entities/UserDevices.entity';
 
 export class DeleteDeviceByIdUseCaseCommand {
   constructor(public deviceId: number, public currentUserId: number) {}
@@ -11,10 +11,10 @@ export class DeleteDeviceByIdUseCaseCommand {
 export class DeleteDeviceByIdUseCase
   implements ICommandHandler<DeleteDeviceByIdUseCaseCommand>
 {
-  constructor(private readonly devicesRepository: DevicesPublicRepository) {}
+  constructor(private readonly devicesRepository: DeviceRepo) {}
 
   async execute({ deviceId, currentUserId }: DeleteDeviceByIdUseCaseCommand) {
-    const device: DeviceDbType | null =
+    const device: UserDevices | null =
       await this.devicesRepository.getDeviceById(deviceId);
 
     if (!device) return new CustomResponse(false, CustomResponseEnum.notExist);

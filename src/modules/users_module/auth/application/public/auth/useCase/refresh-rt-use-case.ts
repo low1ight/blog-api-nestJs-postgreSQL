@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { JwtAdapter } from '../../../../adapters/jwt.adapter';
-import { DevicesPublicRepository } from '../../../../repositories/public/devices/devices.public.repository';
+import { DeviceRepo } from '../../../../repositories/public/devices/device.repo';
 import { v4 as uuidv4 } from 'uuid';
 export class RefreshRtUseCaseCommand {
   constructor(
@@ -16,7 +16,7 @@ export class RefreshRtUseCase
 {
   constructor(
     private readonly jwtAdapter: JwtAdapter,
-    private readonly devicesRepository: DevicesPublicRepository,
+    private readonly devicesRepository: DeviceRepo,
   ) {}
 
   async execute({ userId, deviceId, login }: RefreshRtUseCaseCommand) {

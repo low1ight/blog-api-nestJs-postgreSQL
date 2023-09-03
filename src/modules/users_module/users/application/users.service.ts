@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from '../repositories/repository/users.repository';
+import { UsersRepo } from '../repositories/repository/users-repo.service';
 import { CreateUserDto } from '../controllers/dto/CreateUserDto';
 import { PasswordHashAdapter } from '../../adapters/passwordHash.adapter';
 import { UsersBanInfoRepository } from '../repositories/repository/usersBanInfo.repository';
@@ -11,7 +11,7 @@ import { DataSource } from 'typeorm';
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly usersRepository: UsersRepository,
+    private readonly usersRepository: UsersRepo,
     private readonly passwordHashAdapter: PasswordHashAdapter,
     private readonly usersBanInfoRepository: UsersBanInfoRepository,
     private readonly usersEmailConfirmationRepository: UsersEmailConfirmationRepository,

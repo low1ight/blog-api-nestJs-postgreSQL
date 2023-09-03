@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { JwtAdapter } from '../../../../adapters/jwt.adapter';
 import { v4 as uuidv4 } from 'uuid';
-import { DevicesPublicRepository } from '../../../../repositories/public/devices/devices.public.repository';
+import { DeviceRepo } from '../../../../repositories/public/devices/device.repo';
 
 export class LoginUseCaseCommand {
   constructor(public id, public login, public title, public ip) {}
@@ -10,7 +10,7 @@ export class LoginUseCaseCommand {
 export class LoginUseCase implements ICommandHandler<LoginUseCaseCommand> {
   constructor(
     private readonly jwtAdapter: JwtAdapter,
-    private readonly devicesRepository: DevicesPublicRepository,
+    private readonly devicesRepository: DeviceRepo,
   ) {}
   async execute({ id, login, title, ip }: LoginUseCaseCommand) {
     const sessionId = uuidv4();
