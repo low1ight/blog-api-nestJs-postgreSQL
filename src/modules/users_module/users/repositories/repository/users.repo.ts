@@ -28,7 +28,6 @@ export class UsersRepo {
   }
 
   async deleteUserById(id: number) {
-    // await this.dataSource.query(`DELETE FROM "Users" WHERE id = $1`, [id]);
     await this.userRepository.delete({ id: id });
   }
 
@@ -72,14 +71,6 @@ export class UsersRepo {
 
   async getUserIdByEmail(email: string): Promise<number | null> {
     const user = await this.userRepository.findOneBy({ email });
-    // const userData = await this.dataSource.query(
-    //   `
-    // SELECT "id"
-    // FROM "Users"
-    // WHERE "email" = $1
-    // `,
-    //   [email],
-    // );
 
     return user.id || null;
   }
@@ -90,15 +81,6 @@ export class UsersRepo {
     user.passwordRecoveryCode = recoveryCode;
 
     await this.userRepository.save(user);
-
-    //  await this.dataSource.query(
-    //    `
-    // UPDATE public."Users"
-    // SET "passwordRecoveryCode" = $2
-    // WHERE "id" = $1;
-    //  `,
-    //    [userId, recoveryCode],
-    //  );
   }
 
   async setNewPassword(userId: number, password: string) {
@@ -107,14 +89,6 @@ export class UsersRepo {
     user.password = password;
 
     await this.userRepository.save(user);
-    //  await this.dataSource.query(
-    //    `
-    // UPDATE public."Users"
-    // SET "password" = $2
-    // WHERE "id" = $1;
-    //  `,
-    //    [userId, password],
-    //  );
   }
 
   async getUserIdByPasswordRecoveryCode(code: string): Promise<number | null> {
@@ -122,32 +96,11 @@ export class UsersRepo {
       passwordRecoveryCode: code,
     });
 
-    // const result = await this.dataSource.query(
-    //   `
-    //
-    // SELECT "id"
-    // FROM "Users"
-    // WHERE "passwordRecoveryCode" = $1
-    //
-    // `,
-    //   [code],
-    // );
     return user.id || null;
   }
 
   async isUserExist(userId: number) {
     const user = await this.userRepository.findOneBy({ id: userId });
-
-    // const result = await this.dataSource.query(
-    //   `
-    //
-    //      SELECT Count(*)
-    //      FROM "Users"
-    //      WHERE "id" = $1
-    //
-    // `,
-    //   [userId],
-    // );
 
     return !!user;
   }

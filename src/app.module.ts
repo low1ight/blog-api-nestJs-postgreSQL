@@ -58,7 +58,7 @@ import { PostsQueryRepository } from './modules/blog_platform/posts/repository/p
 import { UpdatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/updatePostUseCase';
 import { DeletePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/deletePostUseCase';
 import { BlogsQueryRepository } from './modules/blog_platform/blogs/repositories/query-repository/blogs-query-repository';
-import { BannedUsersForBlogsRepository } from './modules/users_module/users/repositories/repository/bannedUsersForBlogs.repository';
+import { BannedUsersForBlogRepo } from './modules/users_module/users/repositories/repository/bannedUsersForBlogsRepo';
 import { UsersBloggerController } from './modules/users_module/users/controllers/users.blogger.controller';
 import { BanUserForBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/banUserForBlogUseCase';
 import { BannedUsersForBlogsQueryRepository } from './modules/users_module/users/repositories/query-repository/bannedUsersForBlogs.query.repository';
@@ -212,7 +212,7 @@ const useCases = [
     BlogsQueryRepository,
     PasswordHashAdapter,
     TestingRepository,
-    BannedUsersForBlogsRepository,
+    BannedUsersForBlogRepo,
     UsersRepo,
     AuthPublicService,
     BannedUsersForBlogsQueryRepository,

@@ -4,7 +4,7 @@ import { CustomResponseEnum } from '../../../../utils/customResponse/CustomRespo
 import { BlogsRepository } from '../repositories/repository/blogs.repository';
 import { PostsRepository } from '../../posts/repository/posts.repository';
 import { UsersBanInfoRepository } from '../../../users_module/users/repositories/repository/usersBanInfo.repository';
-import { BannedUsersForBlogsRepository } from '../../../users_module/users/repositories/repository/bannedUsersForBlogs.repository';
+import { BannedUsersForBlogRepo } from '../../../users_module/users/repositories/repository/bannedUsersForBlogsRepo';
 
 @Injectable()
 export class BlogsService {
@@ -12,7 +12,7 @@ export class BlogsService {
     private readonly blogsRepository: BlogsRepository,
     private readonly postsRepository: PostsRepository,
     private readonly usersBanInfoRepository: UsersBanInfoRepository,
-    private readonly bannedUsersForBlogsRepository: BannedUsersForBlogsRepository,
+    private readonly bannedUsersForBlogsRepository: BannedUsersForBlogRepo,
   ) {}
   async validateBanDataBeforeAction(
     postId: number,

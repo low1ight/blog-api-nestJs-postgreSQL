@@ -3,7 +3,7 @@ import { BanUserForBlogDto } from '../../controllers/dto/banUserForBlogDto';
 import { BlogsRepository } from '../../repositories/repository/blogs.repository';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
-import { BannedUsersForBlogsRepository } from '../../../../users_module/users/repositories/repository/bannedUsersForBlogs.repository';
+import { BannedUsersForBlogRepo } from '../../../../users_module/users/repositories/repository/bannedUsersForBlogsRepo';
 import { UsersRepo } from '../../../../users_module/users/repositories/repository/users.repo';
 
 export class BanUserForBlogUseCaseCommand {
@@ -20,7 +20,7 @@ export class BanUserForBlogUseCase
   constructor(
     private blogsRepository: BlogsRepository,
     private usersRepository: UsersRepo,
-    private blogsBannedUsersRepository: BannedUsersForBlogsRepository,
+    private blogsBannedUsersRepository: BannedUsersForBlogRepo,
   ) {}
 
   async execute({
