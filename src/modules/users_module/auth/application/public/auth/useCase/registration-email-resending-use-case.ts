@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { EmailManager } from '../../../../../../../adapters/email.manager';
 import { CustomResponseEnum } from '../../../../../../../utils/customResponse/CustomResponseEnum';
 import { UserConfirmedStatusWithId } from '../../../../../users/repositories/dto/User.confirmed.status.withId';
-import { UsersEmailConfirmationRepository } from '../../../../../users/repositories/repository/usersEmailConfirmation.repository';
+import { UsersEmailConfirmationRepo } from '../../../../../users/repositories/repository/usersEmailConfirmation.repo';
 
 export class RegistrationEmailResendingUseCaseCommand {
   constructor(public email: string) {}
@@ -14,7 +14,7 @@ export class RegistrationEmailResendingUseCase
   implements ICommandHandler<RegistrationEmailResendingUseCaseCommand>
 {
   constructor(
-    private usersEmailConfirmationRepository: UsersEmailConfirmationRepository,
+    private usersEmailConfirmationRepository: UsersEmailConfirmationRepo,
     private emailManager: EmailManager,
   ) {}
   async execute({

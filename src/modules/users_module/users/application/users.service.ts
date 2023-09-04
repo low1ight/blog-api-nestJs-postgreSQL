@@ -3,7 +3,7 @@ import { UsersRepo } from '../repositories/repository/users.repo';
 import { CreateUserDto } from '../controllers/dto/CreateUserDto';
 import { PasswordHashAdapter } from '../../adapters/passwordHash.adapter';
 import { UsersBanInfoRepo } from '../repositories/repository/usersBanInfo.repo';
-import { UsersEmailConfirmationRepository } from '../repositories/repository/usersEmailConfirmation.repository';
+import { UsersEmailConfirmationRepo } from '../repositories/repository/usersEmailConfirmation.repo';
 import { v4 as uuidv4 } from 'uuid';
 import { EmailManager } from '../../../../adapters/email.manager';
 import { DataSource } from 'typeorm';
@@ -14,7 +14,7 @@ export class UsersService {
     private readonly usersRepository: UsersRepo,
     private readonly passwordHashAdapter: PasswordHashAdapter,
     private readonly usersBanInfoRepository: UsersBanInfoRepo,
-    private readonly usersEmailConfirmationRepository: UsersEmailConfirmationRepository,
+    private readonly usersEmailConfirmationRepository: UsersEmailConfirmationRepo,
     private readonly emailManager: EmailManager,
     private readonly dataSource: DataSource,
   ) {}

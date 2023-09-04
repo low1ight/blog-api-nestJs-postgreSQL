@@ -38,7 +38,7 @@ import { LogoutUseCase } from './modules/users_module/auth/application/public/au
 import { RefreshRtUseCase } from './modules/users_module/auth/application/public/auth/useCase/refresh-rt-use-case';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailManager } from './adapters/email.manager';
-import { UsersEmailConfirmationRepository } from './modules/users_module/users/repositories/repository/usersEmailConfirmation.repository';
+import { UsersEmailConfirmationRepo } from './modules/users_module/users/repositories/repository/usersEmailConfirmation.repo';
 import { UsersBanInfoRepo } from './modules/users_module/users/repositories/repository/usersBanInfo.repo';
 import { RegisterNewUserUseCase } from './modules/users_module/auth/application/public/auth/useCase/register-new-user-use-case';
 import { EmailConfirmationUseCase } from './modules/users_module/auth/application/public/auth/useCase/email-confirmation-use-case';
@@ -191,7 +191,7 @@ const useCases = [
     BasicStrategy,
     EmailManager,
     AppService,
-    UsersEmailConfirmationRepository,
+    UsersEmailConfirmationRepo,
     UsersBanInfoRepo,
     LocalStrategy,
     CommentsRepository,

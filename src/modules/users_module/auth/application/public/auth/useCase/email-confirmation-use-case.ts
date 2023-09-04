@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersEmailConfirmationDbModel } from '../../../../../users/repositories/dto/UsersEmailConfirmation.db.model';
-import { UsersEmailConfirmationRepository } from '../../../../../users/repositories/repository/usersEmailConfirmation.repository';
+import { UsersEmailConfirmationRepo } from '../../../../../users/repositories/repository/usersEmailConfirmation.repo';
 import { CustomResponse } from '../../../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../../../utils/customResponse/CustomResponseEnum';
 
@@ -12,7 +12,7 @@ export class EmailConfirmationUseCase
   implements ICommandHandler<EmailConfirmationUseCaseCommand>
 {
   constructor(
-    private readonly usersEmailConfirmationRepository: UsersEmailConfirmationRepository,
+    private readonly usersEmailConfirmationRepository: UsersEmailConfirmationRepo,
   ) {}
 
   async execute({ confirmationCode }: EmailConfirmationUseCaseCommand) {
