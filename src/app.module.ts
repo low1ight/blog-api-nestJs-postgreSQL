@@ -39,7 +39,7 @@ import { RefreshRtUseCase } from './modules/users_module/auth/application/public
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailManager } from './adapters/email.manager';
 import { UsersEmailConfirmationRepository } from './modules/users_module/users/repositories/repository/usersEmailConfirmation.repository';
-import { UsersBanInfoRepository } from './modules/users_module/users/repositories/repository/usersBanInfo.repository';
+import { UsersBanInfoRepo } from './modules/users_module/users/repositories/repository/usersBanInfo.repo';
 import { RegisterNewUserUseCase } from './modules/users_module/auth/application/public/auth/useCase/register-new-user-use-case';
 import { EmailConfirmationUseCase } from './modules/users_module/auth/application/public/auth/useCase/email-confirmation-use-case';
 import { RegistrationEmailResendingUseCase } from './modules/users_module/auth/application/public/auth/useCase/registration-email-resending-use-case';
@@ -58,7 +58,7 @@ import { PostsQueryRepository } from './modules/blog_platform/posts/repository/p
 import { UpdatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/updatePostUseCase';
 import { DeletePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/deletePostUseCase';
 import { BlogsQueryRepository } from './modules/blog_platform/blogs/repositories/query-repository/blogs-query-repository';
-import { BannedUsersForBlogRepo } from './modules/users_module/users/repositories/repository/bannedUsersForBlogsRepo';
+import { BannedUsersForBlogRepo } from './modules/users_module/users/repositories/repository/bannedUsersForBlogs.repo';
 import { UsersBloggerController } from './modules/users_module/users/controllers/users.blogger.controller';
 import { BanUserForBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/banUserForBlogUseCase';
 import { BannedUsersForBlogsQueryRepository } from './modules/users_module/users/repositories/query-repository/bannedUsersForBlogs.query.repository';
@@ -192,7 +192,7 @@ const useCases = [
     EmailManager,
     AppService,
     UsersEmailConfirmationRepository,
-    UsersBanInfoRepository,
+    UsersBanInfoRepo,
     LocalStrategy,
     CommentsRepository,
     UsersQueryRepository,

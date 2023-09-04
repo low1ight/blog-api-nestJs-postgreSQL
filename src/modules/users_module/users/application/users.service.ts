@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersRepo } from '../repositories/repository/users.repo';
 import { CreateUserDto } from '../controllers/dto/CreateUserDto';
 import { PasswordHashAdapter } from '../../adapters/passwordHash.adapter';
-import { UsersBanInfoRepository } from '../repositories/repository/usersBanInfo.repository';
+import { UsersBanInfoRepo } from '../repositories/repository/usersBanInfo.repo';
 import { UsersEmailConfirmationRepository } from '../repositories/repository/usersEmailConfirmation.repository';
 import { v4 as uuidv4 } from 'uuid';
 import { EmailManager } from '../../../../adapters/email.manager';
@@ -13,7 +13,7 @@ export class UsersService {
   constructor(
     private readonly usersRepository: UsersRepo,
     private readonly passwordHashAdapter: PasswordHashAdapter,
-    private readonly usersBanInfoRepository: UsersBanInfoRepository,
+    private readonly usersBanInfoRepository: UsersBanInfoRepo,
     private readonly usersEmailConfirmationRepository: UsersEmailConfirmationRepository,
     private readonly emailManager: EmailManager,
     private readonly dataSource: DataSource,

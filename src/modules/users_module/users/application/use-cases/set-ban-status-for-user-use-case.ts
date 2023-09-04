@@ -1,7 +1,7 @@
 import { BanUserDto } from '../../controllers/dto/BanUserDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersRepo } from '../../repositories/repository/users.repo';
-import { UsersBanInfoRepository } from '../../repositories/repository/usersBanInfo.repository';
+import { UsersBanInfoRepo } from '../../repositories/repository/usersBanInfo.repo';
 
 export class SetBanStatusForUserUseCaseCommand {
   constructor(public userId: number, public dto: BanUserDto) {}
@@ -13,7 +13,7 @@ export class SetBanStatusForUserUseCase
 {
   constructor(
     private readonly usersRepository: UsersRepo,
-    private readonly usersBanInfoRepository: UsersBanInfoRepository,
+    private readonly usersBanInfoRepository: UsersBanInfoRepo,
   ) {}
   async execute({ userId, dto }: SetBanStatusForUserUseCaseCommand) {
     const isUserExist = await this.usersRepository.checkIsUserExistByField(

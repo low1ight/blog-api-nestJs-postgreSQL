@@ -3,7 +3,7 @@ import { BanUserForBlogDto } from '../../controllers/dto/banUserForBlogDto';
 import { BlogsRepository } from '../../repositories/repository/blogs.repository';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
-import { BannedUsersForBlogRepo } from '../../../../users_module/users/repositories/repository/bannedUsersForBlogsRepo';
+import { BannedUsersForBlogRepo } from '../../../../users_module/users/repositories/repository/bannedUsersForBlogs.repo';
 import { UsersRepo } from '../../../../users_module/users/repositories/repository/users.repo';
 
 export class BanUserForBlogUseCaseCommand {
