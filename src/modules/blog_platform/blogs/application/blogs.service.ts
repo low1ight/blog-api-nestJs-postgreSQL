@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 import { BlogsRepo } from '../repositories/repository/blogs.repo';
-import { PostsRepository } from '../../posts/repository/posts.repository';
+import { PostsRepo } from '../../posts/repository/posts.repo';
 import { UsersBanInfoRepo } from '../../../users_module/users/repositories/repository/usersBanInfo.repo';
 import { BannedUsersForBlogRepo } from '../../../users_module/users/repositories/repository/bannedUsersForBlogs.repo';
 
@@ -10,7 +10,7 @@ import { BannedUsersForBlogRepo } from '../../../users_module/users/repositories
 export class BlogsService {
   constructor(
     private readonly blogsRepository: BlogsRepo,
-    private readonly postsRepository: PostsRepository,
+    private readonly postsRepository: PostsRepo,
     private readonly usersBanInfoRepository: UsersBanInfoRepo,
     private readonly bannedUsersForBlogsRepository: BannedUsersForBlogRepo,
   ) {}

@@ -4,7 +4,7 @@ import { CreatePostForBlogDto } from '../../../blogs/controllers/dto/createPostF
 import { BlogDbModel } from '../../../blogs/repositories/dto/BlogDbModel';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
-import { PostsRepository } from '../../repository/posts.repository';
+import { PostsRepo } from '../../repository/posts.repo';
 
 export class CreatePostForBlogUseCaseCommand {
   constructor(
@@ -19,7 +19,7 @@ export class CreatePostForBlogUseCase
 {
   constructor(
     private blogRepository: BlogsRepo,
-    private postsRepository: PostsRepository,
+    private postsRepository: PostsRepo,
   ) {}
 
   async execute({

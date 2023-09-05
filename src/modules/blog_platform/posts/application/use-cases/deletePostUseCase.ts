@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
-import { PostsRepository } from '../../repository/posts.repository';
+import { PostsRepo } from '../../repository/posts.repo';
 
 export class DeletePostUseCaseCommand {
   constructor(
@@ -14,7 +14,7 @@ export class DeletePostUseCaseCommand {
 export class DeletePostForBlogUseCase
   implements ICommandHandler<DeletePostUseCaseCommand>
 {
-  constructor(private postsRepository: PostsRepository) {}
+  constructor(private postsRepository: PostsRepo) {}
 
   async execute({ postId, blogId, currentUserId }: DeletePostUseCaseCommand) {
     const post = await this.postsRepository.getPostDataWithBlogOwnerId(postId);

@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreatePostForBlogDto } from '../../../blogs/controllers/dto/createPostForBlogDto';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
-import { PostsRepository } from '../../repository/posts.repository';
+import { PostsRepo } from '../../repository/posts.repo';
 
 export class UpdatePostUseCaseCommand {
   constructor(
@@ -16,7 +16,7 @@ export class UpdatePostUseCaseCommand {
 export class UpdatePostForBlogUseCase
   implements ICommandHandler<UpdatePostUseCaseCommand>
 {
-  constructor(private postsRepository: PostsRepository) {}
+  constructor(private postsRepository: PostsRepo) {}
 
   async execute({
     postId,

@@ -52,7 +52,7 @@ import { CreateBlogUseCase } from './modules/blog_platform/blogs/application/use
 import { BlogsRepo } from './modules/blog_platform/blogs/repositories/repository/blogs.repo';
 import { UpdateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/updateBlogUseCase';
 import { DeleteBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/deleteBlogUseCase';
-import { PostsRepository } from './modules/blog_platform/posts/repository/posts.repository';
+import { PostsRepo } from './modules/blog_platform/posts/repository/posts.repo';
 import { CreatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/createPostForBlogUseCase';
 import { PostsQueryRepository } from './modules/blog_platform/posts/repository/posts-query-repository.service';
 import { UpdatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/updatePostUseCase';
@@ -201,7 +201,7 @@ const useCases = [
     PostsLikesRepository,
     AccessTokenStrategy,
     CommentsQueryRepository,
-    PostsRepository,
+    PostsRepo,
     TestingService,
     BlogsRepo,
     DeviceRepo,
