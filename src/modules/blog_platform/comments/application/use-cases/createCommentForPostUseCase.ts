@@ -1,7 +1,7 @@
 import { CreateCommentInputDto } from '../../controllers/dto/CreateCommentInputDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
-import { CommentsRepository } from '../../repositories/repository/comments.repository';
+import { CommentsRepo } from '../../repositories/repository/comments.repo';
 import { BlogsService } from '../../../blogs/application/blogs.service';
 
 export class CreateCommentForPostUseCaseCommand {
@@ -17,7 +17,7 @@ export class CreateCommentForPostUseCase
 {
   constructor(
     private readonly blogsService: BlogsService,
-    private readonly commentsRepository: CommentsRepository,
+    private readonly commentsRepository: CommentsRepo,
   ) {}
 
   async execute({ dto, postId, ownerId }: CreateCommentForPostUseCaseCommand) {

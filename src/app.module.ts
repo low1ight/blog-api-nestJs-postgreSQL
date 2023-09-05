@@ -68,7 +68,7 @@ import { PostsPublicController } from './modules/blog_platform/posts/controllers
 import { BanBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/banBlogUseCase';
 import { BlogsPublicController } from './modules/blog_platform/blogs/controllers/blogs.public.controller';
 import { CreateCommentForPostUseCase } from './modules/blog_platform/comments/application/use-cases/createCommentForPostUseCase';
-import { CommentsRepository } from './modules/blog_platform/comments/repositories/repository/comments.repository';
+import { CommentsRepo } from './modules/blog_platform/comments/repositories/repository/comments.repo';
 import { BlogsService } from './modules/blog_platform/blogs/application/blogs.service';
 import { CommentsQueryRepository } from './modules/blog_platform/comments/repositories/query-repository/comments.query.repository';
 import { PostsLikesRepository } from './modules/blog_platform/posts/repository/postsLikes.repository';
@@ -194,7 +194,7 @@ const useCases = [
     UsersEmailConfirmationRepo,
     UsersBanInfoRepo,
     LocalStrategy,
-    CommentsRepository,
+    CommentsRepo,
     UsersQueryRepository,
     UsersService,
     BlogsService,

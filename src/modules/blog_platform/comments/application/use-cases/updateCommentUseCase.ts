@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateCommentInputDto } from '../../controllers/dto/UpdateCommentInputDto';
-import { CommentsRepository } from '../../repositories/repository/comments.repository';
+import { CommentsRepo } from '../../repositories/repository/comments.repo';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
 
@@ -15,7 +15,7 @@ export class UpdateCommentUseCaseCommand {
 export class UpdateCommentUseCase
   implements ICommandHandler<UpdateCommentUseCaseCommand>
 {
-  constructor(private readonly commentsRepository: CommentsRepository) {}
+  constructor(private readonly commentsRepository: CommentsRepo) {}
 
   async execute({
     dto,

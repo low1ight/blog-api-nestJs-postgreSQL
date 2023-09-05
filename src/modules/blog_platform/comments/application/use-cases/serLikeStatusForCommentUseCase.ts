@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { SetLikeStatusForCommentDto } from '../../controllers/dto/SetLikeStatusForCommentDto';
 import { BlogsService } from '../../../blogs/application/blogs.service';
-import { CommentsRepository } from '../../repositories/repository/comments.repository';
+import { CommentsRepo } from '../../repositories/repository/comments.repo';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
 import { CommentLikeDbModel } from '../../../posts/repository/dto/CommentLikeDbModel';
@@ -21,7 +21,7 @@ export class SerLikeStatusForCommentUseCase
 {
   constructor(
     private readonly blogsService: BlogsService,
-    private readonly commentsRepository: CommentsRepository,
+    private readonly commentsRepository: CommentsRepo,
     private readonly commentsLikesRepository: CommentLikesRepo,
   ) {}
   async execute({
