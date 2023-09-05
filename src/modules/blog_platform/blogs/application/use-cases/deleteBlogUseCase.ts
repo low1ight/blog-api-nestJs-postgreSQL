@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BlogsRepository } from '../../repositories/repository/blogs.repository';
+import { BlogsRepo } from '../../repositories/repository/blogs.repo';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { BlogDbModel } from '../../repositories/dto/BlogDbModel';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
@@ -12,7 +12,7 @@ export class DeleteBlogUseCaseCommand {
 export class DeleteBlogUseCase
   implements ICommandHandler<DeleteBlogUseCaseCommand>
 {
-  constructor(private blogRepository: BlogsRepository) {}
+  constructor(private blogRepository: BlogsRepo) {}
 
   async execute({
     userId,

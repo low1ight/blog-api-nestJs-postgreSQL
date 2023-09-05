@@ -1,6 +1,6 @@
 import { BanBlogDto } from '../../controllers/dto/BanBlogDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BlogsRepository } from '../../repositories/repository/blogs.repository';
+import { BlogsRepo } from '../../repositories/repository/blogs.repo';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
 
@@ -9,7 +9,7 @@ export class BanBlogUseCaseCommand {
 }
 @CommandHandler(BanBlogUseCaseCommand)
 export class BanBlogUseCase implements ICommandHandler<BanBlogUseCaseCommand> {
-  constructor(private readonly blogsRepository: BlogsRepository) {}
+  constructor(private readonly blogsRepository: BlogsRepo) {}
 
   async execute({ blogId, dto }: BanBlogUseCaseCommand) {
     const blogBanStatus = await this.blogsRepository.getBlogBanStatusById(

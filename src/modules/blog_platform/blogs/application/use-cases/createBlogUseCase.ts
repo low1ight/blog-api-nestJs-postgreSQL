@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BlogsRepository } from '../../repositories/repository/blogs.repository';
+import { BlogsRepo } from '../../repositories/repository/blogs.repo';
 import { CreateBlogInputDto } from '../../controllers/dto/CreateBlogInputDto';
 import { CreateBlogDto } from '../../controllers/dto/CreateBlogDto';
 import { BlogViewModel } from '../../repositories/dto/BlogViewModel';
@@ -12,7 +12,7 @@ export class CreateBlogUseCaseCommand {
 export class CreateBlogUseCase
   implements ICommandHandler<CreateBlogUseCaseCommand>
 {
-  constructor(private blogRepository: BlogsRepository) {}
+  constructor(private blogRepository: BlogsRepo) {}
 
   async execute({
     dto,

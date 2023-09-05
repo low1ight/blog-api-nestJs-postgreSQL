@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BanUserForBlogDto } from '../../controllers/dto/banUserForBlogDto';
-import { BlogsRepository } from '../../repositories/repository/blogs.repository';
+import { BlogsRepo } from '../../repositories/repository/blogs.repo';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
 import { BannedUsersForBlogRepo } from '../../../../users_module/users/repositories/repository/bannedUsersForBlogs.repo';
@@ -18,7 +18,7 @@ export class BanUserForBlogUseCase
   implements ICommandHandler<BanUserForBlogUseCaseCommand>
 {
   constructor(
-    private blogsRepository: BlogsRepository,
+    private blogsRepository: BlogsRepo,
     private usersRepository: UsersRepo,
     private blogsBannedUsersRepository: BannedUsersForBlogRepo,
   ) {}

@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersRepo } from '../../../users_module/users/repositories/repository/users.repo';
-import { BlogsRepository } from '../repositories/repository/blogs.repository';
+import { BlogsRepo } from '../repositories/repository/blogs.repo';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 
@@ -13,7 +13,7 @@ export class BindBlogUseCase
 {
   constructor(
     private readonly usersRepository: UsersRepo,
-    public readonly blogsRepository: BlogsRepository,
+    public readonly blogsRepository: BlogsRepo,
   ) {}
   async execute({ blogId, userId }: BindBlogUseCaseCommand) {
     const blogOwnerId: number | null =

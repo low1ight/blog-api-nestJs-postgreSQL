@@ -49,7 +49,7 @@ import { SetNewPasswordUseCase } from './modules/users_module/users/application/
 import { ThrottlerModule } from '@nestjs/throttler';
 import { BlogsBloggerController } from './modules/blog_platform/blogs/controllers/blogs.blogger.controller';
 import { CreateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/createBlogUseCase';
-import { BlogsRepository } from './modules/blog_platform/blogs/repositories/repository/blogs.repository';
+import { BlogsRepo } from './modules/blog_platform/blogs/repositories/repository/blogs.repo';
 import { UpdateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/updateBlogUseCase';
 import { DeleteBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/deleteBlogUseCase';
 import { PostsRepository } from './modules/blog_platform/posts/repository/posts.repository';
@@ -203,7 +203,7 @@ const useCases = [
     CommentsQueryRepository,
     PostsRepository,
     TestingService,
-    BlogsRepository,
+    BlogsRepo,
     DeviceRepo,
     DevicesPublicQueryRepository,
     CommentLikesRepository,
