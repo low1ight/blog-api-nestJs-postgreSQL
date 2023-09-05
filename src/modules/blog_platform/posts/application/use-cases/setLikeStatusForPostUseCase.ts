@@ -1,7 +1,7 @@
 import { SetLikeStatusForPostDto } from '../../controllers/dto/SetLikeStatusForPostDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BlogsService } from '../../../blogs/application/blogs.service';
-import { PostsLikesRepository } from '../../repository/postsLikes.repository';
+import { PostsLikesRepo } from '../../repository/postsLikes.repo';
 import { CommentLikeDbModel } from '../../repository/dto/CommentLikeDbModel';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 
@@ -19,7 +19,7 @@ export class SetLikeStatusForPostUseCase
 {
   constructor(
     private readonly blogsService: BlogsService,
-    private readonly postsLikesRepository: PostsLikesRepository,
+    private readonly postsLikesRepository: PostsLikesRepo,
   ) {}
 
   async execute({ dto, userId, postId }: SetLikeStatusForPostUseCaseCommand) {

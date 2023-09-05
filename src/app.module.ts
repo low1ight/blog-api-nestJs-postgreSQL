@@ -71,7 +71,7 @@ import { CreateCommentForPostUseCase } from './modules/blog_platform/comments/ap
 import { CommentsRepo } from './modules/blog_platform/comments/repositories/repository/comments.repo';
 import { BlogsService } from './modules/blog_platform/blogs/application/blogs.service';
 import { CommentsQueryRepository } from './modules/blog_platform/comments/repositories/query-repository/comments.query.repository';
-import { PostsLikesRepository } from './modules/blog_platform/posts/repository/postsLikes.repository';
+import { PostsLikesRepo } from './modules/blog_platform/posts/repository/postsLikes.repo';
 import { SetLikeStatusForPostUseCase } from './modules/blog_platform/posts/application/use-cases/setLikeStatusForPostUseCase';
 import { CommentLikesRepo } from './modules/blog_platform/comments/repositories/repository/commentLikes.repo';
 import { SerLikeStatusForCommentUseCase } from './modules/blog_platform/comments/application/use-cases/serLikeStatusForCommentUseCase';
@@ -198,7 +198,7 @@ const useCases = [
     UsersQueryRepository,
     UsersService,
     BlogsService,
-    PostsLikesRepository,
+    PostsLikesRepo,
     AccessTokenStrategy,
     CommentsQueryRepository,
     PostsRepo,
