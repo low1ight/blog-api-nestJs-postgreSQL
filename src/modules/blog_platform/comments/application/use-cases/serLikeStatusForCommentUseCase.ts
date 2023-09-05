@@ -5,7 +5,7 @@ import { CommentsRepository } from '../../repositories/repository/comments.repos
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
 import { CommentLikeDbModel } from '../../../posts/repository/dto/CommentLikeDbModel';
-import { CommentLikesRepository } from '../../repositories/repository/commentLikes.repository';
+import { CommentLikesRepo } from '../../repositories/repository/commentLikes.repo';
 
 export class SetLikeStatusForCommentUseCaseCommand {
   constructor(
@@ -22,7 +22,7 @@ export class SerLikeStatusForCommentUseCase
   constructor(
     private readonly blogsService: BlogsService,
     private readonly commentsRepository: CommentsRepository,
-    private readonly commentsLikesRepository: CommentLikesRepository,
+    private readonly commentsLikesRepository: CommentLikesRepo,
   ) {}
   async execute({
     dto,

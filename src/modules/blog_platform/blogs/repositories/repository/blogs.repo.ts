@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBlogDto } from '../../controllers/dto/CreateBlogDto';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { BlogViewModel } from '../dto/BlogViewModel';
 import { UpdateBlogDto } from '../../controllers/dto/UpdateBlogDto';
 import { Blog } from '../../entity/Blog.entity';
@@ -9,7 +9,6 @@ import { Blog } from '../../entity/Blog.entity';
 @Injectable()
 export class BlogsRepo {
   constructor(
-    @InjectDataSource() protected dataSource: DataSource,
     @InjectRepository(Blog) protected blogsRepository: Repository<Blog>,
   ) {}
 

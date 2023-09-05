@@ -73,7 +73,7 @@ import { BlogsService } from './modules/blog_platform/blogs/application/blogs.se
 import { CommentsQueryRepository } from './modules/blog_platform/comments/repositories/query-repository/comments.query.repository';
 import { PostsLikesRepository } from './modules/blog_platform/posts/repository/postsLikes.repository';
 import { SetLikeStatusForPostUseCase } from './modules/blog_platform/posts/application/use-cases/setLikeStatusForPostUseCase';
-import { CommentLikesRepository } from './modules/blog_platform/comments/repositories/repository/commentLikes.repository';
+import { CommentLikesRepo } from './modules/blog_platform/comments/repositories/repository/commentLikes.repo';
 import { SerLikeStatusForCommentUseCase } from './modules/blog_platform/comments/application/use-cases/serLikeStatusForCommentUseCase';
 import { CommentsPublicController } from './modules/blog_platform/comments/controllers/comments.public.controller';
 import { DeleteCommentForPostUseCase } from './modules/blog_platform/comments/application/use-cases/deleteCommentForPostUseCase';
@@ -206,7 +206,7 @@ const useCases = [
     BlogsRepo,
     DeviceRepo,
     DevicesPublicQueryRepository,
-    CommentLikesRepository,
+    CommentLikesRepo,
     JwtAdapter,
     PostsQueryRepository,
     BlogsQueryRepository,
