@@ -1,18 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { UserSaViewModel } from './dto/UserSaViewModel';
 import { MeViewModel } from './dto/MeViewModel';
-import { MeType } from './dto/MeType';
 import { UsersQueryMapper } from '../../controllers/dto/query/users/UsersPaginator';
 import { Paginator } from '../../../../../utils/paginatorHelpers/Paginator';
 import { PaginatorModel } from '../../../../../utils/paginatorHelpers/paginator.types';
+import { User } from '../../entities/User.entity';
 
 @Injectable()
 export class UsersQueryRepository {
   constructor(
     @InjectDataSource()
     protected dataSource: DataSource,
+    @InjectRepository(User)
+    protected userRepository: Repository<User>,
   ) {}
 
   async getUsers(
@@ -94,17 +96,18 @@ export class UsersQueryRepository {
   }
 
   async getUserDataForAuthMe(id): Promise<MeViewModel> {
-    const userData: MeType[] = await this.dataSource.query(
-      `
-    
-    SELECT "email","login","id" as "userId"
-    FROM "Users"    
-    WHERE "id" = $1
-    
-    `,
-      [id],
-    );
+    const user = await this.userRepository.findOneBy({ id });
+    // const userData: MeType[] = await this.dataSource.query(
+    //   `
+    //
+    // SELECT "email","login","id" as "userId"
+    // FROM "Users"
+    // WHERE "id" = $1
+    //
+    // `,
+    //   [id],
+    // );
 
-    return new MeViewModel(userData[0]);
+    return new MeViewModel(user);
   }
 }

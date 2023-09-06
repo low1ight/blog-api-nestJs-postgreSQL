@@ -2,8 +2,8 @@ import { SetLikeStatusForPostDto } from '../../controllers/dto/SetLikeStatusForP
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BlogsService } from '../../../blogs/application/blogs.service';
 import { PostsLikesRepo } from '../../repository/postsLikes.repo';
-import { CommentLikeDbModel } from '../../repository/dto/CommentLikeDbModel';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
+import { PostLikes } from '../../entity/PostLikes.entity';
 
 export class SetLikeStatusForPostUseCaseCommand {
   constructor(
@@ -28,7 +28,7 @@ export class SetLikeStatusForPostUseCase
 
     if (!validationResult.isSuccess) return validationResult;
 
-    const currentUserLikeForPost: CommentLikeDbModel | null =
+    const currentUserLikeForPost: PostLikes | null =
       await this.postsLikesRepository.getLike(postId, userId);
 
     //if current like status equal new like status return with successful result
