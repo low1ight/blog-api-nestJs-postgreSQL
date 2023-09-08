@@ -29,7 +29,7 @@ import { AuthPublicService } from './modules/users_module/auth/application/publi
 import { DevicePublicController } from './modules/users_module/auth/controllers/device.public.controller';
 import { AccessTokenStrategy } from './modules/users_module/auth/strategies/accessToken.strategy';
 import { DeviceRepo } from './modules/users_module/auth/repositories/public/devices/device.repo';
-import { DevicesPublicQueryRepository } from './modules/users_module/auth/repositories/public/devices/query-repo/devices.public.query.repository';
+import { DevicesQueryRepo } from './modules/users_module/auth/repositories/public/devices/query-repo/devices.query.repo';
 import { RefreshTokenStrategy } from './modules/users_module/auth/strategies/refreshToken.strategy';
 import { DevicesService } from './modules/users_module/auth/application/public/devices/devices.service';
 import { DeleteAllOtherDevicesUseCase } from './modules/users_module/auth/application/public/devices/use-case/delete-all-other-devices-use-case';
@@ -205,7 +205,7 @@ const useCases = [
     TestingService,
     BlogsRepo,
     DeviceRepo,
-    DevicesPublicQueryRepository,
+    DevicesQueryRepo,
     CommentLikesRepo,
     JwtAdapter,
     PostsQueryRepository,

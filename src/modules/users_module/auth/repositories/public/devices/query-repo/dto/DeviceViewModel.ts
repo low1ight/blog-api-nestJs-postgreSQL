@@ -1,4 +1,4 @@
-import { DeviceDbType } from '../../dto/Device.db.type';
+import { UserDevices } from '../../../../../../users/entities/UserDevices.entity';
 
 export class DeviceViewModel {
   public deviceId: string;
@@ -6,10 +6,10 @@ export class DeviceViewModel {
   public lastActiveDate: string;
   public title: string;
 
-  constructor({ ip, id, lastActiveDate, title }: DeviceDbType) {
+  constructor({ ip, id, lastActiveDate, title }: UserDevices) {
     this.title = title;
     this.lastActiveDate = lastActiveDate.toISOString();
     this.ip = ip;
-    this.deviceId = id;
+    this.deviceId = id.toString();
   }
 }

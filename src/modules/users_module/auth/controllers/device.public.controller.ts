@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CurrentUser } from '../../../../common/decorators/currentUser/current.user.decorator';
-import { DevicesPublicQueryRepository } from '../repositories/public/devices/query-repo/devices.public.query.repository';
+import { DevicesQueryRepo } from '../repositories/public/devices/query-repo/devices.query.repo';
 import { RefreshTokenGuard } from '../guards/refresh.token.guard.';
 import { UserDataFromRT } from '../../../../common/decorators/currentUser/UserDataFromRT';
 import { CommandBus } from '@nestjs/cqrs';
@@ -19,7 +19,7 @@ import { Exceptions } from '../../../../utils/throwException';
 @Controller('security')
 export class DevicePublicController {
   constructor(
-    private readonly deviceQueryRepository: DevicesPublicQueryRepository,
+    private readonly deviceQueryRepository: DevicesQueryRepo,
     private readonly commandBus: CommandBus,
   ) {}
   @Get('/devices')
