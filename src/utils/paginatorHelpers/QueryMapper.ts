@@ -37,8 +37,12 @@ export class QueryMapper {
   }
 
   getSortDirection() {
-    return this.sortDirections.includes(this.sortDirection.toUpperCase())
+    const result = this.sortDirections.includes(
+      this.sortDirection.toUpperCase(),
+    )
       ? this.sortDirection
       : this.defaultValues.sortDirection;
+
+    return result as 'ASC' | 'DESC';
   }
 }

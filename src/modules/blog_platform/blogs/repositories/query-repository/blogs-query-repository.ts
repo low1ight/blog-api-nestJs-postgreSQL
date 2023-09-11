@@ -1,164 +1,116 @@
 import { Injectable } from '@nestjs/common';
 import { BlogQueryMapper } from '../../controllers/dto/query/BlogQueryMapper';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
-import { BlogDbModeForSa } from '../dto/BlogDbModeForSa';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { BlogSaViewModel } from '../dto/BlogSaViewModel';
-import { BlogDbModel } from '../dto/BlogDbModel';
 import { BlogViewModel } from '../dto/BlogViewModel';
 import { Paginator } from '../../../../../utils/paginatorHelpers/Paginator';
+import { Blog } from '../../entity/Blog.entity';
 
 @Injectable()
 export class BlogsQueryRepository {
-  constructor(@InjectDataSource() private dataSource: DataSource) {}
+  constructor(
+    @InjectRepository(Blog) private blogsRepository: Repository<Blog>,
+  ) {}
   async getAllUserBlogs(userId: number, mappedQuery: BlogQueryMapper) {
     const nameSearchTerm = `%${mappedQuery.getSearchNameTerm()}%`;
+    const orderBy = 'blogs.' + mappedQuery.getSortBy();
 
-    const blogs: BlogDbModel[] = await this.dataSource.query(
-      `
-    SELECT "id",  "name", "description", "websiteUrl", "isMembership", "createdAt"
-    FROM public."Blogs"
-    WHERE "ownerId" = $1 AND "name" ILIKE $2
-    ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
-      LIMIT ${mappedQuery.getPageSize()}
-      OFFSET ${mappedQuery.getOffset()}
-    
-    `,
-      [userId, nameSearchTerm],
-    );
+    const blogs = await this.blogsRepository
+      .createQueryBuilder('blogs')
+      .where('blogs.ownerId = :ownerId', { ownerId: userId })
+      .andWhere('blogs.name ILIKE :name', { name: nameSearchTerm })
+      .orderBy(orderBy, mappedQuery.getSortDirection())
+      .limit(mappedQuery.getPageSize())
+      .offset(mappedQuery.getOffset())
+      .getMany();
 
-    const blogViewModel = blogs.map((blog) => new BlogViewModel(blog));
-
-    const totalBlogsCount = await this.dataSource.query(
-      `
-    
-    SELECT Count(*)
-    FROM public."Blogs"
-    WHERE "ownerId" = $1 AND "name" ILIKE $2
-    
-    `,
-      [userId, nameSearchTerm],
-    );
+    const totalCount = await this.blogsRepository
+      .createQueryBuilder('blogs')
+      .where('blogs.ownerId = :ownerId', { ownerId: userId })
+      .andWhere('blogs.name ILIKE :name', { name: nameSearchTerm })
+      .getCount();
 
     const paginator = new Paginator(
       mappedQuery.getPageSize(),
       mappedQuery.getPageNumber(),
     );
 
-    return paginator.paginate(blogViewModel, Number(totalBlogsCount[0].count));
+    const blogViewModel = blogs.map((blog) => new BlogViewModel(blog));
+
+    return paginator.paginate(blogViewModel, totalCount);
   }
 
   async getAllBLogForPublic(mappedQuery: BlogQueryMapper) {
     const nameSearchTerm = `%${mappedQuery.getSearchNameTerm()}%`;
+    const orderBy = 'blogs.' + mappedQuery.getSortBy();
 
-    const blogs: BlogDbModel[] = await this.dataSource.query(
-      `
-    SELECT "id",  "name", "description", "websiteUrl", "isMembership", "createdAt"
-    FROM public."Blogs"
-    WHERE "name" ILIKE $1 AND "isBanned" = false
-    ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
-      LIMIT ${mappedQuery.getPageSize()}
-      OFFSET ${mappedQuery.getOffset()}
-    
-    `,
-      [nameSearchTerm],
-    );
+    const blogs = await this.blogsRepository
+      .createQueryBuilder('blogs')
+      .where('blogs.isBanned = false')
+      .andWhere('blogs.name ILIKE :name', { name: nameSearchTerm })
+      .orderBy(orderBy, mappedQuery.getSortDirection())
+      .limit(mappedQuery.getPageSize())
+      .offset(mappedQuery.getOffset())
+      .getMany();
 
-    const blogViewModel = blogs.map((blog) => new BlogViewModel(blog));
-
-    const totalBlogsCount = await this.dataSource.query(
-      `
-    
-    SELECT Count(*)
-    FROM public."Blogs"
-    WHERE "name" ILIKE $1 AND "isBanned" = false
-    
-    `,
-      [nameSearchTerm],
-    );
+    const totalCount = await this.blogsRepository
+      .createQueryBuilder('blogs')
+      .where('blogs.isBanned = false')
+      .andWhere('blogs.name ILIKE :name', { name: nameSearchTerm })
+      .getCount();
 
     const paginator = new Paginator(
       mappedQuery.getPageSize(),
       mappedQuery.getPageNumber(),
     );
 
-    return paginator.paginate(blogViewModel, Number(totalBlogsCount[0].count));
+    const blogViewModel = blogs.map((blog) => new BlogViewModel(blog));
+
+    return paginator.paginate(blogViewModel, totalCount);
   }
 
   async getBlogsForSa(mappedQuery: BlogQueryMapper) {
     const nameSearchTerm = `%${mappedQuery.getSearchNameTerm()}%`;
+    const orderBy = 'blogs.' + mappedQuery.getSortBy();
 
-    const blogs: BlogDbModeForSa[] = await this.dataSource.query(
-      `
-    
-    SELECT 
-    b."id", b."name", b."description", b."websiteUrl", 
-    b."isMembership", b."createdAt",b."isBanned",b."banDate",
-    
-    u."id" as "userId", u."login" as "userLogin"
-    
-    FROM public."Blogs" b
-   
-    JOIN "Users" u ON u."id" = b."ownerId"
-     WHERE "name" ILIKE $1
-    ORDER BY "${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
-      LIMIT ${mappedQuery.getPageSize()}
-      OFFSET ${mappedQuery.getOffset()}
-    
-    
-    `,
-      [nameSearchTerm],
+    const blogs = await this.blogsRepository
+      .createQueryBuilder('blogs')
+      .leftJoinAndSelect('blogs.user', 'user')
+      .where('blogs.isBanned = false')
+      .andWhere('blogs.name ILIKE :name', { name: nameSearchTerm })
+      .orderBy(orderBy, mappedQuery.getSortDirection())
+      .limit(mappedQuery.getPageSize())
+      .offset(mappedQuery.getOffset())
+      .getMany();
+
+    const totalCount = await this.blogsRepository
+      .createQueryBuilder('blogs')
+      .where('blogs.isBanned = false')
+      .andWhere('blogs.name ILIKE :name', { name: nameSearchTerm })
+      .getCount();
+
+    const paginator = new Paginator(
+      mappedQuery.getPageSize(),
+      mappedQuery.getPageNumber(),
     );
 
     const blogsViewModel: BlogSaViewModel[] = blogs.map(
       (blog) => new BlogSaViewModel(blog),
     );
 
-    const totalCount = await this.dataSource.query(
-      `
-    
-     SELECT Count(*)
-
-     FROM public."Blogs" b
-
-     WHERE "name" ILIKE $1
-    
-    `,
-      [nameSearchTerm],
-    );
-
-    const paginator = new Paginator(
-      mappedQuery.getPageSize(),
-      mappedQuery.getPageNumber(),
-    );
-
-    return paginator.paginate(blogsViewModel, Number(totalCount[0].count));
+    return paginator.paginate(blogsViewModel, totalCount);
   }
 
   async getBlogById(blogId: number) {
-    const blog = await this.dataSource.query(
-      `
-    SELECT "id",  "name", "description", "websiteUrl", "isMembership", "createdAt"
-    FROM public."Blogs"
-    WHERE "id" = $1 AND "isBanned" = false
-    
-    `,
-      [blogId],
-    );
+    const blog = await this.blogsRepository.findOneBy({ id: blogId });
 
-    return blog[0] ? new BlogViewModel(blog[0]) : null;
+    return blog ? new BlogViewModel(blog) : null;
   }
 
   async getBlogOwnerId(blogId: number): Promise<number | null> {
-    const blog = await this.dataSource.query(
-      `
-         SELECT "ownerId"
-         FROM "Blogs"
-         WHERE "id" = $1
-         `,
-      [blogId],
-    );
+    const blog = await this.blogsRepository.findOneBy({ id: blogId });
 
-    return blog[0]?.ownerId || null;
+    return blog?.ownerId || null;
   }
 }

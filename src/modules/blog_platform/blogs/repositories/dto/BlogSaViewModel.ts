@@ -1,5 +1,6 @@
-import { BlogDbModeForSa } from './BlogDbModeForSa';
 import { BlogViewModel } from './BlogViewModel';
+import { Blog } from '../../entity/Blog.entity';
+import { User } from '../../../../users_module/users/entities/User.entity';
 
 export class BlogSaViewModel extends BlogViewModel {
   public blogOwnerInfo: {
@@ -17,16 +18,15 @@ export class BlogSaViewModel extends BlogViewModel {
     websiteUrl,
     isMembership,
     createdAt,
-    userLogin,
-    userId,
+    user,
     isBanned,
     banDate,
-  }: BlogDbModeForSa) {
+  }: Blog & { user: User }) {
     super({ id, name, description, websiteUrl, isMembership, createdAt });
 
     this.blogOwnerInfo = {
-      userId: userId.toString(),
-      userLogin,
+      userId: user.id.toString(),
+      userLogin: user.login,
     };
 
     this.banInfo = {
