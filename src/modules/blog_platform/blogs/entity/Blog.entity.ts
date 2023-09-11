@@ -40,7 +40,7 @@ export class Blog {
   banDate: Date;
 
   @ManyToOne(() => User, (u) => u.blogs, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @JoinColumn({ name: 'ownerId' })
   user: User;
 
   @OneToMany(() => BannedUsersForBlog, (b) => b.blog)
