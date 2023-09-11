@@ -57,7 +57,7 @@ import { CreatePostForBlogUseCase } from './modules/blog_platform/posts/applicat
 import { PostsQueryRepository } from './modules/blog_platform/posts/repository/posts-query-repository.service';
 import { UpdatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/updatePostUseCase';
 import { DeletePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/deletePostUseCase';
-import { BlogsQueryRepository } from './modules/blog_platform/blogs/repositories/query-repository/blogs-query-repository';
+import { BlogsQueryRepo } from './modules/blog_platform/blogs/repositories/query-repository/blogs-query-repo';
 import { BannedUsersForBlogRepo } from './modules/users_module/users/repositories/repository/bannedUsersForBlogs.repo';
 import { UsersBloggerController } from './modules/users_module/users/controllers/users.blogger.controller';
 import { BanUserForBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/banUserForBlogUseCase';
@@ -209,7 +209,7 @@ const useCases = [
     CommentLikesRepo,
     JwtAdapter,
     PostsQueryRepository,
-    BlogsQueryRepository,
+    BlogsQueryRepo,
     PasswordHashAdapter,
     TestingRepository,
     BannedUsersForBlogRepo,

@@ -18,14 +18,14 @@ import { BanBlogDto } from './dto/BanBlogDto';
 import { BanBlogUseCaseCommand } from '../application/use-cases/banBlogUseCase';
 import { BlogQueryInputDto } from './dto/query/BlogQueryInputDto';
 import { BlogQueryMapper } from './dto/query/BlogQueryMapper';
-import { BlogsQueryRepository } from '../repositories/query-repository/blogs-query-repository';
+import { BlogsQueryRepo } from '../repositories/query-repository/blogs-query-repo';
 
 @Controller('sa/blogs')
 @UseGuards(BasicAuthGuard)
 export class BlogsSaController {
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly blogsQueryRepository: BlogsQueryRepository,
+    private readonly blogsQueryRepository: BlogsQueryRepo,
   ) {}
   @Put(':blogId/bind-with-user/:userId')
   async bingUserForBlog(

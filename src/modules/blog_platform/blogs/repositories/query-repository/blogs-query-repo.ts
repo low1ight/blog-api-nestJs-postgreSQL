@@ -8,7 +8,7 @@ import { Paginator } from '../../../../../utils/paginatorHelpers/Paginator';
 import { Blog } from '../../entity/Blog.entity';
 
 @Injectable()
-export class BlogsQueryRepository {
+export class BlogsQueryRepo {
   constructor(
     @InjectRepository(Blog) private blogsRepository: Repository<Blog>,
   ) {}

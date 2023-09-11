@@ -1,4 +1,4 @@
-import { BlogsQueryRepository } from '../repositories/query-repository/blogs-query-repository';
+import { BlogsQueryRepo } from '../repositories/query-repository/blogs-query-repo';
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { BlogQueryInputDto } from './dto/query/BlogQueryInputDto';
 import { BlogQueryMapper } from './dto/query/BlogQueryMapper';
@@ -15,7 +15,7 @@ import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDa
 @Controller('blogs')
 export class BlogsPublicController {
   constructor(
-    private readonly blogsQueryRepository: BlogsQueryRepository,
+    private readonly blogsQueryRepository: BlogsQueryRepo,
     private readonly postsQueryRepository: PostsQueryRepository,
   ) {}
   @Get('')

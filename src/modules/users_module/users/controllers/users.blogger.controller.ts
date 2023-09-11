@@ -20,7 +20,7 @@ import { Exceptions } from '../../../../utils/throwException';
 import { BannedUsersInputQueryDto } from './dto/query/bannedUsers/BannedUsersInputQueryDto';
 import { BannedUsersQueryMapper } from './dto/query/bannedUsers/BannedUsersQueryMapper';
 import { BannedUsersForBlogsQueryRepository } from '../repositories/query-repository/bannedUsersForBlogs.query.repository';
-import { BlogsQueryRepository } from '../../../blog_platform/blogs/repositories/query-repository/blogs-query-repository';
+import { BlogsQueryRepo } from '../../../blog_platform/blogs/repositories/query-repository/blogs-query-repo';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 
 @Controller('blogger/users')
@@ -28,7 +28,7 @@ import { CustomResponseEnum } from '../../../../utils/customResponse/CustomRespo
 export class UsersBloggerController {
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly blogsQueryRepository: BlogsQueryRepository,
+    private readonly blogsQueryRepository: BlogsQueryRepo,
     private readonly bannedUsersForBlogsQueryRepository: BannedUsersForBlogsQueryRepository,
   ) {}
   @Put(':id/ban')

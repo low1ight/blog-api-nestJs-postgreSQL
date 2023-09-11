@@ -32,7 +32,7 @@ import { PostsQueryDto } from '../../posts/controllers/dto/query/PostsQueryDto';
 import { PostQueryMapper } from '../../posts/controllers/dto/query/PostQueryMapper';
 import { BlogQueryInputDto } from './dto/query/BlogQueryInputDto';
 import { BlogQueryMapper } from './dto/query/BlogQueryMapper';
-import { BlogsQueryRepository } from '../repositories/query-repository/blogs-query-repository';
+import { BlogsQueryRepo } from '../repositories/query-repository/blogs-query-repo';
 import { CommentsQueryRepository } from '../../comments/repositories/query-repository/comments.query.repository';
 import { CommentQueryMapper } from '../../comments/controllers/dto/query/CommentQueryMapper';
 import { CommentInputQueryDto } from '../../comments/controllers/dto/query/CommentInputQueryType';
@@ -44,7 +44,7 @@ export class BlogsBloggerController {
     private readonly commandBus: CommandBus,
     private readonly commentsQueryRepository: CommentsQueryRepository,
     private readonly postsQueryRepository: PostsQueryRepository,
-    private readonly blogsQueryRepository: BlogsQueryRepository,
+    private readonly blogsQueryRepository: BlogsQueryRepo,
   ) {}
 
   @Post('')
