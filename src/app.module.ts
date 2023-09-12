@@ -44,7 +44,7 @@ import { RegisterNewUserUseCase } from './modules/users_module/auth/application/
 import { EmailConfirmationUseCase } from './modules/users_module/auth/application/public/auth/useCase/email-confirmation-use-case';
 import { RegistrationEmailResendingUseCase } from './modules/users_module/auth/application/public/auth/useCase/registration-email-resending-use-case';
 import { PasswordRecoveryUseCase } from './modules/users_module/auth/application/public/auth/useCase/password-recovery-use-case';
-import { UsersQueryRepository } from './modules/users_module/users/repositories/query-repository/users.query.repository';
+import { UsersQueryRepo } from './modules/users_module/users/repositories/query-repository/users.query.repo';
 import { SetNewPasswordUseCase } from './modules/users_module/users/application/use-cases/set-new-password-use-case';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { BlogsBloggerController } from './modules/blog_platform/blogs/controllers/blogs.blogger.controller';
@@ -195,7 +195,7 @@ const useCases = [
     UsersBanInfoRepo,
     LocalStrategy,
     CommentsRepo,
-    UsersQueryRepository,
+    UsersQueryRepo,
     UsersService,
     BlogsService,
     PostsLikesRepo,

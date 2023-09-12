@@ -32,14 +32,14 @@ import { NewPasswordDto } from '../../users/controllers/dto/NewPasswordDto';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 import { SetNewPasswordUseCaseCommand } from '../../users/application/use-cases/set-new-password-use-case';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
-import { UsersQueryRepository } from '../../users/repositories/query-repository/users.query.repository';
+import { UsersQueryRepo } from '../../users/repositories/query-repository/users.query.repo';
 
 @Controller('auth')
 @Throttle(5, 10)
 export class AuthPublicController {
   constructor(
     private commandBus: CommandBus,
-    private usersQueryRepository: UsersQueryRepository,
+    private usersQueryRepository: UsersQueryRepo,
   ) {}
 
   @UseGuards(LocalAuthGuard)

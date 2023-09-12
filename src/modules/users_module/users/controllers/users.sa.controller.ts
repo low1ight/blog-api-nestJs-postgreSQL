@@ -19,7 +19,7 @@ import { DeleteUserUseCaseCommand } from '../application/use-cases/delete-user-u
 import { SetBanStatusForUserUseCaseCommand } from '../application/use-cases/set-ban-status-for-user-use-case';
 import { BanUserDto } from './dto/BanUserDto';
 import { BasicAuthGuard } from '../../auth/guards/basic.auth.guard';
-import { UsersQueryRepository } from '../repositories/query-repository/users.query.repository';
+import { UsersQueryRepo } from '../repositories/query-repository/users.query.repo';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 import { UsersQueryMapper } from './dto/query/users/UsersPaginator';
 import { UserInputQueryDto } from './dto/query/users/UsersInputQueryDto';
@@ -28,7 +28,7 @@ import { UserInputQueryDto } from './dto/query/users/UsersInputQueryDto';
 @UseGuards(BasicAuthGuard)
 export class UsersSaController {
   constructor(
-    private readonly usersQueryRepository: UsersQueryRepository,
+    private readonly usersQueryRepository: UsersQueryRepo,
     protected commandBus: CommandBus,
   ) {}
 
