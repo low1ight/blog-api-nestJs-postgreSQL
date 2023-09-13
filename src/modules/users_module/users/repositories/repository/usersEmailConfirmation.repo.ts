@@ -4,10 +4,12 @@ import { DataSource, QueryRunner, Repository } from 'typeorm';
 import { ExpirationDate } from '../../../../../utils/expirationDate';
 import { UsersEmailConfirmationDbModel } from '../dto/UsersEmailConfirmation.db.model';
 import { UserEmailConfirmation } from '../../entities/UserEmailConfirmation.entity';
+import { User } from '../../entities/User.entity';
 
 @Injectable()
 export class UsersEmailConfirmationRepo {
   constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(UserEmailConfirmation)
     protected userEmailConfirmationRepository: Repository<UserEmailConfirmation>,
     @InjectDataSource() private dataSource: DataSource,
@@ -64,20 +66,13 @@ export class UsersEmailConfirmationRepo {
   }
 
   async getEmailConfirmedStatusWithId(email: string) {
-    const result = await this.dataSource.query(
-      `
-    
-    SELECT u."id", e."isConfirmed"
-    FROM "Users" u 
-    LEFT JOIN "UsersEmailConfirmation" e ON u."id" = e."ownerId"
-    WHERE "email" = $1
-    
-    
-    `,
-      [email],
-    );
+    const result = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email })
+      .leftJoinAndSelect('user.userEmailConfirmation', 'emailConfirmation')
+      .getOne();
 
-    return result[0] || null;
+    return result?.userEmailConfirmation || null;
   }
 
   async setNewConfirmationCode(userId: number, code: string) {
