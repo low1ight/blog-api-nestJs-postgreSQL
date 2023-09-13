@@ -48,25 +48,13 @@ export class UsersRepo {
   async getUserDataForLogin(
     loginOrEmail: string,
   ): Promise<UserForLoginValidationModel | null> {
-    const result = await this.dataSource.query(
-      `
-    SELECT u."id",
-           "login",
-           "email",
-           "password",
-           c."isConfirmed",
-           b."isBanned"  
-                
-  FROM "Users" u          
- LEFT JOIN "UsersEmailConfirmation" c ON u."id" = c."ownerId"
- LEFT JOIN "UsersBanInfo" b ON u."id" = b."userId"
- WHERE "email" = $1 OR "login" = $1
-    
-    `,
-      [loginOrEmail],
-    );
-
-    return result[0] || null;
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.login = :login', { login: loginOrEmail })
+      .orWhere('user.email = :email', { email: loginOrEmail })
+      .leftJoinAndSelect('user.userBanInfo', 'banInfo')
+      .leftJoinAndSelect('user.userEmailConfirmation', 'emailConfirmation')
+      .getOne();
   }
 
   async getUserIdByEmail(email: string): Promise<number | null> {

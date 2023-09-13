@@ -16,10 +16,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException('wrong email or login');
     }
-    if (!user.isConfirmed) {
+    if (!user.userEmailConfirmation.isConfirmed) {
       throw new UnauthorizedException('email is not confirmed');
     }
-    if (user.isBanned) {
+    if (user.userBanInfo.isBanned) {
       throw new UnauthorizedException('user has been banned');
     }
     return user;

@@ -1,8 +1,8 @@
-export type UserForLoginValidationModel = {
-  id: number;
-  login: string;
-  email: string;
-  password: string;
-  isBanned: boolean;
-  isConfirmed: boolean;
+import { UserBanInfo } from '../../entities/UserBanInfo.entity';
+import { UserEmailConfirmation } from '../../entities/UserEmailConfirmation.entity';
+import { User } from '../../entities/User.entity';
+
+export type UserForLoginValidationModel = User & {
+  userBanInfo: UserBanInfo;
+  userEmailConfirmation: UserEmailConfirmation;
 };

@@ -16,6 +16,6 @@ export class UserEmailConfirmation {
   isConfirmed: boolean;
 
   @OneToOne(() => User, (u) => u.userEmailConfirmation, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @JoinColumn({ name: 'ownerId' })
   user: User;
 }
