@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, QueryRunner, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 import { ExpirationDate } from '../../../../../utils/expirationDate';
 import { UsersEmailConfirmationDbModel } from '../dto/UsersEmailConfirmation.db.model';
 import { UserEmailConfirmation } from '../../entities/UserEmailConfirmation.entity';
@@ -12,7 +12,6 @@ export class UsersEmailConfirmationRepo {
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(UserEmailConfirmation)
     protected userEmailConfirmationRepository: Repository<UserEmailConfirmation>,
-    @InjectDataSource() private dataSource: DataSource,
   ) {}
 
   async createAutoConfirmedEmailConfirmationFofUser(

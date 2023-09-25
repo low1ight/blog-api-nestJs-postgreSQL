@@ -43,6 +43,6 @@ export class QueryMapper {
       ? this.sortDirection
       : this.defaultValues.sortDirection;
 
-    return result as 'ASC' | 'DESC';
+    return result.toUpperCase() as 'ASC' | 'DESC';
   }
 }

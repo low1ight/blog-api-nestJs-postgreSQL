@@ -13,7 +13,6 @@ import { PostsQueryDto } from './dto/query/PostsQueryDto';
 import { PostQueryMapper } from './dto/query/PostQueryMapper';
 import { PostsQueryRepository } from '../repository/posts-query-repository.service';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
-import { PostViewModel } from '../repository/dto/postViewModel';
 import { Exceptions } from '../../../../utils/throwException';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 import { JwtAuthGuard } from '../../../users_module/auth/guards/jwt.auth.guard';
@@ -58,8 +57,10 @@ export class PostsPublicController {
     @Param('id', CustomParseInt) id: number,
     @CurrentUser() user: UserDataFromAT | null,
   ) {
-    const post: PostViewModel | null =
-      await this.postsQueryRepository.getPostById(id, user?.id || null);
+    const post: any = await this.postsQueryRepository.getPostById(
+      id,
+      user?.id || null,
+    );
     if (!post) Exceptions.throwHttpException(CustomResponseEnum.notExist);
     return post;
   }

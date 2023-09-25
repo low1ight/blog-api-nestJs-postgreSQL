@@ -3,8 +3,8 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { v4 as uuidv4 } from 'uuid';
 import { EmailManager } from '../../../../../../../adapters/email.manager';
 import { CustomResponseEnum } from '../../../../../../../utils/customResponse/CustomResponseEnum';
-import { UserConfirmedStatusWithId } from '../../../../../users/repositories/dto/User.confirmed.status.withId';
 import { UsersEmailConfirmationRepo } from '../../../../../users/repositories/repository/usersEmailConfirmation.repo';
+import { UserEmailConfirmation } from '../../../../../users/entities/UserEmailConfirmation.entity';
 
 export class RegistrationEmailResendingUseCaseCommand {
   constructor(public email: string) {}
@@ -21,7 +21,7 @@ export class RegistrationEmailResendingUseCase
     email,
   }: RegistrationEmailResendingUseCaseCommand): Promise<CustomResponse<any>> {
     //get user email confirmation
-    const userEmailConfirmationData: UserConfirmedStatusWithId | null =
+    const userEmailConfirmationData: UserEmailConfirmation | null =
       await this.usersEmailConfirmationRepository.getEmailConfirmedStatusWithId(
         email,
       );
@@ -43,7 +43,7 @@ export class RegistrationEmailResendingUseCase
     const confirmationCode = uuidv4();
 
     await this.usersEmailConfirmationRepository.setNewConfirmationCode(
-      userEmailConfirmationData.id,
+      userEmailConfirmationData.ownerId,
       confirmationCode,
     );
 

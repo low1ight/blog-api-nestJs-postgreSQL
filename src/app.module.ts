@@ -46,7 +46,7 @@ import { RegistrationEmailResendingUseCase } from './modules/users_module/auth/a
 import { PasswordRecoveryUseCase } from './modules/users_module/auth/application/public/auth/useCase/password-recovery-use-case';
 import { UsersQueryRepo } from './modules/users_module/users/repositories/query-repository/users.query.repo';
 import { SetNewPasswordUseCase } from './modules/users_module/users/application/use-cases/set-new-password-use-case';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { BlogsBloggerController } from './modules/blog_platform/blogs/controllers/blogs.blogger.controller';
 import { CreateBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/createBlogUseCase';
 import { BlogsRepo } from './modules/blog_platform/blogs/repositories/repository/blogs.repo';
@@ -89,6 +89,7 @@ import { PostLikes } from './modules/blog_platform/posts/entity/PostLikes.entity
 import { Post } from './modules/blog_platform/posts/entity/Post.entity';
 import { Comment } from './modules/blog_platform/comments/entity/Comment.entity';
 import { CommentLikes } from './modules/blog_platform/comments/entity/CommentLikes.entity';
+import { APP_GUARD } from '@nestjs/core';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -221,10 +222,10 @@ const useCases = [
     ...customValidators,
     ...useCases,
 
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: ThrottlerGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}

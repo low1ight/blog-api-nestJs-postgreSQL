@@ -74,6 +74,7 @@ export class DeviceRepo {
     const device = await this.deviceRepository.findOneBy({ id: deviceId });
 
     device.sessionId = sessionId;
+    device.lastActiveDate = new Date();
 
     await this.deviceRepository.save(device);
     // await this.dataSource.query(
