@@ -5,6 +5,7 @@ import { PostViewModel } from './dto/postViewModel';
 import { PostQueryMapper } from '../controllers/dto/query/PostQueryMapper';
 import { Paginator } from '../../../../utils/paginatorHelpers/Paginator';
 import { Post } from '../entity/Post.entity';
+import { Blog } from '../../blogs/entity/Blog.entity';
 
 @Injectable()
 export class PostsQueryRepository {
@@ -105,6 +106,14 @@ export class PostsQueryRepository {
   }
 
   async getPostById(postId: number, currentUserId: null | number) {
+    const post: Post & { blog: Blog } =
+      await this.PostsRepository.createQueryBuilder('post')
+        .leftJoinAndSelect('post.blog', 'blog')
+        .where('blog.isBanned = :isBanned', { isBanned: false })
+        .andWhere('post.id = :postId', { postId })
+        .getOne();
+
+    return new PostViewModel(post);
     //   const post: PostsWithBlogDataAndLikesRaw[] = await this.dataSource.query(
     //     `
     //
