@@ -20,7 +20,7 @@ import { BlogQueryInputDto } from './dto/query/BlogQueryInputDto';
 import { BlogQueryMapper } from './dto/query/BlogQueryMapper';
 import { BlogsQueryRepo } from '../repositories/query-repository/blogs-query-repo';
 
-@Controller('sa/blogs')
+@Controller('saa/blogs')
 @UseGuards(BasicAuthGuard)
 export class BlogsSaController {
   constructor(

@@ -36,9 +36,10 @@ import { BlogsQueryRepo } from '../repositories/query-repository/blogs-query-rep
 import { CommentsQueryRepository } from '../../comments/repositories/query-repository/comments.query.repository';
 import { CommentQueryMapper } from '../../comments/controllers/dto/query/CommentQueryMapper';
 import { CommentInputQueryDto } from '../../comments/controllers/dto/query/CommentInputQueryType';
+import { BasicAuthGuard } from '../../../users_module/auth/guards/basic.auth.guard';
 
-@Controller('blogger/blogs')
-@UseGuards(JwtAuthGuard)
+@Controller('sa/blogs')
+@UseGuards(BasicAuthGuard)
 export class BlogsBloggerController {
   constructor(
     private readonly commandBus: CommandBus,
@@ -50,9 +51,11 @@ export class BlogsBloggerController {
   @Post('')
   async createBlog(
     @Body() dto: CreateBlogInputDto,
-    @CurrentUser() { id }: UserDataFromAT,
+    // @CurrentUser() { id }: UserDataFromAT,
   ) {
-    return await this.commandBus.execute(new CreateBlogUseCaseCommand(dto, id));
+    return await this.commandBus.execute(
+      new CreateBlogUseCaseCommand(dto, null),
+    );
   }
 
   @Put('/:id')
@@ -60,10 +63,10 @@ export class BlogsBloggerController {
   async updateBlog(
     @Body() dto: UpdateBlogDto,
     @Param('id', CustomParseInt) id: number,
-    @CurrentUser() userData: UserDataFromAT,
+    // @CurrentUser() userData: UserDataFromAT,
   ) {
     const result: CustomResponse<any> = await this.commandBus.execute(
-      new UpdateBlogUseCaseCommand(dto, userData.id, id),
+      new UpdateBlogUseCaseCommand(dto, null, id),
     );
     if (!result.isSuccess)
       return Exceptions.throwHttpException(result.errStatusCode);
@@ -73,10 +76,10 @@ export class BlogsBloggerController {
   @HttpCode(204)
   async deleteBlog(
     @Param('id', CustomParseInt) id: number,
-    @CurrentUser() userData: UserDataFromAT,
+    // @CurrentUser() userData: UserDataFromAT,
   ) {
     const result: CustomResponse<any> = await this.commandBus.execute(
-      new DeleteBlogUseCaseCommand(userData.id, id),
+      new DeleteBlogUseCaseCommand(null, id),
     );
     if (!result.isSuccess)
       return Exceptions.throwHttpException(result.errStatusCode);
@@ -85,10 +88,10 @@ export class BlogsBloggerController {
   async createPost(
     @Param('id', CustomParseInt) id: number,
     @Body() dto: CreatePostForBlogDto,
-    @CurrentUser() user: UserDataFromAT,
+    // @CurrentUser() user: UserDataFromAT,
   ) {
     const result: CustomResponse<number | null> = await this.commandBus.execute(
-      new CreatePostForBlogUseCaseCommand(id, user.id, dto),
+      new CreatePostForBlogUseCaseCommand(id, null, dto),
     );
 
     if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
@@ -102,10 +105,10 @@ export class BlogsBloggerController {
     @Param('blogId', CustomParseInt) blogId: number,
     @Param('postId', CustomParseInt) postId: number,
     @Body() dto: UpdatePostDto,
-    @CurrentUser() user: UserDataFromAT,
+    // @CurrentUser() user: UserDataFromAT,
   ) {
     const result: CustomResponse<number | null> = await this.commandBus.execute(
-      new UpdatePostUseCaseCommand(postId, blogId, user.id, dto),
+      new UpdatePostUseCaseCommand(postId, blogId, null, dto),
     );
 
     if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
@@ -118,10 +121,10 @@ export class BlogsBloggerController {
   async deletePost(
     @Param('blogId', CustomParseInt) blogId: number,
     @Param('postId', CustomParseInt) postId: number,
-    @CurrentUser() user: UserDataFromAT,
+    // @CurrentUser() user: UserDataFromAT,
   ) {
     const result: CustomResponse<number | null> = await this.commandBus.execute(
-      new DeletePostUseCaseCommand(postId, blogId, user.id),
+      new DeletePostUseCaseCommand(postId, blogId, null),
     );
 
     if (!result.isSuccess) Exceptions.throwHttpException(result.errStatusCode);
@@ -132,25 +135,21 @@ export class BlogsBloggerController {
   async getBlogPosts(
     @Param('id', CustomParseInt) id: number,
     @Query() query: PostsQueryDto,
-    @CurrentUser() userData: UserDataFromAT,
+    // @CurrentUser() userData: UserDataFromAT,
   ) {
     const mappedQuery = new PostQueryMapper(query);
 
-    return await this.postsQueryRepository.getPosts(
-      id,
-      mappedQuery,
-      userData.id,
-    );
+    return await this.postsQueryRepository.getPosts(id, mappedQuery, null);
   }
 
   @Get('')
   async getAllCurrentUserBlogs(
     @Query() dto: BlogQueryInputDto,
-    @CurrentUser() { id }: UserDataFromAT,
+    // @CurrentUser() { id }: UserDataFromAT,
   ) {
     const mappedQuery = new BlogQueryMapper(dto);
 
-    return await this.blogsQueryRepository.getAllUserBlogs(id, mappedQuery);
+    return await this.blogsQueryRepository.getAllUserBlogs(null, mappedQuery);
   }
 
   @Get('comments')

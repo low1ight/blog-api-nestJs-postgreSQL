@@ -15,7 +15,7 @@ export class Blog {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   ownerId: number;
 
   @Column()

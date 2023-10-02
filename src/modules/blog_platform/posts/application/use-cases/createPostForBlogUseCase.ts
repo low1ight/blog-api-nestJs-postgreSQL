@@ -33,8 +33,8 @@ export class CreatePostForBlogUseCase
 
     if (!blog) return new CustomResponse(false, CustomResponseEnum.notExist);
 
-    if (blog.ownerId !== currentUserId)
-      return new CustomResponse(false, CustomResponseEnum.forbidden);
+    // if (blog.ownerId !== currentUserId)
+    //   return new CustomResponse(false, CustomResponseEnum.forbidden);
 
     const postId = await this.postsRepository.createPost(blogId, dto);
 

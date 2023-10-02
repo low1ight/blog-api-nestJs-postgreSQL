@@ -22,10 +22,10 @@ export class DeleteBlogUseCase
       blogId,
     );
 
-    if (!blogId) return new CustomResponse(false, CustomResponseEnum.notExist);
+    if (!blog) return new CustomResponse(false, CustomResponseEnum.notExist);
 
-    if (blog.ownerId !== userId)
-      return new CustomResponse(false, CustomResponseEnum.forbidden);
+    // if (blog.ownerId !== userId)
+    //   return new CustomResponse(false, CustomResponseEnum.forbidden);
 
     await this.blogRepository.deleteBlogById(blogId);
 

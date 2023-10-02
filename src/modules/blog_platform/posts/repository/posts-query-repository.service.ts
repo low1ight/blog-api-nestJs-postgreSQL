@@ -113,7 +113,7 @@ export class PostsQueryRepository {
         .andWhere('post.id = :postId', { postId })
         .getOne();
 
-    return new PostViewModel(post);
+    return post ? new PostViewModel(post) : null;
     //   const post: PostsWithBlogDataAndLikesRaw[] = await this.dataSource.query(
     //     `
     //

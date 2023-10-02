@@ -22,8 +22,8 @@ export class DeletePostForBlogUseCase
     if (!post || post.blogId !== blogId)
       return new CustomResponse(false, CustomResponseEnum.notExist);
 
-    if (post.ownerId !== currentUserId)
-      return new CustomResponse(false, CustomResponseEnum.forbidden);
+    // if (post.ownerId !== currentUserId)
+    //   return new CustomResponse(false, CustomResponseEnum.forbidden);
 
     await this.postsRepository.deletePost(postId);
 
