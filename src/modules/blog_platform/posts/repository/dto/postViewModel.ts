@@ -21,8 +21,8 @@ export class PostViewModel {
     this.title = dto.title;
     this.content = dto.content;
     this.shortDescription = dto.shortDescription;
-    this.blogId = dto.blog.id.toString();
-    this.blogName = dto.blog.name;
+    this.blogId = dto.blog.id.toString() || 'no name';
+    this.blogName = dto.blog.name || 'no name';
     this.createdAt = dto.createdAt;
     this.extendedLikesInfo = {
       likesCount: 0,
