@@ -19,7 +19,10 @@ export class PostsQueryRepository {
     mappedQuery: PostQueryMapper,
     currentUserId: number | null = null,
   ) {
-    const orderBy = 'post.' + mappedQuery.getSortBy();
+    let orderBy: string = mappedQuery.getSortBy();
+    if (orderBy.toLowerCase() === 'blogname') orderBy = 'blog.name';
+    else orderBy = 'post.' + orderBy;
+
     const queryBuilder = this.PostsRepository.createQueryBuilder('post')
       .leftJoinAndSelect('post.blog', 'blog')
       .where('blog.isBanned = :isBanned', { isBanned: false });

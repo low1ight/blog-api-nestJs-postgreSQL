@@ -18,7 +18,7 @@ export class BlogsQueryRepo {
 
     const blogs = await this.blogsRepository
       .createQueryBuilder('blogs')
-      .where('blogs.ownerId = :ownerId', { ownerId: userId })
+      //.where('blogs.ownerId = :ownerId', { ownerId: userId })
       .andWhere('blogs.name ILIKE :name', { name: nameSearchTerm })
       .orderBy(orderBy, mappedQuery.getSortDirection())
       .limit(mappedQuery.getPageSize())
@@ -27,7 +27,7 @@ export class BlogsQueryRepo {
 
     const totalCount = await this.blogsRepository
       .createQueryBuilder('blogs')
-      .where('blogs.ownerId = :ownerId', { ownerId: userId })
+      //.where('blogs.ownerId = :ownerId', { ownerId: userId })
       .andWhere('blogs.name ILIKE :name', { name: nameSearchTerm })
       .getCount();
 
