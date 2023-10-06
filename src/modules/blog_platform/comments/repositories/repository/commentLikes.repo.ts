@@ -32,6 +32,7 @@ export class CommentLikesRepo {
     commentLike.commentId = commentId;
     commentLike.userId = userId;
     commentLike.likeStatus = likeStatus;
+    commentLike.createdAt = new Date();
 
     await this.commentLikesRepository.save(commentLike);
   }
