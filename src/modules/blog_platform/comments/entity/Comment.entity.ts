@@ -28,7 +28,7 @@ export class Comment {
   createdAt: Date;
 
   @ManyToOne(() => User, (u) => u.comments, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @JoinColumn({ name: 'ownerId' })
   user: User;
 
   @ManyToOne(() => Post, (p) => p.comments, { onDelete: 'CASCADE' })
