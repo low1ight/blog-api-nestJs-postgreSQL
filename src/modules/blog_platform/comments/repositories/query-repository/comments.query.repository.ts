@@ -22,6 +22,8 @@ export class CommentsQueryRepository {
     mappedQuery: CommentQueryMapper,
     currentUserId: number | null,
   ) {
+    const orderBy = 'comment.' + mappedQuery.getSortBy();
+
     const comments = await this.commentRepository
       .createQueryBuilder('comment')
       .select([
@@ -30,6 +32,7 @@ export class CommentsQueryRepository {
         'comment.createdAt as "createdAt"',
         'comment.ownerId as "userId"',
       ])
+      .where('comment."postId" = :postId', { postId })
       .addSelect([
         `(SELECT Count(*) FROM "CommentsLikes" c
         WHERE c."commentId" = comment.id AND c."likeStatus" = 'Like') as "totalLikesCount"`,
@@ -45,6 +48,9 @@ export class CommentsQueryRepository {
       .setParameter('userId', currentUserId)
       .leftJoin('comment.user', 'user')
       .addSelect(['user.login as "userLogin"'])
+      .orderBy(orderBy, mappedQuery.getSortDirection())
+      .limit(mappedQuery.getPageSize())
+      .offset(mappedQuery.getOffset())
       .getRawMany();
 
     // const comments = await this.dataSource.query(
