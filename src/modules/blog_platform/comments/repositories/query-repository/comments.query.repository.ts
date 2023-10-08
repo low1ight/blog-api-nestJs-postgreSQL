@@ -45,6 +45,7 @@ export class CommentsQueryRepository {
         `(SELECT "likeStatus"  FROM public."CommentsLikes" l
     WHERE comment.id = l."commentId" AND l."userId" = :userId) AS "myStatus"`,
       ])
+
       .setParameter('userId', currentUserId)
       .leftJoin('comment.user', 'user')
       .addSelect(['user.login as "userLogin"'])

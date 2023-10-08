@@ -6,12 +6,16 @@ import { PostQueryMapper } from '../controllers/dto/query/PostQueryMapper';
 import { Paginator } from '../../../../utils/paginatorHelpers/Paginator';
 import { Post } from '../entity/Post.entity';
 import { Blog } from '../../blogs/entity/Blog.entity';
+import { PostLikes } from '../entity/PostLikes.entity';
+import { UserBanInfo } from '../../../users_module/users/entities/UserBanInfo.entity';
+import { PostsWithBlogDataAndLikesRaw } from './dto/PostDbModelWithBlogName';
+import { LikeForPostViewModel } from './dto/LikeForPostViewModel';
 
 @Injectable()
 export class PostsQueryRepository {
   constructor(
     @InjectDataSource() private dataSource: DataSource,
-    @InjectRepository(Post) private PostsRepository: Repository<Post>,
+    @InjectRepository(Post) private postRepository: Repository<Post>,
   ) {}
 
   async getPosts(
@@ -23,7 +27,8 @@ export class PostsQueryRepository {
     if (orderBy.toLowerCase() === 'blogname') orderBy = 'blog.name';
     else orderBy = 'post.' + orderBy;
 
-    const queryBuilder = this.PostsRepository.createQueryBuilder('post')
+    const queryBuilder = this.postRepository
+      .createQueryBuilder('post')
       .leftJoinAndSelect('post.blog', 'blog')
       .where('blog.isBanned = :isBanned', { isBanned: false });
 
@@ -31,11 +36,57 @@ export class PostsQueryRepository {
       queryBuilder.andWhere('blog.id = :blogId', { blogId });
     }
 
-    const [posts, count] = await queryBuilder
-      .orderBy(orderBy, mappedQuery.getSortDirection())
-      .limit(mappedQuery.getPageSize())
-      .offset(mappedQuery.getOffset())
-      .getManyAndCount();
+    const posts = await this.postRepository
+      .createQueryBuilder('p')
+      .select([
+        'p.id as id',
+        'p.blogId as "blogId"',
+        'p.title as title',
+        'p."shortDescription" as "shortDescription"',
+        'p.content as content',
+        'p.createdAt as "createdAt"',
+        'b.name as "blogName"',
+      ])
+      .leftJoin('p.blog', 'b')
+      .leftJoinAndMapMany(
+        'p.likes',
+        (qb) =>
+          qb
+            .select([
+              'l.userId AS "likeUserId"',
+              'l."postId"',
+              'l.createdAt AS "likeAddedAt"',
+              'u.login AS "likeUserLogin"',
+              'ROW_NUMBER() OVER (PARTITION BY l."postId" ORDER BY l."createdAt" DESC) AS rn',
+            ])
+            .from(PostLikes, 'l')
+            .limit(5)
+            .innerJoin(
+              UserBanInfo,
+              'b',
+              'l.userId = b.userId AND b.isBanned = false',
+            )
+            .leftJoin('Users', 'u', 'u.id = l.userId')
+            .where('l.likeStatus = :likeStatus', { likeStatus: 'Like' }),
+        'likes',
+        'likes."postId" = p.id',
+      )
+      .addSelect([
+        `(SELECT Count(*) FROM "PostsLikes" pl
+        WHERE pl."postId" = p.id AND pl."likeStatus" = 'Like') as "totalLikesCount"`,
+      ])
+      .addSelect([
+        `(SELECT Count(*) FROM "PostsLikes" pl
+          WHERE pl."postId" = p.id AND pl."likeStatus" = 'Dislike') as "totalDislikesCount"`,
+      ])
+      .addSelect([
+        `(SELECT "likeStatus"  FROM public."PostsLikes" pl
+      WHERE p.id = pl."postId" AND pl."userId" = :userId) AS "myStatus"`,
+      ])
+      .setParameter('userId', currentUserId)
+      .getRawMany();
+
+    return this.toViewModelWithLikes(posts);
 
     //  const posts = await this.dataSource.query(
     //    `
@@ -96,27 +147,27 @@ export class PostsQueryRepository {
     //    [blogId],
     //  );
 
-    const postsViewModels: PostViewModel[] = posts.map(
-      (post) => new PostViewModel(post),
-    );
-
-    const paginator = new Paginator(
-      mappedQuery.getPageSize(),
-      mappedQuery.getPageNumber(),
-    );
-
-    return paginator.paginate(postsViewModels, count);
+    // const postsViewModels: PostViewModel[] = posts.map(
+    //   (post) => new PostViewModel(post),
+    // );
+    //
+    // const paginator = new Paginator(
+    //   mappedQuery.getPageSize(),
+    //   mappedQuery.getPageNumber(),
+    // );
+    //
+    // return paginator.paginate(postsViewModels, count);
   }
 
   async getPostById(postId: number, currentUserId: null | number) {
-    const post: Post & { blog: Blog } =
-      await this.PostsRepository.createQueryBuilder('post')
-        .leftJoinAndSelect('post.blog', 'blog')
-        .where('blog.isBanned = :isBanned', { isBanned: false })
-        .andWhere('post.id = :postId', { postId })
-        .getOne();
+    const post: Post & { blog: Blog } = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.blog', 'blog')
+      .where('blog.isBanned = :isBanned', { isBanned: false })
+      .andWhere('post.id = :postId', { postId })
+      .getOne();
 
-    return post ? new PostViewModel(post) : null;
+    // return post ? new PostViewModel(post) : null;
     //   const post: PostsWithBlogDataAndLikesRaw[] = await this.dataSource.query(
     //     `
     //
@@ -167,31 +218,31 @@ export class PostsQueryRepository {
     //   return post[0] ? this.toViewModelWithLikes(post)[0] : null;
   }
 
-  // toViewModelWithLikes(posts: PostsWithBlogDataAndLikesRaw[]): PostViewModel[] {
-  //   const result = [];
-  //   const addedPosts = {};
-  //
-  //   for (const post of posts) {
-  //     let currentPost = addedPosts[post.id];
-  //     if (!currentPost) {
-  //       currentPost = new PostViewModel(post);
-  //
-  //       result.push(currentPost);
-  //
-  //       addedPosts[post.id] = currentPost;
-  //     }
-  //
-  //     if (post.likeUserId && post.likeUserLogin && post.likeAddedAt) {
-  //       currentPost.extendedLikesInfo.newestLikes.push(
-  //         new LikeForPostViewModel(
-  //           post.likeUserId,
-  //           post.likeUserLogin,
-  //           post.likeAddedAt,
-  //         ),
-  //       );
-  //     }
-  //   }
-  //
-  //   return result;
-  // }
+  toViewModelWithLikes(posts: PostsWithBlogDataAndLikesRaw[]): PostViewModel[] {
+    const result = [];
+    const addedPosts = {};
+
+    for (const post of posts) {
+      let currentPost = addedPosts[post.id];
+      if (!currentPost) {
+        currentPost = new PostViewModel(post);
+
+        result.push(currentPost);
+
+        addedPosts[post.id] = currentPost;
+      }
+
+      if (post.likeUserId && post.likeUserLogin && post.likeAddedAt) {
+        currentPost.extendedLikesInfo.newestLikes.push(
+          new LikeForPostViewModel(
+            post.likeUserId,
+            post.likeUserLogin,
+            post.likeAddedAt,
+          ),
+        );
+      }
+    }
+
+    return result;
+  }
 }
