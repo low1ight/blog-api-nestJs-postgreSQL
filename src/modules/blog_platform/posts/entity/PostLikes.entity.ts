@@ -1,10 +1,19 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Post } from './Post.entity';
 import { User } from '../../../users_module/users/entities/User.entity';
 
 @Entity('PostsLikes')
 export class PostLikes {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
   postId: number;
 
   @Column()
