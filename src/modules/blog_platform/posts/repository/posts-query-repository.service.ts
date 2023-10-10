@@ -23,20 +23,18 @@ export class PostsQueryRepository {
     currentUserId: number | null = null,
   ) {
     let orderBy: string = mappedQuery.getSortBy();
-    if (orderBy.toLowerCase() === 'blogname') orderBy = 'blog.name';
-    else orderBy = 'post.' + orderBy;
+    if (orderBy.toLowerCase() === 'blogname') orderBy = 'b.name';
+    else orderBy = 'p.' + orderBy;
 
     const queryBuilder = this.postRepository
-      .createQueryBuilder('post')
-      .leftJoinAndSelect('post.blog', 'blog')
-      .where('blog.isBanned = :isBanned', { isBanned: false });
+      .createQueryBuilder('p')
+      .where('b.isBanned = :isBanned', { isBanned: false });
 
     if (blogId !== null) {
-      queryBuilder.andWhere('blog.id = :blogId', { blogId });
+      queryBuilder.andWhere('b.id = :blogId', { blogId });
     }
 
-    const posts = await this.postRepository
-      .createQueryBuilder('p')
+    const posts = await queryBuilder
       .select([
         'p.id as id',
         'p.blogId as "blogId"',
@@ -83,9 +81,14 @@ export class PostsQueryRepository {
       WHERE p.id = pl."postId" AND pl."userId" = :userId) AS "myStatus"`,
       ])
       .setParameter('userId', currentUserId)
+      .orderBy(orderBy, mappedQuery.getSortDirection())
+      .limit(mappedQuery.getPageSize())
+      .offset(mappedQuery.getOffset())
       .getRawMany();
 
-    return this.toViewModelWithLikes(posts);
+    const postsViewModels = this.toViewModelWithLikes(posts);
+
+    const count = await this.postRepository.count();
 
     //  const posts = await this.dataSource.query(
     //    `
@@ -150,12 +153,12 @@ export class PostsQueryRepository {
     //   (post) => new PostViewModel(post),
     // );
     //
-    // const paginator = new Paginator(
-    //   mappedQuery.getPageSize(),
-    //   mappedQuery.getPageNumber(),
-    // );
-    //
-    // return paginator.paginate(postsViewModels, count);
+    const paginator = new Paginator(
+      mappedQuery.getPageSize(),
+      mappedQuery.getPageNumber(),
+    );
+
+    return paginator.paginate(postsViewModels, count);
   }
 
   async getPostById(postId: number, currentUserId: null | number) {
