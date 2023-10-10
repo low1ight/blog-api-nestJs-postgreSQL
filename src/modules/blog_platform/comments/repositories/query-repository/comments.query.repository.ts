@@ -54,6 +54,11 @@ export class CommentsQueryRepository {
       .offset(mappedQuery.getOffset())
       .getRawMany();
 
+    const totalCount = await this.commentRepository
+      .createQueryBuilder('comment')
+      .where('comment."postId" = :postId', { postId })
+      .getCount();
+
     // const comments = await this.dataSource.query(
     //   `
     //
@@ -98,14 +103,13 @@ export class CommentsQueryRepository {
     const commentsViewModel: CommentViewModel[] = comments.map(
       (item) => new CommentViewModel(item),
     );
-    return commentsViewModel;
 
-    // const paginator = new Paginator(
-    //   mappedQuery.getPageSize(),
-    //   mappedQuery.getPageNumber(),
-    // );
-    //
-    // return paginator.paginate(commentsViewModel, Number(totalCount[0].count));
+    const paginator = new Paginator(
+      mappedQuery.getPageSize(),
+      mappedQuery.getPageNumber(),
+    );
+
+    return paginator.paginate(commentsViewModel, totalCount);
   }
 
   async getCommentById(commentId: number, userId: number | null) {
