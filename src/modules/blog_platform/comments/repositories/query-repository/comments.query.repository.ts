@@ -109,33 +109,60 @@ export class CommentsQueryRepository {
   }
 
   async getCommentById(commentId: number, userId: number | null) {
-    const result = await this.dataSource.query(
-      `
-    
-    SELECT c."id",c."content",c."createdAt", u."id" AS "userId", u."login" AS "userLogin",
-    b."isBanned",
-        (SELECT Count(*) AS "totalLikesCount" FROM public."CommentsLikes" l
-        JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
-        WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
+    const comment = await this.commentRepository
+      .createQueryBuilder('comment')
+      .select([
+        'comment.id as id',
+        'comment.content as content',
+        'comment.createdAt as "createdAt"',
+        'comment.ownerId as "userId"',
+      ])
+      .where('comment.id = :commentId', { commentId })
+      .addSelect([
+        `(SELECT Count(*) FROM "CommentsLikes" c
+        WHERE c."commentId" = comment.id AND c."likeStatus" = 'Like') as "totalLikesCount"`,
+      ])
+      .addSelect([
+        `(SELECT Count(*) FROM "CommentsLikes" c
+        WHERE c."commentId" = comment.id AND c."likeStatus" = 'Dislike') as "totalDislikesCount"`,
+      ])
+      .addSelect([
+        `(SELECT "likeStatus"  FROM public."CommentsLikes" l
+    WHERE comment.id = l."commentId" AND l."userId" = :userId) AS "myStatus"`,
+      ])
 
-       (SELECT Count(*) AS "totalDislikesCount" FROM public."CommentsLikes" l
-        JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
-        WHERE "likeStatus" = 'Dislike' AND c."id" = l."commentId"),
-    
-    (SELECT "likeStatus" AS "myStatus" FROM public."CommentsLikes" l
-    WHERE c."id" = l."commentId" AND l."userId" = $2)
-    FROM "Comments" c
-    JOIN "Users" u ON u."id" = c."ownerId"
-    JOIN "UsersBanInfo" b ON b."userId" = c."ownerId"
-    
-    WHERE c."id" = $1 AND b."isBanned" = false
-    
-    
-    `,
-      [commentId, userId],
-    );
+      .setParameter('userId', userId)
+      .leftJoin('comment.user', 'user')
+      .addSelect(['user.login as "userLogin"'])
+      .getRawOne();
 
-    return result[0] ? new CommentViewModel(result[0]) : null;
+    // const result = await this.dataSource.query(
+    //   `
+    //
+    // SELECT c."id",c."content",c."createdAt", u."id" AS "userId", u."login" AS "userLogin",
+    // b."isBanned",
+    //     (SELECT Count(*) AS "totalLikesCount" FROM public."CommentsLikes" l
+    //     JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
+    //     WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
+    //
+    //    (SELECT Count(*) AS "totalDislikesCount" FROM public."CommentsLikes" l
+    //     JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
+    //     WHERE "likeStatus" = 'Dislike' AND c."id" = l."commentId"),
+    //
+    // (SELECT "likeStatus" AS "myStatus" FROM public."CommentsLikes" l
+    // WHERE c."id" = l."commentId" AND l."userId" = $2)
+    // FROM "Comments" c
+    // JOIN "Users" u ON u."id" = c."ownerId"
+    // JOIN "UsersBanInfo" b ON b."userId" = c."ownerId"
+    //
+    // WHERE c."id" = $1 AND b."isBanned" = false
+    //
+    //
+    // `,
+    //   [commentId, userId],
+    // );
+
+    return comment ? new CommentViewModel(comment) : null;
   }
 
   async getAllUserBlogsComments(
