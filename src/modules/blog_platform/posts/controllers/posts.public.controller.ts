@@ -36,6 +36,7 @@ export class PostsPublicController {
     private readonly commentsQueryRepository: CommentsQueryRepository,
     private readonly commandBus: CommandBus,
   ) {}
+
   @Get('')
   // @UseGuards(OptionalJwtAuthGuard)
   async getAllPosts(

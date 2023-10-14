@@ -12,12 +12,14 @@ import { CustomResponseEnum } from '../../../../utils/customResponse/CustomRespo
 import { OptionalJwtAuthGuard } from '../../../users_module/auth/guards/optional.jwt.guard';
 import { CurrentUser } from '../../../../common/decorators/currentUser/current.user.decorator';
 import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDataFromAT';
+
 @Controller('blogs')
 export class BlogsPublicController {
   constructor(
     private readonly blogsQueryRepository: BlogsQueryRepo,
     private readonly postsQueryRepository: PostsQueryRepository,
   ) {}
+
   @Get('')
   async getBlogs(@Query() query: BlogQueryInputDto) {
     const mappedQuery = new BlogQueryMapper(query);

@@ -162,7 +162,7 @@ export class PostsQueryRepository {
   }
 
   async getPostById(postId: number, currentUserId: null | number) {
-    const posts = await this.postRepository
+    const post = await this.postRepository
       .createQueryBuilder('p')
       .where('p.id = :postId', { postId })
       .select([
@@ -212,8 +212,7 @@ export class PostsQueryRepository {
       ])
       .setParameter('userId', currentUserId)
       .getRawMany();
-
-    return this.toViewModelWithLikes(posts);
+    return post ? this.toViewModelWithLikes(post)[0] : null;
 
     // const post: Post & { blog: Blog } = await this.postRepository
     //   .createQueryBuilder('post')

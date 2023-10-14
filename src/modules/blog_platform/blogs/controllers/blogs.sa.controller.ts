@@ -27,6 +27,7 @@ export class BlogsSaController {
     private readonly commandBus: CommandBus,
     private readonly blogsQueryRepository: BlogsQueryRepo,
   ) {}
+
   @Put(':blogId/bind-with-user/:userId')
   async bingUserForBlog(
     @Param('blogId', CustomParseInt) blogId: number,
