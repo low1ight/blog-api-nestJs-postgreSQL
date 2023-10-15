@@ -90,6 +90,9 @@ export class PostsPublicController {
   ) {
     const mappedQuery = new CommentQueryMapper(query);
 
+    const post: any = await this.postsQueryRepository.getPostById(id, null);
+    if (!post) Exceptions.throwHttpException(CustomResponseEnum.notExist);
+
     return await this.commentsQueryRepository.getComments(
       id,
       mappedQuery,
