@@ -162,7 +162,7 @@ export class PostsQueryRepository {
   }
 
   async getPostById(postId: number, currentUserId: null | number) {
-    const post = await this.postRepository
+    const query = this.postRepository
       .createQueryBuilder('p')
       .where('p.id = :postId', { postId })
       .select([
@@ -205,13 +205,19 @@ export class PostsQueryRepository {
       .addSelect([
         `(SELECT Count(*) FROM "PostsLikes" pl
           WHERE pl."postId" = p.id AND pl."likeStatus" = 'Dislike') as "totalDislikesCount"`,
-      ])
-      .addSelect([
-        `(SELECT "likeStatus"  FROM public."PostsLikes" pl
+      ]);
+
+    if (currentUserId) {
+      query
+        .addSelect([
+          `(SELECT "likeStatus"  FROM public."PostsLikes" pl
       WHERE p.id = pl."postId" AND pl."userId" = :userId) AS "myStatus"`,
-      ])
-      .setParameter('userId', currentUserId)
-      .getRawMany();
+        ])
+        .setParameter('userId', currentUserId);
+    }
+
+    const post = await query.getRawMany();
+
     return post ? this.toViewModelWithLikes(post)[0] : null;
 
     // const post: Post & { blog: Blog } = await this.postRepository

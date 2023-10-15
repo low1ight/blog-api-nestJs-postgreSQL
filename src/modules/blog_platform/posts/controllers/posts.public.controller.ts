@@ -38,24 +38,27 @@ export class PostsPublicController {
   ) {}
 
   @Get('')
-  // @UseGuards(OptionalJwtAuthGuard)
+  @UseGuards(OptionalJwtAuthGuard)
   async getAllPosts(
     @Query() query: PostsQueryDto,
-    // @CurrentUser() user: UserDataFromAT | null,
+    @CurrentUser() user: UserDataFromAT | null,
   ) {
     const mappedQuery = new PostQueryMapper(query);
 
-    return await this.postsQueryRepository.getPosts(null, mappedQuery, null);
+    return await this.postsQueryRepository.getPosts(
+      null,
+      mappedQuery,
+      user?.id,
+    );
   }
 
   @Get(':id')
-  // @UseGuards(OptionalJwtAuthGuard)
+  @UseGuards(OptionalJwtAuthGuard)
   async getPostById(
     @Param('id', CustomParseInt) id: number,
-    // @CurrentUser() user: UserDataFromAT | null,
+    @CurrentUser() user: UserDataFromAT | null,
   ) {
-    console.log('start');
-    const post: any = await this.postsQueryRepository.getPostById(id, null);
+    const post: any = await this.postsQueryRepository.getPostById(id, user?.id);
     if (!post) Exceptions.throwHttpException(CustomResponseEnum.notExist);
     return post;
   }
