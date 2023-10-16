@@ -57,7 +57,6 @@ export class PostsQueryRepository {
               'ROW_NUMBER() OVER (PARTITION BY l."postId" ORDER BY l."createdAt" DESC) AS rn',
             ])
             .from(PostLikes, 'l')
-            .limit(5)
             .innerJoin(
               UserBanInfo,
               'b',
@@ -68,6 +67,7 @@ export class PostsQueryRepository {
         'likes',
         'likes."postId" = p.id',
       )
+      .where('likes.rn <= 5')
       .addSelect([
         `(SELECT Count(*) FROM "PostsLikes" pl
         WHERE pl."postId" = p.id AND pl."likeStatus" = 'Like') as "totalLikesCount"`,
@@ -187,7 +187,6 @@ export class PostsQueryRepository {
               'ROW_NUMBER() OVER (PARTITION BY l."postId" ORDER BY l."createdAt" DESC) AS rn',
             ])
             .from(PostLikes, 'l')
-            .limit(5)
             .innerJoin(
               UserBanInfo,
               'b',
@@ -198,6 +197,7 @@ export class PostsQueryRepository {
         'likes',
         'likes."postId" = p.id',
       )
+      .where('likes.rn <= 5')
       .addSelect([
         `(SELECT Count(*) FROM "PostsLikes" pl
         WHERE pl."postId" = p.id AND pl."likeStatus" = 'Like') as "totalLikesCount"`,
