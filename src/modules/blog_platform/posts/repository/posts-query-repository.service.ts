@@ -62,6 +62,7 @@ export class PostsQueryRepository {
               'b',
               'l.userId = b.userId AND b.isBanned = false',
             )
+            .orderBy('l."createdAt"', 'DESC')
             .limit(mappedQuery.getPageSize())
             .offset(mappedQuery.getOffset())
             .leftJoin('Users', 'u', 'u.id = l.userId')
@@ -84,6 +85,7 @@ export class PostsQueryRepository {
       ])
       .setParameter('userId', currentUserId)
       .orderBy(orderBy, mappedQuery.getSortDirection())
+      .addOrderBy('"likeAddedAt"', 'DESC')
       .getRawMany();
 
     const postsViewModels = this.toViewModelWithLikes(posts);
@@ -192,17 +194,18 @@ export class PostsQueryRepository {
               'ROW_NUMBER() OVER (PARTITION BY l."postId" ORDER BY l."createdAt" DESC) AS rn',
             ])
             .from(PostLikes, 'l')
-            .limit(5)
             .innerJoin(
               UserBanInfo,
               'b',
               'l.userId = b.userId AND b.isBanned = false',
             )
             .leftJoin('Users', 'u', 'u.id = l.userId')
+            .orderBy('l."createdAt"', 'DESC')
             .where('l.likeStatus = :likeStatus', { likeStatus: 'Like' }),
         'likes',
         'likes."postId" = p.id',
       )
+      .orderBy('"likeAddedAt"', 'DESC')
       .andWhere('likes.rn IS NULL OR likes.rn <= 5')
       .addSelect([
         `(SELECT Count(*) FROM "PostsLikes" pl
