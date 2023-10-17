@@ -31,7 +31,7 @@ export class PostsQueryRepository {
       .where('b.isBanned = :isBanned', { isBanned: false });
 
     if (blogId !== null) {
-      queryBuilder.andWhere('b.id = :blogId', { blogId });
+      queryBuilder.andWhere('p."blogId" = :blogId', { blogId });
     }
 
     const posts = await queryBuilder
@@ -62,12 +62,14 @@ export class PostsQueryRepository {
               'b',
               'l.userId = b.userId AND b.isBanned = false',
             )
+            .limit(mappedQuery.getPageSize())
+            .offset(mappedQuery.getOffset())
             .leftJoin('Users', 'u', 'u.id = l.userId')
             .where('l.likeStatus = :likeStatus', { likeStatus: 'Like' }),
         'likes',
         'likes."postId" = p.id',
       )
-      .where('likes.rn <= 5')
+      .andWhere('likes.rn IS NULL OR likes.rn <= 5')
       .addSelect([
         `(SELECT Count(*) FROM "PostsLikes" pl
         WHERE pl."postId" = p.id AND pl."likeStatus" = 'Like') as "totalLikesCount"`,
@@ -82,13 +84,16 @@ export class PostsQueryRepository {
       ])
       .setParameter('userId', currentUserId)
       .orderBy(orderBy, mappedQuery.getSortDirection())
-      .limit(mappedQuery.getPageSize())
-      .offset(mappedQuery.getOffset())
       .getRawMany();
 
     const postsViewModels = this.toViewModelWithLikes(posts);
 
-    const count = await this.postRepository.count();
+    const count = await this.postRepository
+      .createQueryBuilder('p')
+      .leftJoin('p.blog', 'b')
+      .where('b.isBanned = :isBanned', { isBanned: false })
+      .andWhere('p."blogId" = :blogId', { blogId })
+      .getCount();
 
     //  const posts = await this.dataSource.query(
     //    `
@@ -187,6 +192,7 @@ export class PostsQueryRepository {
               'ROW_NUMBER() OVER (PARTITION BY l."postId" ORDER BY l."createdAt" DESC) AS rn',
             ])
             .from(PostLikes, 'l')
+            .limit(5)
             .innerJoin(
               UserBanInfo,
               'b',
