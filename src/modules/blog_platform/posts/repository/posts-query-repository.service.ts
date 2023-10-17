@@ -30,8 +30,14 @@ export class PostsQueryRepository {
       .createQueryBuilder('p')
       .where('b.isBanned = :isBanned', { isBanned: false });
 
+    const queryCount = this.postRepository
+      .createQueryBuilder('p')
+      .leftJoin('p.blog', 'b')
+      .where('b.isBanned = :isBanned', { isBanned: false });
+
     if (blogId !== null) {
       queryBuilder.andWhere('p."blogId" = :blogId', { blogId });
+      queryCount.andWhere('p."blogId" = :blogId', { blogId });
     }
 
     const posts = await queryBuilder
@@ -90,12 +96,7 @@ export class PostsQueryRepository {
 
     const postsViewModels = this.toViewModelWithLikes(posts);
 
-    const count = await this.postRepository
-      .createQueryBuilder('p')
-      .leftJoin('p.blog', 'b')
-      .where('b.isBanned = :isBanned', { isBanned: false })
-      .andWhere('p."blogId" = :blogId', { blogId })
-      .getCount();
+    const count = await queryCount.getCount();
 
     //  const posts = await this.dataSource.query(
     //    `
