@@ -70,7 +70,7 @@ export class PostsQueryRepository {
         'likes',
         'likes."postId" = p.id',
       )
-      .andWhere('likes.rn IS NULL OR likes.rn <= 5')
+      .andWhere('likes.rn IS NULL OR likes.rn <= 3')
       .addSelect([
         `(SELECT Count(*) FROM "PostsLikes" pl
         WHERE pl."postId" = p.id AND pl."likeStatus" = 'Like') as "totalLikesCount"`,
@@ -206,7 +206,7 @@ export class PostsQueryRepository {
         'likes."postId" = p.id',
       )
       .orderBy('"likeAddedAt"', 'DESC')
-      .andWhere('likes.rn IS NULL OR likes.rn <= 5')
+      .andWhere('likes.rn IS NULL OR likes.rn <= 3')
       .addSelect([
         `(SELECT Count(*) FROM "PostsLikes" pl
         WHERE pl."postId" = p.id AND pl."likeStatus" = 'Like') as "totalLikesCount"`,
