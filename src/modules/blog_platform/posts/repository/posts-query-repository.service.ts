@@ -203,7 +203,7 @@ export class PostsQueryRepository {
         'likes',
         'likes."postId" = p.id',
       )
-      .where('likes.rn <= 5')
+      .andWhere('likes.rn IS NULL OR likes.rn <= 5')
       .addSelect([
         `(SELECT Count(*) FROM "PostsLikes" pl
         WHERE pl."postId" = p.id AND pl."likeStatus" = 'Like') as "totalLikesCount"`,
