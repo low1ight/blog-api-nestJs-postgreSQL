@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateBlogInputDto } from './dto/CreateBlogInputDto';
-import { JwtAuthGuard } from '../../../users_module/auth/guards/jwt.auth.guard';
 import { CurrentUser } from '../../../../common/decorators/currentUser/current.user.decorator';
 import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDataFromAT';
 import { CreateBlogUseCaseCommand } from '../application/use-cases/createBlogUseCase';
@@ -135,11 +134,15 @@ export class BlogsBloggerController {
   async getBlogPosts(
     @Param('id', CustomParseInt) id: number,
     @Query() query: PostsQueryDto,
-    // @CurrentUser() userData: UserDataFromAT,
+    @CurrentUser() userData: UserDataFromAT,
   ) {
     const mappedQuery = new PostQueryMapper(query);
 
-    return await this.postsQueryRepository.getPosts(id, mappedQuery, null);
+    return await this.postsQueryRepository.getPosts(
+      id,
+      mappedQuery,
+      userData.id,
+    );
   }
 
   @Get('')

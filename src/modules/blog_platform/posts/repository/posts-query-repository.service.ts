@@ -26,13 +26,10 @@ export class PostsQueryRepository {
     if (orderBy.toLowerCase() === 'blogname') orderBy = 'b.name';
     else orderBy = 'p.' + orderBy;
 
+    console.log(orderBy);
+
     const queryBuilder = this.postRepository.createQueryBuilder('p');
     const queryCount = this.postRepository.createQueryBuilder('p');
-
-    if (blogId !== null) {
-      queryBuilder.andWhere('p."blogId" = :blogId', { blogId });
-      queryCount.andWhere('p."blogId" = :blogId', { blogId });
-    }
 
     queryBuilder
       .select([
@@ -62,7 +59,7 @@ export class PostsQueryRepository {
                   'us.login as login',
                 ])
                 .from(PostLikes, 'pl')
-                .where('pl.postId = p.id')
+                .andWhere('pl.postId = p.id')
                 .leftJoin('pl.user', 'us')
                 .andWhere("pl.likeStatus = 'Like'")
                 .orderBy('"createdAt"', 'DESC')
@@ -92,6 +89,11 @@ export class PostsQueryRepository {
       WHERE p.id = pl."postId" AND pl."userId" = :userId) AS "myStatus"`,
         ])
         .setParameter('userId', currentUserId);
+    }
+
+    if (blogId !== null) {
+      queryBuilder.andWhere('p."blogId" = :blogId', { blogId });
+      queryCount.andWhere('p."blogId" = :blogId', { blogId });
     }
 
     const posts = await queryBuilder.getRawMany();
