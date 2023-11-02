@@ -82,7 +82,8 @@ export class PostsQueryRepository {
           WHERE pl."postId" = p.id AND pl."likeStatus" = 'Dislike') as "totalDislikesCount"`,
       ])
       .orderBy(orderBy, mappedQuery.getSortDirection())
-      .limit(mappedQuery.getPageSize());
+      .limit(mappedQuery.getPageSize())
+      .skip(mappedQuery.getOffset());
 
     if (currentUserId) {
       queryBuilder
