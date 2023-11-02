@@ -146,7 +146,7 @@ export class PostsQueryRepository {
         'newestLikes',
       )
       .leftJoin('p.blog', 'b')
-      .where('b.isBanned = :isBanned', { isBanned: false })
+      .andWhere('b.isBanned = :isBanned', { isBanned: false })
       .addSelect([
         `(SELECT Count(*) FROM "PostsLikes" pl
         WHERE pl."postId" = p.id AND pl."likeStatus" = 'Like') as "totalLikesCount"`,
@@ -154,8 +154,7 @@ export class PostsQueryRepository {
       .addSelect([
         `(SELECT Count(*) FROM "PostsLikes" pl
           WHERE pl."postId" = p.id AND pl."likeStatus" = 'Dislike') as "totalDislikesCount"`,
-      ])
-      .limit(10);
+      ]);
 
     if (currentUserId) {
       query
