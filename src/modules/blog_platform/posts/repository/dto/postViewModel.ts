@@ -27,6 +27,7 @@ export class PostViewModel {
     totalLikesCount,
     totalDislikesCount,
     myStatus,
+    newestLikes,
   }: PostsWithBlogDataAndLikesRaw) {
     this.id = id.toString();
     this.title = title;
@@ -39,7 +40,7 @@ export class PostViewModel {
       likesCount: Number(totalLikesCount),
       dislikesCount: Number(totalDislikesCount),
       myStatus: myStatus || 'None',
-      newestLikes: [],
+      newestLikes: newestLikes || [],
     };
   }
 }

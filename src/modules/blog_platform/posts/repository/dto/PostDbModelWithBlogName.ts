@@ -1,3 +1,5 @@
+import { LikeForPostViewModel } from './LikeForPostViewModel';
+
 export type PostsWithBlogDataAndLikesRaw = {
   id: number;
   blogId: number;
@@ -12,6 +14,7 @@ export type PostsWithBlogDataAndLikesRaw = {
   likeUserId: number;
   likeAddedAt: Date;
   likeUserLogin: string;
+  newestLikes: LikeForPostViewModel[];
 };
 
 export type GroupedPostsWithBlogDataAndLikesRaw = {
