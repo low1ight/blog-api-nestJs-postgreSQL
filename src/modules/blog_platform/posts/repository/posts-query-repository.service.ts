@@ -80,7 +80,7 @@ export class PostsQueryRepository {
       ])
       .orderBy(orderBy, mappedQuery.getSortDirection())
       .limit(mappedQuery.getPageSize())
-      .skip(mappedQuery.getOffset());
+      .offset(mappedQuery.getOffset());
 
     if (currentUserId) {
       queryBuilder
