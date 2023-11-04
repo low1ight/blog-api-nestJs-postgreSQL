@@ -59,47 +59,6 @@ export class CommentsQueryRepository {
       .where('comment."postId" = :postId', { postId })
       .getCount();
 
-    // const comments = await this.dataSource.query(
-    //   `
-    //
-    // SELECT c."id",c."content",c."createdAt", u."id" AS "userId", u."login" AS "userLogin",
-    //
-    // (SELECT Count(*) AS "totalLikesCount" FROM public."CommentsLikes" l
-    //     JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
-    //     WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
-    //
-    //    (SELECT Count(*) AS "totalDislikesCount" FROM public."CommentsLikes" l
-    //     JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
-    //     WHERE "likeStatus" = 'Dislike' AND c."id" = l."commentId"),
-    //
-    // (SELECT "likeStatus" AS "myStatus" FROM public."CommentsLikes" l
-    // WHERE c."id" = l."commentId" AND l."userId" = $2)
-    //
-    // FROM "Comments" c
-    // JOIN "Users" u ON u."id" = c."ownerId"
-    // JOIN "UsersBanInfo" b ON b."userId" = c."ownerId"
-    // WHERE c."postId" = $1 OR $1 IS NULL AND b."isBanned" = false
-    // ORDER BY c."${mappedQuery.getSortBy()}" ${mappedQuery.getSortDirection()}
-    //   LIMIT ${mappedQuery.getPageSize()}
-    //   OFFSET ${mappedQuery.getOffset()}
-    //
-    //
-    //
-    // `,
-    //   [postId, currentUserId],
-    // );
-    //
-    // const totalCount = await this.dataSource.query(
-    //   `
-    // SELECT Count(*)
-    //
-    //
-    //    FROM "Comments" c WHERE c."postId" = $1 OR $1 IS NULL
-    //
-    // `,
-    //   [postId],
-    // );
-    //
     const commentsViewModel: CommentViewModel[] = comments.map(
       (item) => new CommentViewModel(item),
     );
@@ -139,32 +98,6 @@ export class CommentsQueryRepository {
       .leftJoin('comment.user', 'user')
       .addSelect(['user.login as "userLogin"'])
       .getRawOne();
-
-    // const result = await this.dataSource.query(
-    //   `
-    //
-    // SELECT c."id",c."content",c."createdAt", u."id" AS "userId", u."login" AS "userLogin",
-    // b."isBanned",
-    //     (SELECT Count(*) AS "totalLikesCount" FROM public."CommentsLikes" l
-    //     JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
-    //     WHERE "likeStatus" = 'Like' AND c."id" = l."commentId"),
-    //
-    //    (SELECT Count(*) AS "totalDislikesCount" FROM public."CommentsLikes" l
-    //     JOIN "UsersBanInfo" b ON l."userId" = b."userId" AND b."isBanned" = false
-    //     WHERE "likeStatus" = 'Dislike' AND c."id" = l."commentId"),
-    //
-    // (SELECT "likeStatus" AS "myStatus" FROM public."CommentsLikes" l
-    // WHERE c."id" = l."commentId" AND l."userId" = $2)
-    // FROM "Comments" c
-    // JOIN "Users" u ON u."id" = c."ownerId"
-    // JOIN "UsersBanInfo" b ON b."userId" = c."ownerId"
-    //
-    // WHERE c."id" = $1 AND b."isBanned" = false
-    //
-    //
-    // `,
-    //   [commentId, userId],
-    // );
 
     return comment ? new CommentViewModel(comment) : null;
   }

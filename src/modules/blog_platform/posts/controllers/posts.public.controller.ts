@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { PostsQueryDto } from './dto/query/PostsQueryDto';
 import { PostQueryMapper } from './dto/query/PostQueryMapper';
-import { PostsQueryRepository } from '../repository/posts-query-repository.service';
+import { PostsQueryRepository } from '../repository/posts.query.repository';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
 import { Exceptions } from '../../../../utils/throwException';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';

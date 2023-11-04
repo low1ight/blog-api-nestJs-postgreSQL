@@ -23,7 +23,7 @@ import { Exceptions } from '../../../../utils/throwException';
 import { DeleteBlogUseCaseCommand } from '../application/use-cases/deleteBlogUseCase';
 import { CreatePostForBlogDto } from './dto/createPostForBlogDto';
 import { CreatePostForBlogUseCaseCommand } from '../../posts/application/use-cases/createPostForBlogUseCase';
-import { PostsQueryRepository } from '../../posts/repository/posts-query-repository.service';
+import { PostsQueryRepository } from '../../posts/repository/posts.query.repository';
 import { UpdatePostDto } from './dto/UpdatePostDto';
 import { UpdatePostUseCaseCommand } from '../../posts/application/use-cases/updatePostUseCase';
 import { DeletePostUseCaseCommand } from '../../posts/application/use-cases/deletePostUseCase';

@@ -5,7 +5,7 @@ import { BlogQueryMapper } from './dto/query/BlogQueryMapper';
 import { PostQueryMapper } from '../../posts/controllers/dto/query/PostQueryMapper';
 import { PostsQueryDto } from '../../posts/controllers/dto/query/PostsQueryDto';
 import { CustomParseInt } from '../../../../common/customPipe/customParseInt';
-import { PostsQueryRepository } from '../../posts/repository/posts-query-repository.service';
+import { PostsQueryRepository } from '../../posts/repository/posts.query.repository';
 import { BlogViewModel } from '../repositories/dto/BlogViewModel';
 import { Exceptions } from '../../../../utils/throwException';
 import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';

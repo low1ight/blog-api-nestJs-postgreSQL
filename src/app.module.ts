@@ -54,7 +54,7 @@ import { UpdateBlogUseCase } from './modules/blog_platform/blogs/application/use
 import { DeleteBlogUseCase } from './modules/blog_platform/blogs/application/use-cases/deleteBlogUseCase';
 import { PostsRepo } from './modules/blog_platform/posts/repository/posts.repo';
 import { CreatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/createPostForBlogUseCase';
-import { PostsQueryRepository } from './modules/blog_platform/posts/repository/posts-query-repository.service';
+import { PostsQueryRepository } from './modules/blog_platform/posts/repository/posts.query.repository';
 import { UpdatePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/updatePostUseCase';
 import { DeletePostForBlogUseCase } from './modules/blog_platform/posts/application/use-cases/deletePostUseCase';
 import { BlogsQueryRepo } from './modules/blog_platform/blogs/repositories/query-repository/blogs-query-repo';
