@@ -92,6 +92,9 @@ import { CommentLikes } from './modules/blog_platform/comments/entity/CommentLik
 import { APP_GUARD } from '@nestjs/core';
 import { QuizPublicController } from './modules/quiz_game/controllets/quiz.public.controller';
 import { QuizSaController } from './modules/quiz_game/controllets/quiz.sa.controller';
+import { QuizQuestions } from './modules/quiz_game/entity/Quiz.questions.entity';
+import { QuizQuestionsSaRepo } from './modules/quiz_game/repository/quiz.questions.sa.repo';
+import { CreateQuizQuestionUseCase } from './modules/quiz_game/application/use-cases/createQuizQuestionUseCase';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -122,6 +125,7 @@ const useCases = [
   SetLikeStatusForPostUseCase,
   UpdatePostForBlogUseCase,
   DeleteBlogUseCase,
+  CreateQuizQuestionUseCase,
 ];
 
 @Module({
@@ -153,6 +157,7 @@ const useCases = [
       PostLikes,
       Comment,
       CommentLikes,
+      QuizQuestions,
     ]),
     MailerModule.forRoot({
       transport: {
@@ -223,6 +228,7 @@ const useCases = [
     BannedUsersForBlogsQueryRepository,
     RefreshTokenStrategy,
     DevicesService,
+    QuizQuestionsSaRepo,
     ...customValidators,
     ...useCases,
 
