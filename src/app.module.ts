@@ -90,6 +90,8 @@ import { Post } from './modules/blog_platform/posts/entity/Post.entity';
 import { Comment } from './modules/blog_platform/comments/entity/Comment.entity';
 import { CommentLikes } from './modules/blog_platform/comments/entity/CommentLikes.entity';
 import { APP_GUARD } from '@nestjs/core';
+import { QuizPublicController } from './modules/quiz_game/controllets/quiz.public.controller';
+import { QuizSaController } from './modules/quiz_game/controllets/quiz.sa.controller';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -178,6 +180,7 @@ const useCases = [
   controllers: [
     AppController,
     UsersSaController,
+    QuizPublicController,
     DevicePublicController,
     TestingController,
     PostsPublicController,
@@ -187,6 +190,7 @@ const useCases = [
     CommentsPublicController,
     BlogsSaController,
     UsersBloggerController,
+    QuizSaController,
   ],
   providers: [
     BasicStrategy,
