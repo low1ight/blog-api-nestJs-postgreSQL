@@ -95,6 +95,7 @@ import { QuizSaController } from './modules/quiz_game/controllets/quiz.sa.contro
 import { QuizQuestions } from './modules/quiz_game/entity/Quiz.questions.entity';
 import { QuizQuestionsSaRepo } from './modules/quiz_game/repository/quiz.questions.sa.repo';
 import { CreateQuizQuestionUseCase } from './modules/quiz_game/application/use-cases/createQuizQuestionUseCase';
+import { DeleteQuizQuestionByIdUseCase } from './modules/quiz_game/application/use-cases/deleteQuizQuestionByIdUseCase';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -106,6 +107,7 @@ const useCases = [
   DeletePostForBlogUseCase,
   RefreshRtUseCase,
   UpdateCommentUseCase,
+  DeleteQuizQuestionByIdUseCase,
   CreateCommentForPostUseCase,
   UpdateBlogUseCase,
   SetBanStatusForUserUseCase,

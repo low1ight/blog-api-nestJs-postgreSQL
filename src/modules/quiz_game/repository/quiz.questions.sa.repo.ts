@@ -22,4 +22,11 @@ export class QuizQuestionsSaRepo {
 
     return await this.quizQuestionRepository.save(quizQuestion);
   }
+
+  async getQuizQuestionById(id: string) {
+    return await this.quizQuestionRepository.findOneBy({ id });
+  }
+  async deleteQuizQuestionById(id: string) {
+    return await this.quizQuestionRepository.delete({ id });
+  }
 }
