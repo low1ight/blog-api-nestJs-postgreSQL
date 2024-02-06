@@ -2,6 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { QuizQuestions } from '../entity/Quiz.questions.entity';
 import { Repository } from 'typeorm';
 import { CreateQuizQuestionInputDto } from '../controllets/dto/CreateQuizQuestionInputDto';
+import { SetPublishQuestionStatusDto } from '../controllets/dto/SetPublishQuestionStatusDto';
 
 export class QuizQuestionsSaRepo {
   constructor(
@@ -26,6 +27,13 @@ export class QuizQuestionsSaRepo {
   async getQuizQuestionById(id: string) {
     return await this.quizQuestionRepository.findOneBy({ id });
   }
+
+  async setPublishQuestionStatus(dto: SetPublishQuestionStatusDto, id: string) {
+    const question = await this.quizQuestionRepository.findOneBy({ id });
+    question.published = dto.published;
+    return await this.quizQuestionRepository.save(question);
+  }
+
   async deleteQuizQuestionById(id: string) {
     return await this.quizQuestionRepository.delete({ id });
   }

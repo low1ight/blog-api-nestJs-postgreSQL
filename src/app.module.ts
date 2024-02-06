@@ -96,6 +96,7 @@ import { QuizQuestions } from './modules/quiz_game/entity/Quiz.questions.entity'
 import { QuizQuestionsSaRepo } from './modules/quiz_game/repository/quiz.questions.sa.repo';
 import { CreateQuizQuestionUseCase } from './modules/quiz_game/application/use-cases/createQuizQuestionUseCase';
 import { DeleteQuizQuestionByIdUseCase } from './modules/quiz_game/application/use-cases/deleteQuizQuestionByIdUseCase';
+import { SetQuestionPublishStatusByIdUseCase } from './modules/quiz_game/application/use-cases/setQuestionPublishStatusByIdUseCase';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -115,6 +116,7 @@ const useCases = [
   SerLikeStatusForCommentUseCase,
   BindBlogUseCase,
   LogoutUseCase,
+  SetQuestionPublishStatusByIdUseCase,
   SetNewPasswordUseCase,
   LoginUseCase,
   PasswordRecoveryUseCase,
