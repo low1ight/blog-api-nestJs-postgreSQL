@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+import { ArrayMinSize, IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateQuizQuestionInputDto {
   @IsString()
@@ -6,5 +6,7 @@ export class CreateQuizQuestionInputDto {
   body: string;
 
   @IsArray()
-  correctAnswers: [];
+  @ArrayMinSize(1)
+  @IsString({ each: true })
+  correctAnswers: string[];
 }
