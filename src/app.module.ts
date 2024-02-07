@@ -97,12 +97,14 @@ import { QuizQuestionsSaRepo } from './modules/quiz_game/repository/quiz.questio
 import { CreateQuizQuestionUseCase } from './modules/quiz_game/application/use-cases/createQuizQuestionUseCase';
 import { DeleteQuizQuestionByIdUseCase } from './modules/quiz_game/application/use-cases/deleteQuizQuestionByIdUseCase';
 import { SetQuestionPublishStatusByIdUseCase } from './modules/quiz_game/application/use-cases/setQuestionPublishStatusByIdUseCase';
+import { UpdateQuizQuestionByIdUseCase } from './modules/quiz_game/application/use-cases/updateQuizQuestionByIdUseCase';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
   DeleteAllOtherDevicesUseCase,
   CreateUserUseCase,
   BanBlogUseCase,
+  UpdateQuizQuestionByIdUseCase,
   DeleteUserUseCase,
   RegisterNewUserUseCase,
   DeletePostForBlogUseCase,

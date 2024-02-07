@@ -9,6 +9,8 @@ import { CustomResponse } from '../../../utils/customResponse/CustomResponse';
 import { Exceptions } from '../../../utils/throwException';
 import { SetPublishQuestionStatusDto } from './dto/SetPublishQuestionStatusDto';
 import { SetQuestionPublishStatusByIdUseCaseCommand } from '../application/use-cases/setQuestionPublishStatusByIdUseCase';
+import { UpdateQuizQuestionInputDto } from './dto/UpdateQuizQuestionInputDto';
+import { UpdateQuizQuestionByIdUseCaseCommand } from '../application/use-cases/updateQuizQuestionByIdUseCase';
 
 @Controller('sa/quiz/questions')
 export class QuizSaController {
@@ -34,6 +36,22 @@ export class QuizSaController {
       new SetQuestionPublishStatusByIdUseCaseCommand(dto, id),
     );
 
+    if (!result.isSuccess)
+      return Exceptions.throwHttpException(
+        result.errStatusCode,
+        result.content,
+      );
+  }
+
+  @Put(':id')
+  @HttpCode(204)
+  async updateQuestionById(
+    @Body() dto: UpdateQuizQuestionInputDto,
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ) {
+    const result: CustomResponse<any> = await this.commandBus.execute(
+      new UpdateQuizQuestionByIdUseCaseCommand(dto, id),
+    );
     if (!result.isSuccess)
       return Exceptions.throwHttpException(
         result.errStatusCode,
