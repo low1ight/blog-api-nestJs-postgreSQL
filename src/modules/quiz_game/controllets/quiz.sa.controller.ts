@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, HttpCode, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpCode,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { QuizQuestionsSaRepo } from '../repository/quiz.questions.sa.repo';
 import { CreateQuizQuestionInputDto } from './dto/CreateQuizQuestionInputDto';
 import { CommandBus } from '@nestjs/cqrs';
@@ -11,8 +19,10 @@ import { SetPublishQuestionStatusDto } from './dto/SetPublishQuestionStatusDto';
 import { SetQuestionPublishStatusByIdUseCaseCommand } from '../application/use-cases/setQuestionPublishStatusByIdUseCase';
 import { UpdateQuizQuestionInputDto } from './dto/UpdateQuizQuestionInputDto';
 import { UpdateQuizQuestionByIdUseCaseCommand } from '../application/use-cases/updateQuizQuestionByIdUseCase';
+import { BasicAuthGuard } from '../../users_module/auth/guards/basic.auth.guard';
 
 @Controller('sa/quiz/questions')
+@UseGuards(BasicAuthGuard)
 export class QuizSaController {
   constructor(
     private readonly quizQuestionsSaRepo: QuizQuestionsSaRepo,
