@@ -1,6 +1,6 @@
 import { IsBoolean, IsNotEmpty } from 'class-validator';
 
-export class SetPublishQuestionStatusDto {
+export class SetPublishQuizQuestionStatusDto {
   @IsNotEmpty()
   @IsBoolean()
   published: boolean;

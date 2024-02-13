@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { QuizQuestionsSaRepo } from '../../repository/quiz.questions.sa.repo';
+import { QuizQuestionsRepo } from '../../repository/quiz.questions.repo';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 import { UpdateQuizQuestionInputDto } from '../../controllets/dto/UpdateQuizQuestionInputDto';
 
@@ -11,7 +11,7 @@ export class UpdateQuizQuestionByIdUseCaseCommand {
 export class UpdateQuizQuestionByIdUseCase
   implements ICommandHandler<UpdateQuizQuestionByIdUseCaseCommand>
 {
-  constructor(private readonly quizQuestionSaRepo: QuizQuestionsSaRepo) {}
+  constructor(private readonly quizQuestionSaRepo: QuizQuestionsRepo) {}
 
   async execute({ dto, id }: UpdateQuizQuestionByIdUseCaseCommand) {
     const quizQuestion = await this.quizQuestionSaRepo.getQuizQuestionById(id);

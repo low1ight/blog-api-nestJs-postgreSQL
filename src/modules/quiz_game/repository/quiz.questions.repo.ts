@@ -2,10 +2,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { QuizQuestions } from '../entity/Quiz.questions.entity';
 import { Repository } from 'typeorm';
 import { CreateQuizQuestionInputDto } from '../controllets/dto/CreateQuizQuestionInputDto';
-import { SetPublishQuestionStatusDto } from '../controllets/dto/SetPublishQuestionStatusDto';
+import { SetPublishQuizQuestionStatusDto } from '../controllets/dto/SetPublishQuizQuestionStatusDto';
 import { UpdateQuizQuestionInputDto } from '../controllets/dto/UpdateQuizQuestionInputDto';
+import { Injectable } from '@nestjs/common';
 
-export class QuizQuestionsSaRepo {
+@Injectable()
+export class QuizQuestionsRepo {
   constructor(
     @InjectRepository(QuizQuestions)
     private quizQuestionRepository: Repository<QuizQuestions>,
@@ -39,7 +41,10 @@ export class QuizQuestionsSaRepo {
     return await this.quizQuestionRepository.save(question);
   }
 
-  async setPublishQuestionStatus(dto: SetPublishQuestionStatusDto, id: string) {
+  async setPublishQuestionStatus(
+    dto: SetPublishQuizQuestionStatusDto,
+    id: string,
+  ) {
     const question = await this.quizQuestionRepository.findOneBy({ id });
     question.published = dto.published;
     return await this.quizQuestionRepository.save(question);

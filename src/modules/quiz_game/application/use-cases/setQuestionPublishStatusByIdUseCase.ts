@@ -1,17 +1,17 @@
-import { SetPublishQuestionStatusDto } from '../../controllets/dto/SetPublishQuestionStatusDto';
+import { SetPublishQuizQuestionStatusDto } from '../../controllets/dto/SetPublishQuizQuestionStatusDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { QuizQuestionsSaRepo } from '../../repository/quiz.questions.sa.repo';
+import { QuizQuestionsRepo } from '../../repository/quiz.questions.repo';
 import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
 
 export class SetQuestionPublishStatusByIdUseCaseCommand {
-  constructor(public dto: SetPublishQuestionStatusDto, public id: string) {}
+  constructor(public dto: SetPublishQuizQuestionStatusDto, public id: string) {}
 }
 
 @CommandHandler(SetQuestionPublishStatusByIdUseCaseCommand)
 export class SetQuestionPublishStatusByIdUseCase
   implements ICommandHandler<SetQuestionPublishStatusByIdUseCaseCommand>
 {
-  constructor(private readonly quizQuestionSaRepo: QuizQuestionsSaRepo) {}
+  constructor(private readonly quizQuestionSaRepo: QuizQuestionsRepo) {}
 
   async execute({ dto, id }: SetQuestionPublishStatusByIdUseCaseCommand) {
     const quizQuestion = await this.quizQuestionSaRepo.getQuizQuestionById(id);

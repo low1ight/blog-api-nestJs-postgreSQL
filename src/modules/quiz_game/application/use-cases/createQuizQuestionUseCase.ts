@@ -1,6 +1,6 @@
 import { CreateQuizQuestionInputDto } from '../../controllets/dto/CreateQuizQuestionInputDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { QuizQuestionsSaRepo } from '../../repository/quiz.questions.sa.repo';
+import { QuizQuestionsRepo } from '../../repository/quiz.questions.repo';
 
 export class CreateQuizQuestionUseCaseCommand {
   constructor(public dto: CreateQuizQuestionInputDto) {}
@@ -10,7 +10,7 @@ export class CreateQuizQuestionUseCaseCommand {
 export class CreateQuizQuestionUseCase
   implements ICommandHandler<CreateQuizQuestionUseCaseCommand>
 {
-  constructor(private readonly quizQuestionSaRepo: QuizQuestionsSaRepo) {}
+  constructor(private readonly quizQuestionSaRepo: QuizQuestionsRepo) {}
 
   async execute({ dto }: CreateQuizQuestionUseCaseCommand) {
     return await this.quizQuestionSaRepo.createQuizQuestion(dto);

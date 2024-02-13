@@ -78,7 +78,6 @@ import { SerLikeStatusForCommentUseCase } from './modules/blog_platform/comments
 import { CommentsPublicController } from './modules/blog_platform/comments/controllers/comments.public.controller';
 import { DeleteCommentForPostUseCase } from './modules/blog_platform/comments/application/use-cases/deleteCommentForPostUseCase';
 import { UpdateCommentUseCase } from './modules/blog_platform/comments/application/use-cases/updateCommentUseCase';
-
 import { UserBanInfo } from './modules/users_module/users/entities/UserBanInfo.entity';
 import { User } from './modules/users_module/users/entities/User.entity';
 import { UserDevices } from './modules/users_module/users/entities/UserDevices.entity';
@@ -90,14 +89,14 @@ import { Post } from './modules/blog_platform/posts/entity/Post.entity';
 import { Comment } from './modules/blog_platform/comments/entity/Comment.entity';
 import { CommentLikes } from './modules/blog_platform/comments/entity/CommentLikes.entity';
 import { APP_GUARD } from '@nestjs/core';
-import { QuizPublicController } from './modules/quiz_game/controllets/quiz.public.controller';
-import { QuizSaController } from './modules/quiz_game/controllets/quiz.sa.controller';
+import { QuizQuestionSaController } from './modules/quiz_game/controllets/quizQuestion.sa.controller';
 import { QuizQuestions } from './modules/quiz_game/entity/Quiz.questions.entity';
-import { QuizQuestionsSaRepo } from './modules/quiz_game/repository/quiz.questions.sa.repo';
+import { QuizQuestionsRepo } from './modules/quiz_game/repository/quiz.questions.repo';
 import { CreateQuizQuestionUseCase } from './modules/quiz_game/application/use-cases/createQuizQuestionUseCase';
 import { DeleteQuizQuestionByIdUseCase } from './modules/quiz_game/application/use-cases/deleteQuizQuestionByIdUseCase';
 import { SetQuestionPublishStatusByIdUseCase } from './modules/quiz_game/application/use-cases/setQuestionPublishStatusByIdUseCase';
 import { UpdateQuizQuestionByIdUseCase } from './modules/quiz_game/application/use-cases/updateQuizQuestionByIdUseCase';
+import { QuizQuestionQueryRepo } from './modules/quiz_game/repository/quiz.question.query.repo';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -191,7 +190,6 @@ const useCases = [
   controllers: [
     AppController,
     UsersSaController,
-    QuizPublicController,
     DevicePublicController,
     TestingController,
     PostsPublicController,
@@ -201,7 +199,7 @@ const useCases = [
     CommentsPublicController,
     BlogsSaController,
     UsersBloggerController,
-    QuizSaController,
+    QuizQuestionSaController,
   ],
   providers: [
     BasicStrategy,
@@ -225,6 +223,8 @@ const useCases = [
     CommentLikesRepo,
     JwtAdapter,
     PostsQueryRepository,
+    QuizQuestionsRepo,
+    QuizQuestionQueryRepo,
     BlogsQueryRepo,
     PasswordHashAdapter,
     TestingRepository,
@@ -234,7 +234,6 @@ const useCases = [
     BannedUsersForBlogsQueryRepository,
     RefreshTokenStrategy,
     DevicesService,
-    QuizQuestionsSaRepo,
     ...customValidators,
     ...useCases,
 
