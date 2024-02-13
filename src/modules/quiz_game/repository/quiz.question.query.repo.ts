@@ -16,17 +16,30 @@ export class QuizQuestionQueryRepo {
 
   async getQuizQuestions(query: QuizQuestionQueryMapper) {
     const orderBy = 'quizQuestions.' + query.getSortBy();
+    const bodySearchTerm = `%${query.bodySearchTerm}%`;
 
-    const questions: QuizQuestionDBModel[] =
-      await this.quizQuestionQueryRepository
-        .createQueryBuilder('quizQuestions')
-        .orderBy(orderBy, query.getSortDirection())
-        .limit(query.getPageSize())
-        .offset(query.getOffset())
-        .getMany();
+    const queryBuilder = this.quizQuestionQueryRepository
+      .createQueryBuilder('quizQuestions')
+      .orderBy(orderBy, query.getSortDirection())
+      .where('quizQuestions.body ILIKE :body', {
+        body: bodySearchTerm,
+      })
+      .limit(query.getPageSize())
+      .offset(query.getOffset());
+
+    if (query.publishedStatus !== 'all') {
+      queryBuilder.andWhere('quizQuestions.published = :published', {
+        published: query.publishedStatus === 'published',
+      });
+    }
+
+    const questions: QuizQuestionDBModel[] = await queryBuilder.getMany();
 
     const totalCount = await this.quizQuestionQueryRepository
       .createQueryBuilder('quizQuestions')
+      .where('quizQuestions.body ILIKE :body', {
+        body: bodySearchTerm,
+      })
       .getCount();
 
     const paginator = new Paginator(query.getPageSize(), query.getPageNumber());
