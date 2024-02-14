@@ -1,4 +1,4 @@
-import { QueryMapper } from '../../../../../utils/paginatorHelpers/QueryMapper';
+import { QueryMapper } from '../../../../../../utils/paginatorHelpers/QueryMapper';
 import { QuizQuestionQueryDto } from './QuizQuestionQueryDto';
 
 export class QuizQuestionQueryMapper extends QueryMapper {

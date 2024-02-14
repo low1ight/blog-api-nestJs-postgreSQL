@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { QuizQuestionsRepo } from '../../repository/quiz.questions.repo';
-import { CustomResponse } from '../../../../utils/customResponse/CustomResponse';
+import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 
 export class DeleteQuizQuestionByIdUseCaseCommand {
   constructor(public id: string) {}

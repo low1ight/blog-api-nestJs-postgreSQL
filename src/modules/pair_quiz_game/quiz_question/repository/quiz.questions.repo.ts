@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuizQuestions } from '../entity/Quiz.questions.entity';
+import { QuizQuestions } from '../entity/QuizQuestions.entity';
 import { Repository } from 'typeorm';
 import { CreateQuizQuestionInputDto } from '../controllets/dto/CreateQuizQuestionInputDto';
 import { SetPublishQuizQuestionStatusDto } from '../controllets/dto/SetPublishQuizQuestionStatusDto';

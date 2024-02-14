@@ -1,4 +1,4 @@
-import { QueryDto } from '../../../../../utils/paginatorHelpers/QueryDto';
+import { QueryDto } from '../../../../../../utils/paginatorHelpers/QueryDto';
 
 export class QuizQuestionQueryDto extends QueryDto {
   bodySearchTerm: string;

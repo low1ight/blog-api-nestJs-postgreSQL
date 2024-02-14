@@ -89,14 +89,14 @@ import { Post } from './modules/blog_platform/posts/entity/Post.entity';
 import { Comment } from './modules/blog_platform/comments/entity/Comment.entity';
 import { CommentLikes } from './modules/blog_platform/comments/entity/CommentLikes.entity';
 import { APP_GUARD } from '@nestjs/core';
-import { QuizQuestionSaController } from './modules/quiz_game/controllets/quizQuestion.sa.controller';
-import { QuizQuestions } from './modules/quiz_game/entity/Quiz.questions.entity';
-import { QuizQuestionsRepo } from './modules/quiz_game/repository/quiz.questions.repo';
-import { CreateQuizQuestionUseCase } from './modules/quiz_game/application/use-cases/createQuizQuestionUseCase';
-import { DeleteQuizQuestionByIdUseCase } from './modules/quiz_game/application/use-cases/deleteQuizQuestionByIdUseCase';
-import { SetQuestionPublishStatusByIdUseCase } from './modules/quiz_game/application/use-cases/setQuestionPublishStatusByIdUseCase';
-import { UpdateQuizQuestionByIdUseCase } from './modules/quiz_game/application/use-cases/updateQuizQuestionByIdUseCase';
-import { QuizQuestionQueryRepo } from './modules/quiz_game/repository/quiz.question.query.repo';
+import { UpdateQuizQuestionByIdUseCase } from './modules/pair_quiz_game/quiz_question/application/use-cases/updateQuizQuestionByIdUseCase';
+import { SetQuestionPublishStatusByIdUseCase } from './modules/pair_quiz_game/quiz_question/application/use-cases/setQuestionPublishStatusByIdUseCase';
+import { CreateQuizQuestionUseCase } from './modules/pair_quiz_game/quiz_question/application/use-cases/createQuizQuestionUseCase';
+import { DeleteQuizQuestionByIdUseCase } from './modules/pair_quiz_game/quiz_question/application/use-cases/deleteQuizQuestionByIdUseCase';
+import { QuizQuestionSaController } from './modules/pair_quiz_game/quiz_question/controllets/quizQuestion.sa.controller';
+import { QuizQuestionsRepo } from './modules/pair_quiz_game/quiz_question/repository/quiz.questions.repo';
+import { QuizQuestionQueryRepo } from './modules/pair_quiz_game/quiz_question/repository/quiz.question.query.repo';
+import { QuizQuestions } from './modules/pair_quiz_game/quiz_question/entity/QuizQuestions.entity';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
