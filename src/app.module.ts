@@ -96,17 +96,24 @@ import { DeleteQuizQuestionByIdUseCase } from './modules/pair_quiz_game/quiz_que
 import { QuizQuestionSaController } from './modules/pair_quiz_game/quiz_question/controllets/quizQuestion.sa.controller';
 import { QuizQuestionsRepo } from './modules/pair_quiz_game/quiz_question/repository/quiz.questions.repo';
 import { QuizQuestionQueryRepo } from './modules/pair_quiz_game/quiz_question/repository/quiz.question.query.repo';
-import { QuizQuestions } from './modules/pair_quiz_game/quiz_question/entity/QuizQuestions.entity';
+import { QuizQuestion } from './modules/pair_quiz_game/quiz_question/entity/QuizQuestion.entity';
+import { QuizGameController } from './modules/pair_quiz_game/quiz_game/controllers/quizGame.controller';
+import { ConnectToGameUseCase } from './modules/pair_quiz_game/quiz_game/application/use-case/connectToGameUseCase';
+import { QuizGameRepo } from './modules/pair_quiz_game/quiz_game/quizGame.repo';
+import { QuizGame } from './modules/pair_quiz_game/quiz_game/entity/QuizGame.entity';
+import { QuizGameQuestion } from './modules/pair_quiz_game/quiz_game/entity/QuizGameQuestion.entity';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
   DeleteAllOtherDevicesUseCase,
+
   CreateUserUseCase,
   BanBlogUseCase,
   UpdateQuizQuestionByIdUseCase,
   DeleteUserUseCase,
   RegisterNewUserUseCase,
   DeletePostForBlogUseCase,
+  ConnectToGameUseCase,
   RefreshRtUseCase,
   UpdateCommentUseCase,
   DeleteQuizQuestionByIdUseCase,
@@ -153,6 +160,9 @@ const useCases = [
     }),
     TypeOrmModule.forFeature([
       User,
+      QuizQuestion,
+      QuizGame,
+      QuizGameQuestion,
       UserBanInfo,
       UserDevices,
       UserEmailConfirmation,
@@ -162,7 +172,6 @@ const useCases = [
       PostLikes,
       Comment,
       CommentLikes,
-      QuizQuestions,
     ]),
     MailerModule.forRoot({
       transport: {
@@ -188,6 +197,7 @@ const useCases = [
     ThrottlerModule.forRoot({}),
   ],
   controllers: [
+    QuizGameController,
     AppController,
     UsersSaController,
     DevicePublicController,
@@ -226,6 +236,7 @@ const useCases = [
     QuizQuestionsRepo,
     QuizQuestionQueryRepo,
     BlogsQueryRepo,
+    QuizGameRepo,
     PasswordHashAdapter,
     TestingRepository,
     BannedUsersForBlogRepo,

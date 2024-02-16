@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuizQuestions } from '../entity/QuizQuestions.entity';
+import { QuizQuestion } from '../entity/QuizQuestion.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { QuizQuestionQueryMapper } from '../controllets/dto/query/QuizQuestionQueryMapper';
@@ -10,8 +10,8 @@ import { QuizQuestionSaViewModel } from './dto/QuizQuestionSaViewModel';
 @Injectable()
 export class QuizQuestionQueryRepo {
   constructor(
-    @InjectRepository(QuizQuestions)
-    private quizQuestionQueryRepository: Repository<QuizQuestions>,
+    @InjectRepository(QuizQuestion)
+    private quizQuestionQueryRepository: Repository<QuizQuestion>,
   ) {}
 
   async getQuizQuestions(query: QuizQuestionQueryMapper) {

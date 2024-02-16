@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuizQuestions } from '../entity/QuizQuestions.entity';
+import { QuizQuestion } from '../entity/QuizQuestion.entity';
 import { Repository } from 'typeorm';
 import { CreateQuizQuestionInputDto } from '../controllets/dto/CreateQuizQuestionInputDto';
 import { SetPublishQuizQuestionStatusDto } from '../controllets/dto/SetPublishQuizQuestionStatusDto';
@@ -9,15 +9,15 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class QuizQuestionsRepo {
   constructor(
-    @InjectRepository(QuizQuestions)
-    private quizQuestionRepository: Repository<QuizQuestions>,
+    @InjectRepository(QuizQuestion)
+    private quizQuestionRepository: Repository<QuizQuestion>,
   ) {}
 
   async createQuizQuestion({
     body,
     correctAnswers,
   }: CreateQuizQuestionInputDto) {
-    const quizQuestion = new QuizQuestions();
+    const quizQuestion = new QuizQuestion();
     quizQuestion.body = body;
     quizQuestion.createdAt = new Date();
     quizQuestion.updatedAt = new Date();
