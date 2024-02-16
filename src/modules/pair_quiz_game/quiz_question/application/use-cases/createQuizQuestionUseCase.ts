@@ -1,6 +1,6 @@
 import { CreateQuizQuestionInputDto } from '../../controllets/dto/CreateQuizQuestionInputDto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { QuizQuestionsRepo } from '../../repository/quiz.questions.repo';
+import { QuizQuestionsRepo } from '../../repository/repository/quiz.questions.repo';
 
 export class CreateQuizQuestionUseCaseCommand {
   constructor(public dto: CreateQuizQuestionInputDto) {}

@@ -1,9 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuizQuestion } from '../entity/QuizQuestion.entity';
+import { QuizQuestion } from '../../entity/QuizQuestion.entity';
 import { Repository } from 'typeorm';
-import { CreateQuizQuestionInputDto } from '../controllets/dto/CreateQuizQuestionInputDto';
-import { SetPublishQuizQuestionStatusDto } from '../controllets/dto/SetPublishQuizQuestionStatusDto';
-import { UpdateQuizQuestionInputDto } from '../controllets/dto/UpdateQuizQuestionInputDto';
+import { CreateQuizQuestionInputDto } from '../../controllets/dto/CreateQuizQuestionInputDto';
+import { SetPublishQuizQuestionStatusDto } from '../../controllets/dto/SetPublishQuizQuestionStatusDto';
+import { UpdateQuizQuestionInputDto } from '../../controllets/dto/UpdateQuizQuestionInputDto';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

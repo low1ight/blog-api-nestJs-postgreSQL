@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { QuizGameRepo } from '../../quizGame.repo';
+import { QuizGameRepo } from '../../repository/repository/quizGame.repo';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
 

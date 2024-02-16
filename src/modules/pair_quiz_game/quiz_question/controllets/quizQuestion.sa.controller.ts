@@ -23,7 +23,7 @@ import { UpdateQuizQuestionByIdUseCaseCommand } from '../application/use-cases/u
 import { BasicAuthGuard } from '../../../users_module/auth/guards/basic.auth.guard';
 import { QuizQuestionQueryDto } from './dto/query/QuizQuestionQueryDto';
 import { QuizQuestionQueryMapper } from './dto/query/QuizQuestionQueryMapper';
-import { QuizQuestionQueryRepo } from '../repository/quiz.question.query.repo';
+import { QuizQuestionQueryRepo } from '../repository/query-repository/quiz.question.query.repo';
 
 @Controller('sa/quiz/questions')
 @UseGuards(BasicAuthGuard)

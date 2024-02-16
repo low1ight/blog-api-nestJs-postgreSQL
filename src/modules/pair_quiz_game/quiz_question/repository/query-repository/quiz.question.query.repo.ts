@@ -1,9 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuizQuestion } from '../entity/QuizQuestion.entity';
+import { QuizQuestion } from '../../entity/QuizQuestion.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { QuizQuestionQueryMapper } from '../controllets/dto/query/QuizQuestionQueryMapper';
-import { Paginator } from '../../../../utils/paginatorHelpers/Paginator';
+import { QuizQuestionQueryMapper } from '../../controllets/dto/query/QuizQuestionQueryMapper';
+import { Paginator } from '../../../../../utils/paginatorHelpers/Paginator';
 import { QuizQuestionDBModel } from './dto/QuizQuestionDBModel';
 import { QuizQuestionSaViewModel } from './dto/QuizQuestionSaViewModel';
 

@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuizGame } from './entity/QuizGame.entity';
+import { QuizGame } from '../../entity/QuizGame.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 @Injectable()

@@ -94,12 +94,12 @@ import { SetQuestionPublishStatusByIdUseCase } from './modules/pair_quiz_game/qu
 import { CreateQuizQuestionUseCase } from './modules/pair_quiz_game/quiz_question/application/use-cases/createQuizQuestionUseCase';
 import { DeleteQuizQuestionByIdUseCase } from './modules/pair_quiz_game/quiz_question/application/use-cases/deleteQuizQuestionByIdUseCase';
 import { QuizQuestionSaController } from './modules/pair_quiz_game/quiz_question/controllets/quizQuestion.sa.controller';
-import { QuizQuestionsRepo } from './modules/pair_quiz_game/quiz_question/repository/quiz.questions.repo';
-import { QuizQuestionQueryRepo } from './modules/pair_quiz_game/quiz_question/repository/quiz.question.query.repo';
+import { QuizQuestionsRepo } from './modules/pair_quiz_game/quiz_question/repository/repository/quiz.questions.repo';
+import { QuizQuestionQueryRepo } from './modules/pair_quiz_game/quiz_question/repository/query-repository/quiz.question.query.repo';
 import { QuizQuestion } from './modules/pair_quiz_game/quiz_question/entity/QuizQuestion.entity';
 import { QuizGameController } from './modules/pair_quiz_game/quiz_game/controllers/quizGame.controller';
 import { ConnectToGameUseCase } from './modules/pair_quiz_game/quiz_game/application/use-case/connectToGameUseCase';
-import { QuizGameRepo } from './modules/pair_quiz_game/quiz_game/quizGame.repo';
+import { QuizGameRepo } from './modules/pair_quiz_game/quiz_game/repository/repository/quizGame.repo';
 import { QuizGame } from './modules/pair_quiz_game/quiz_game/entity/QuizGame.entity';
 import { QuizGameQuestion } from './modules/pair_quiz_game/quiz_game/entity/QuizGameQuestion.entity';
 
