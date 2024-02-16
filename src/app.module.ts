@@ -102,6 +102,7 @@ import { ConnectToGameUseCase } from './modules/pair_quiz_game/quiz_game/applica
 import { QuizGameRepo } from './modules/pair_quiz_game/quiz_game/repository/repository/quizGame.repo';
 import { QuizGame } from './modules/pair_quiz_game/quiz_game/entity/QuizGame.entity';
 import { QuizGameQuestion } from './modules/pair_quiz_game/quiz_game/entity/QuizGameQuestion.entity';
+import { QuizGameQueryRepo } from './modules/pair_quiz_game/quiz_game/repository/query-repository/quizGame.query.repo';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -229,6 +230,7 @@ const useCases = [
     TestingService,
     BlogsRepo,
     DeviceRepo,
+    QuizGameQueryRepo,
     DevicesQueryRepo,
     CommentLikesRepo,
     JwtAdapter,
