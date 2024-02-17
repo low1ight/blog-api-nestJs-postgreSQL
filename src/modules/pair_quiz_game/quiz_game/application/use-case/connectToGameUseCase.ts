@@ -1,7 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { QuizGameRepo } from '../../repository/repository/quizGame.repo';
+import { QuizGamesRepo } from '../../repository/repository/quizGames.repo';
 import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
 import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
+import { QuizGamesQuestionsRepo } from '../../repository/repository/quizGamesQuestions.repo';
+import { QuizQuestionsRepo } from '../../../quiz_question/repository/repository/quiz.questions.repo';
 
 export class ConnectToGameUseCaseCommand {
   constructor(public userId: number) {}
@@ -11,7 +13,11 @@ export class ConnectToGameUseCaseCommand {
 export class ConnectToGameUseCase
   implements ICommandHandler<ConnectToGameUseCaseCommand>
 {
-  constructor(private readonly quizGameRepo: QuizGameRepo) {}
+  constructor(
+    private readonly quizGameRepo: QuizGamesRepo,
+    private readonly quizGamesQuestionsRepo: QuizGamesQuestionsRepo,
+    private readonly quizQuestionSaRepo: QuizQuestionsRepo,
+  ) {}
 
   async execute({ userId }: ConnectToGameUseCaseCommand) {
     //check is user has already an active game or lobby
@@ -31,7 +37,23 @@ export class ConnectToGameUseCase
         userId,
       );
     } else {
-      await this.quizGameRepo.createNewQuizGame(userId);
+      //get 5 random questions of, it returns null if it'll be fewer questions than necessary
+      const questionsIdArr: string[] | null =
+        await this.quizQuestionSaRepo.getRandomQuestionsId(5);
+
+      if (!questionsIdArr)
+        return new CustomResponse(
+          false,
+          1,
+          'not enough questions to create new game',
+        );
+
+      //create game and add random questions to this game
+      const gameId: string = await this.quizGameRepo.createNewQuizGame(userId);
+      await this.quizGamesQuestionsRepo.addQuestionForQuizGame(
+        questionsIdArr,
+        gameId,
+      );
     }
 
     return new CustomResponse(true);

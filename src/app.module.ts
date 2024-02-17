@@ -99,10 +99,11 @@ import { QuizQuestionQueryRepo } from './modules/pair_quiz_game/quiz_question/re
 import { QuizQuestion } from './modules/pair_quiz_game/quiz_question/entity/QuizQuestion.entity';
 import { QuizGameController } from './modules/pair_quiz_game/quiz_game/controllers/quizGame.controller';
 import { ConnectToGameUseCase } from './modules/pair_quiz_game/quiz_game/application/use-case/connectToGameUseCase';
-import { QuizGameRepo } from './modules/pair_quiz_game/quiz_game/repository/repository/quizGame.repo';
+import { QuizGamesRepo } from './modules/pair_quiz_game/quiz_game/repository/repository/quizGames.repo';
 import { QuizGame } from './modules/pair_quiz_game/quiz_game/entity/QuizGame.entity';
 import { QuizGameQuestion } from './modules/pair_quiz_game/quiz_game/entity/QuizGameQuestion.entity';
 import { QuizGameQueryRepo } from './modules/pair_quiz_game/quiz_game/repository/query-repository/quizGame.query.repo';
+import { QuizGamesQuestionsRepo } from './modules/pair_quiz_game/quiz_game/repository/repository/quizGamesQuestions.repo';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -225,6 +226,7 @@ const useCases = [
     BlogsService,
     PostsLikesRepo,
     AccessTokenStrategy,
+    QuizGamesQuestionsRepo,
     CommentsQueryRepository,
     PostsRepo,
     TestingService,
@@ -238,7 +240,7 @@ const useCases = [
     QuizQuestionsRepo,
     QuizQuestionQueryRepo,
     BlogsQueryRepo,
-    QuizGameRepo,
+    QuizGamesRepo,
     PasswordHashAdapter,
     TestingRepository,
     BannedUsersForBlogRepo,

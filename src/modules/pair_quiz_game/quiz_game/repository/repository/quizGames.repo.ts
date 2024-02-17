@@ -3,7 +3,7 @@ import { QuizGame } from '../../entity/QuizGame.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 @Injectable()
-export class QuizGameRepo {
+export class QuizGamesRepo {
   constructor(
     @InjectRepository(QuizGame)
     private readonly quizGameRepository: Repository<QuizGame>,
@@ -19,7 +19,8 @@ export class QuizGameRepo {
     quizGame.finishGameDate = null;
     quizGame.status = 'PendingSecondPlayer';
 
-    await this.quizGameRepository.save(quizGame);
+    const game = await this.quizGameRepository.save(quizGame);
+    return game.id;
   }
 
   async isUserHaveNotFinishedGame(userId: number) {

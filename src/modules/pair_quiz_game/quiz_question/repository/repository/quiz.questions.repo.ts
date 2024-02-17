@@ -53,4 +53,15 @@ export class QuizQuestionsRepo {
   async deleteQuizQuestionById(id: string) {
     return await this.quizQuestionRepository.delete({ id });
   }
+
+  async getRandomQuestionsId(count: number) {
+    const result = await this.quizQuestionRepository
+      .createQueryBuilder('questions')
+      .select('questions.id')
+      .orderBy('RANDOM()')
+      .limit(count)
+      .getMany();
+
+    return result.length === count ? result.map((i) => i.id) : null;
+  }
 }
