@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Generated, ManyToOne, PrimaryColumn } from 'typeorm';
 import { QuizGame } from './QuizGame.entity';
 import { QuizQuestion } from '../../quiz_question/entity/QuizQuestion.entity';
 
@@ -8,11 +8,15 @@ export class QuizGameQuestion {
   quizGameId: string;
 
   @PrimaryColumn()
-  quizQuestionId: string;
+  questionId: string;
 
   @ManyToOne(() => QuizGame, (g) => g.questions)
   quizGame: QuizGame;
 
-  @ManyToOne(() => QuizQuestion, (g) => g.gameQuestion)
+  @ManyToOne(() => QuizQuestion, (q) => q.gameQuestion)
   question: QuizQuestion;
+
+  @Column()
+  @Generated('increment')
+  questionNumber: number;
 }
