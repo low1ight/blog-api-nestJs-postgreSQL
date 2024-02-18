@@ -1,5 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { QuizGameQuestion } from './QuizGameQuestion.entity';
+import { User } from '../../../users_module/users/entities/User.entity';
 
 @Entity('QuizGames')
 export class QuizGame {
@@ -9,8 +17,16 @@ export class QuizGame {
   @Column()
   firstPlayerId: number;
 
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'firstPlayerId' }) // Указываем, какое поле является внешним ключом
+  firstPlayer: User;
+
   @Column({ nullable: true })
   secondPlayerId: number | null;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'secondPlayerId' }) // Аналогично для второго игрока
+  secondPlayer: User | null;
 
   @Column()
   status: string;
@@ -23,6 +39,9 @@ export class QuizGame {
 
   @Column({ nullable: true })
   finishGameDate: Date | null;
+
+  @ManyToOne(() => User)
+  user: User;
 
   @OneToMany(() => QuizGameQuestion, (q) => q.quizGame)
   questions: QuizGameQuestion[];
