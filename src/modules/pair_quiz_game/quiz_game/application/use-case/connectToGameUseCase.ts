@@ -29,33 +29,38 @@ export class ConnectToGameUseCase
 
     //find game what pending a second Player
     //if it exists, connect to game or creating new game
-    const gameId = await this.quizGameRepo.findGameWhatPendingSecondPlayer();
+    const foundGameId =
+      await this.quizGameRepo.findGameWhatPendingSecondPlayer();
 
-    if (gameId) {
+    //if already created game with pending second player founded, connect current user to it, and return 'connected'
+    if (foundGameId) {
       await this.quizGameRepo.connectToGameWhatPendingSecondPlayer(
-        gameId,
+        foundGameId,
         userId,
       );
-    } else {
-      //get 5 random questions of, it returns null if it'll be fewer questions than necessary
-      const questionsIdArr: string[] | null =
-        await this.quizQuestionSaRepo.getRandomQuestionsId(5);
-
-      if (!questionsIdArr)
-        return new CustomResponse(
-          false,
-          1,
-          'not enough questions to create new game',
-        );
-
-      //create game and add random questions to this game
-      const gameId: string = await this.quizGameRepo.createNewQuizGame(userId);
-      await this.quizGamesQuestionsRepo.addQuestionForQuizGame(
-        questionsIdArr,
-        gameId,
-      );
+      return new CustomResponse(true, null, {
+        gameId: foundGameId,
+        status: 'connected',
+      });
     }
 
-    return new CustomResponse(true);
+    //get 5 random questions of, it returns null if it'll be fewer questions than necessary
+    const questionsIdArr: string[] | null =
+      await this.quizQuestionSaRepo.getRandomQuestionsId(5);
+
+    if (!questionsIdArr)
+      return new CustomResponse(
+        false,
+        1,
+        'not enough questions to create new game',
+      );
+
+    //create game and add random questions to this game
+    const gameId: string = await this.quizGameRepo.createNewQuizGame(userId);
+    await this.quizGamesQuestionsRepo.addQuestionForQuizGame(
+      questionsIdArr,
+      gameId,
+    );
+    return new CustomResponse(true, null, { gameId, status: 'created' });
   }
 }

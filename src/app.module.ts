@@ -104,6 +104,7 @@ import { QuizGame } from './modules/pair_quiz_game/quiz_game/entity/QuizGame.ent
 import { QuizGameQuestion } from './modules/pair_quiz_game/quiz_game/entity/QuizGameQuestion.entity';
 import { QuizGameQueryRepo } from './modules/pair_quiz_game/quiz_game/repository/query-repository/quizGame.query.repo';
 import { QuizGamesQuestionsRepo } from './modules/pair_quiz_game/quiz_game/repository/repository/quizGamesQuestions.repo';
+import { QuizGamePlayerAnswer } from './modules/pair_quiz_game/quiz_game/entity/QuizGamePlayerAnswer.entity';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -165,6 +166,7 @@ const useCases = [
       QuizQuestion,
       QuizGame,
       QuizGameQuestion,
+      QuizGamePlayerAnswer,
       UserBanInfo,
       UserDevices,
       UserEmailConfirmation,
