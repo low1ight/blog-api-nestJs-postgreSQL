@@ -1,4 +1,4 @@
-import { Column, Entity, Generated, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { QuizGame } from './QuizGame.entity';
 import { QuizQuestion } from '../../quiz_question/entity/QuizQuestion.entity';
 
@@ -17,6 +17,5 @@ export class QuizGameQuestion {
   question: QuizQuestion;
 
   @Column()
-  @Generated('increment')
   questionNumber: number;
 }
