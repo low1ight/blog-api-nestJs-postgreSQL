@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../../../users_module/auth/guards/jwt.auth.guard';
 import { CurrentUser } from '../../../../common/decorators/currentUser/current.user.decorator';
 import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDataFromAT';
@@ -16,6 +16,16 @@ export class QuizGameController {
     private readonly commandBus: CommandBus,
     private readonly quizGameQueryRepo: QuizGameQueryRepo,
   ) {}
+
+  @Get('/my-current')
+  async getCurrentUserGame(@CurrentUser() user: UserDataFromAT) {
+    const game = await this.quizGameQueryRepo.getNotFinishedGameByUserId(
+      user.id,
+    );
+    if (!game) return Exceptions.throwHttpException(1);
+    return game;
+  }
+
   @Post('/connection')
   async connectToGame(@CurrentUser() user: UserDataFromAT) {
     const result: CustomResponse<ConnectGameStatus | null> =
@@ -23,11 +33,8 @@ export class QuizGameController {
     if (!result.isSuccess)
       return Exceptions.throwHttpException(result.errStatusCode);
 
-    if (result.content.status === 'created') {
-      return await this.quizGameQueryRepo.getPendingForPlayerGame(
-        result.content.gameId,
-      );
-    }
-    return await this.quizGameQueryRepo.getStartedGame(result.content.gameId);
+    return await this.quizGameQueryRepo.getNotFinishedGameByGameId(
+      result.content.gameId,
+    );
   }
 }
