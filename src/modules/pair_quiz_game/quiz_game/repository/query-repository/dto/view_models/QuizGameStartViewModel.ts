@@ -2,7 +2,7 @@ import { QuizGameDBType } from '../QuizGameDBType';
 import { QuizGamePlayerProgressViewModel } from './QuizGamePlayerProgressViewModel';
 import { QuizGameQuestionViewModel } from './QuizGameQuestionViewModel';
 
-export class QuizGameViewModel {
+export class QuizGameStartViewModel {
   id: string;
   firstPlayerProgress: QuizGamePlayerProgressViewModel;
   secondPlayerProgress: QuizGamePlayerProgressViewModel | null;
