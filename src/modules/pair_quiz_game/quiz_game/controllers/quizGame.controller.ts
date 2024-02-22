@@ -1,4 +1,11 @@
-import { Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../../../users_module/auth/guards/jwt.auth.guard';
 import { CurrentUser } from '../../../../common/decorators/currentUser/current.user.decorator';
 import { UserDataFromAT } from '../../../../common/decorators/currentUser/UserDataFromAT';
@@ -23,6 +30,21 @@ export class QuizGameController {
       user.id,
     );
     if (!game) return Exceptions.throwHttpException(1);
+    return game;
+  }
+
+  @Get('/:id')
+  async getGameById(
+    @CurrentUser() user: UserDataFromAT,
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ) {
+    const game = await this.quizGameQueryRepo.getNotFinishedGameByGameId(id);
+    if (!game) return Exceptions.throwHttpException(1);
+    if (
+      game.firstPlayerProgress.player.id !== user.id.toString() &&
+      game.secondPlayerProgress.player.id !== user.id.toString()
+    )
+      return Exceptions.throwHttpException(1);
     return game;
   }
 
