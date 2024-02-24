@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
@@ -15,6 +16,9 @@ import { CustomResponse } from '../../../../utils/customResponse/CustomResponse'
 import { Exceptions } from '../../../../utils/throwException';
 import { QuizGameQueryRepo } from '../repository/query-repository/quizGame.query.repo';
 import { ConnectGameStatus } from '../types/ConnectGameStatus';
+import { AnswerQuestionUseCaseCommand } from '../application/use-case/answerQuestion';
+import { AnswerQuestionDto } from './dto/AnswerQuestionDto';
+import { QuizGamePlayerProgressAnswerViewModel } from '../repository/query-repository/dto/view_models/QuizGamePlayerProgressAnswerViewModel';
 
 @Controller('/pair-game-quiz/pairs')
 @UseGuards(JwtAuthGuard)
@@ -58,5 +62,21 @@ export class QuizGameController {
     return await this.quizGameQueryRepo.getNotFinishedGameByGameId(
       result.content.gameId,
     );
+  }
+
+  @Post('/my-current/answers')
+  async answerQuestion(
+    @CurrentUser() user: UserDataFromAT,
+    @Body() dto: AnswerQuestionDto,
+  ) {
+    const result: CustomResponse<null | QuizGamePlayerProgressAnswerViewModel> =
+      await this.commandBus.execute(
+        new AnswerQuestionUseCaseCommand(user.id, dto),
+      );
+
+    if (!result.isSuccess)
+      return Exceptions.throwHttpException(result.errStatusCode);
+
+    return result.content;
   }
 }

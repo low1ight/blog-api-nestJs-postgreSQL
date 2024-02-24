@@ -50,4 +50,28 @@ export class QuizGamesRepo {
     game.status = 'Active';
     await this.quizGameRepository.save(game);
   }
+
+  async getCurrentUserGameIdByUserId(userId: number) {
+    const game = await this.quizGameRepository
+      .createQueryBuilder('QuizGame')
+      .where('NOT QuizGame.status = :status', { status: 'finished' })
+      .andWhere(
+        'QuizGame.firstPlayerId = :userId OR QuizGame.secondPlayerId = :userId',
+        { userId },
+      )
+      .getOne();
+    return game?.id;
+  }
 }
+// return await this.quizGameRepository
+//   .createQueryBuilder('game')
+//   .where('NOT game.status = :status', { status: 'finished' })
+//   .andWhere(
+//     'game.firstPlayerId = :userId OR game.secondPlayerId = :userId',
+//     { userId },
+//   )
+//   .leftJoinAndSelect('game.questions', 'questions')
+//   .orderBy('questions."questionNumber"', 'ASC')
+//   .leftJoin('questions.question', 'question')
+//   .addSelect(['question.id', 'question.body', 'question.correctAnswers'])
+//   .getOne();

@@ -105,6 +105,8 @@ import { QuizGameQuestion } from './modules/pair_quiz_game/quiz_game/entity/Quiz
 import { QuizGameQueryRepo } from './modules/pair_quiz_game/quiz_game/repository/query-repository/quizGame.query.repo';
 import { QuizGamesQuestionsRepo } from './modules/pair_quiz_game/quiz_game/repository/repository/quizGamesQuestions.repo';
 import { QuizGamePlayerAnswer } from './modules/pair_quiz_game/quiz_game/entity/QuizGamePlayerAnswer.entity';
+import { QuizGamePlayerAnswersRepo } from './modules/pair_quiz_game/quiz_game/repository/repository/quizGamePlayerAnswers.repo';
+import { AnswerQuestionUseCase } from './modules/pair_quiz_game/quiz_game/application/use-case/answerQuestion';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -137,6 +139,7 @@ const useCases = [
   RegistrationEmailResendingUseCase,
   DeleteDeviceByIdUseCase,
   CreateBlogUseCase,
+  AnswerQuestionUseCase,
   SetLikeStatusForPostUseCase,
   UpdatePostForBlogUseCase,
   DeleteBlogUseCase,
@@ -237,6 +240,7 @@ const useCases = [
     QuizGameQueryRepo,
     DevicesQueryRepo,
     CommentLikesRepo,
+    QuizGamePlayerAnswersRepo,
     JwtAdapter,
     PostsQueryRepository,
     QuizQuestionsRepo,

@@ -23,4 +23,24 @@ export class QuizGamesQuestionsRepo {
     });
     await this.quizGamesQuestionsRepository.save(quizGameQuestionsArr);
   }
+
+  async getQuestionByGameIdAndQuestionNumber(
+    gameId: string,
+    questionNumber: number,
+  ) {
+    const question = await this.quizGamesQuestionsRepository
+      .createQueryBuilder('gameQuestion')
+      .where('gameQuestion.quizGameId = :gameId', { gameId })
+      .andWhere('gameQuestion.questionNumber = :questionNumber', {
+        questionNumber,
+      })
+      .leftJoin('gameQuestion.question', 'question')
+      .addSelect(['question.id', 'question.body', 'question.correctAnswers'])
+      .getOne();
+
+    return {
+      id: question.questionId,
+      correctAnswers: question.question.correctAnswers,
+    };
+  }
 }
