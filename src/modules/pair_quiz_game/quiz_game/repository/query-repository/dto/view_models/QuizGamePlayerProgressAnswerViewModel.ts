@@ -1,7 +1,11 @@
 export class QuizGamePlayerProgressAnswerViewModel {
-  constructor(
-    public questionId: string,
-    public answerStatus: string,
-    public addedAt: string,
-  ) {}
+  questionId: string;
+  answerStatus: string;
+  addedAt: Date;
+
+  constructor(questionId: string, answerStatus: boolean, addedAt: Date) {
+    this.questionId = questionId;
+    this.answerStatus = answerStatus ? 'Correct' : 'Incorrect';
+    this.addedAt = addedAt;
+  }
 }
