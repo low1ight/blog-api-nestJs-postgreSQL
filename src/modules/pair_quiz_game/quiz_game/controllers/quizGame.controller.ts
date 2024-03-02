@@ -44,11 +44,11 @@ export class QuizGameController {
   ) {
     const game = await this.quizGameQueryRepo.getNotFinishedGameByGameId(id);
     if (!game) return Exceptions.throwHttpException(1);
-    if (
-      game.firstPlayerProgress.player.id !== user.id.toString() &&
-      game.secondPlayerProgress.player.id !== user.id.toString()
-    )
-      return Exceptions.throwHttpException(1);
+    // if (
+    //   game.firstPlayerProgress.player.id !== user.id.toString() &&
+    //   game.secondPlayerProgress.player.id !== user.id.toString()
+    // )
+    //   return Exceptions.throwHttpException(1);
     return game;
   }
 

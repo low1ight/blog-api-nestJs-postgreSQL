@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { QuizGameQuestion } from './QuizGameQuestion.entity';
 import { User } from '../../../users_module/users/entities/User.entity';
+import { QuizGamePlayerAnswer } from './QuizGamePlayerAnswer.entity';
 
 @Entity('QuizGames')
 export class QuizGame {
@@ -45,4 +46,7 @@ export class QuizGame {
 
   @OneToMany(() => QuizGameQuestion, (q) => q.quizGame)
   questions: QuizGameQuestion[];
+
+  @OneToMany(() => QuizGamePlayerAnswer, (q) => q.game)
+  playerAnswers: QuizGamePlayerAnswer[];
 }

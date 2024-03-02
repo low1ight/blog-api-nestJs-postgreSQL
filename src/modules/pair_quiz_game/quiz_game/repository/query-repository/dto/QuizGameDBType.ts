@@ -1,4 +1,5 @@
 import { PlayerDBType } from './PlayerDBType';
+import { PlayerAnswerDbModel } from './PlayerAnswerDbModel';
 
 export type QuizGameDBType = {
   id: string;
@@ -8,6 +9,7 @@ export type QuizGameDBType = {
   finishGameDate: Date | null;
   firstPlayer: PlayerDBType;
   secondPlayer: PlayerDBType | null;
+  playerAnswers: PlayerAnswerDbModel[];
   questions: Question[] | null;
 };
 

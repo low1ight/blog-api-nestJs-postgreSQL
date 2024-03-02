@@ -59,17 +59,21 @@ export class QuizGameQueryRepo {
         'game.startGameDate',
         'game.finishGameDate',
       ])
+      .leftJoinAndSelect('game.playerAnswers', 'pa')
+      .orderBy('pa."addedAt"', 'ASC')
       .leftJoin('game.firstPlayer', 'fp')
       .addSelect(['fp.id', 'fp.login'])
       .leftJoin('game.secondPlayer', 'sp')
       .addSelect(['sp.id', 'sp.login'])
       .leftJoinAndSelect('game.questions', 'questions')
-      .orderBy('questions."questionNumber"', 'ASC')
+      .addOrderBy('questions."questionNumber"', 'ASC')
       .leftJoin('questions.question', 'question')
       .addSelect(['question.id', 'question.body', 'question.correctAnswers'])
       .getOne();
 
     if (!game) return null;
+
+    //return game;
 
     return game.status === 'Active'
       ? new QuizGameStartViewModel(game)

@@ -15,7 +15,7 @@ export class QuizGamePlayerAnswer {
   @PrimaryColumn()
   gameId: string;
 
-  @ManyToOne(() => QuizGame)
+  @ManyToOne(() => QuizGame, (q) => q.playerAnswers)
   @JoinColumn({ name: 'gameId' })
   game: QuizGame;
 

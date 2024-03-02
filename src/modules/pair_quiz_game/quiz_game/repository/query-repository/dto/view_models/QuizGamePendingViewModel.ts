@@ -25,7 +25,10 @@ export class QuizGamePendingViewModel {
     this.startGameDate = startGameDate;
     this.finishGameDate = finishGameDate;
 
-    this.firstPlayerProgress = new QuizGamePlayerProgressViewModel(firstPlayer);
+    this.firstPlayerProgress = new QuizGamePlayerProgressViewModel(
+      firstPlayer,
+      [],
+    );
     this.secondPlayerProgress = null;
 
     this.questions = null;
