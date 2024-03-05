@@ -9,4 +9,10 @@ export class TestingController {
   async deleteAllDataFromTables() {
     await this.testingService.deleteAllData();
   }
+
+  @Delete('quiz-games')
+  @HttpCode(204)
+  async deleteQuizGames() {
+    await this.testingService.deleteQuizGames();
+  }
 }

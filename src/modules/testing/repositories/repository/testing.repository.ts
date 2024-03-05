@@ -15,4 +15,15 @@ export class TestingRepository {
 
     `);
   }
+
+  async deleteQuizGames() {
+    await this.dataSource.query(`
+        DELETE FROM "QuizGamePlayersAnswers";
+        DELETE FROM "QuizGamesQuestions";
+        DELETE FROM "QuizGames";
+          
+    
+
+    `);
+  }
 }

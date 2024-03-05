@@ -8,4 +8,8 @@ export class TestingService {
   async deleteAllData() {
     return await this.testingRepository.deleteAllData();
   }
+
+  async deleteQuizGames() {
+    return await this.testingRepository.deleteQuizGames();
+  }
 }
