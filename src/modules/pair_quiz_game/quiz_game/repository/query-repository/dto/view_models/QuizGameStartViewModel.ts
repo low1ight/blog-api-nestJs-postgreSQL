@@ -88,7 +88,7 @@ export class QuizGameStartViewModel {
       (player.score >= 1 &&
         player.answers.length === 5 &&
         !anotherPlayerDate) ||
-      player.answers[4].addedAt < anotherPlayerDate
+      player.answers[4]?.addedAt < anotherPlayerDate
     );
   }
 }

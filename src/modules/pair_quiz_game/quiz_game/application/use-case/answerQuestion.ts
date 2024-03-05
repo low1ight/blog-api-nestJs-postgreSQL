@@ -1,11 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { QuizGamesRepo } from '../../repository/repository/quizGames.repo';
-import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
-import { CustomResponseEnum } from '../../../../../utils/customResponse/CustomResponseEnum';
-import { QuizGamesQuestionsRepo } from '../../repository/repository/quizGamesQuestions.repo';
-import { QuizQuestionsRepo } from '../../../quiz_question/repository/repository/quiz.questions.repo';
-import { QuizGamePlayerAnswersRepo } from '../../repository/repository/quizGamePlayerAnswers.repo';
+
 import { AnswerQuestionDto } from '../../controllers/dto/AnswerQuestionDto';
+import { QuizGamePlayerAnswerService } from '../quizGamePlayerAnswer.service';
+import { QuizGameQuestionTimeOutService } from '../../adapters/quizGameQuestionTimeOut.service';
+import { CustomResponse } from '../../../../../utils/customResponse/CustomResponse';
+import { QuizGamePlayerAnswerViewModel } from '../../repository/query-repository/dto/view_models/QuizGamePlayerAnswerViewModel';
 
 export class AnswerQuestionUseCaseCommand {
   constructor(public userId: number, public dto: AnswerQuestionDto) {}
@@ -16,45 +15,34 @@ export class AnswerQuestionUseCase
   implements ICommandHandler<AnswerQuestionUseCaseCommand>
 {
   constructor(
-    private readonly quizGameRepo: QuizGamesRepo,
-    private readonly quizGamesQuestionsRepo: QuizGamesQuestionsRepo,
-    private readonly quizQuestionSaRepo: QuizQuestionsRepo,
-    private readonly quizGamePlayerAnswersRepo: QuizGamePlayerAnswersRepo,
+    private readonly quizGamePlayerAnswers: QuizGamePlayerAnswerService,
+    private readonly quizGameQuestionTimeOutService: QuizGameQuestionTimeOutService,
   ) {}
 
   async execute({ userId, dto }: AnswerQuestionUseCaseCommand) {
-    //get current game id
-    const userCurrentGameId =
-      await this.quizGameRepo.getCurrentUserGameIdByUserId(userId);
+    const result: CustomResponse<{
+      answer: QuizGamePlayerAnswerViewModel;
+      currentAnswerNumber: number;
+    } | null> = await this.quizGamePlayerAnswers.answerQuestion(userId, dto);
 
-    if (!userCurrentGameId)
-      return new CustomResponse(false, CustomResponseEnum.forbidden);
+    if (!result.isSuccess) return result;
 
-    // get count of answered questions by player for current game
-    const currentlyAnsweredQuestionsByUser =
-      await this.quizGamePlayerAnswersRepo.getPlayerAnswersInGameById(
+    //after answer question we delete time out for this question and create new,
+    // if there is available question for answer
+    this.quizGameQuestionTimeOutService.stopTimeOut(userId);
+
+    if (
+      result.content.currentAnswerNumber <
+      Number(process.env.QUIZ_GAME_QUESTION_COUNT)
+    ) {
+      console.log('get it');
+
+      this.quizGameQuestionTimeOutService.setTimeOutForGame(
         userId,
-        userCurrentGameId,
+        result.content.currentAnswerNumber + 1,
       );
+    }
 
-    if (currentlyAnsweredQuestionsByUser >= 5)
-      return new CustomResponse(false, CustomResponseEnum.forbidden);
-
-    //get questionId by question number and game id
-    const question: { id: string; correctAnswers: string[] } =
-      await this.quizGamesQuestionsRepo.getQuestionByGameIdAndQuestionNumber(
-        userCurrentGameId,
-        currentlyAnsweredQuestionsByUser + 1,
-      );
-
-    const answer = await this.quizGamePlayerAnswersRepo.addQuestionAnswer(
-      userId,
-      userCurrentGameId,
-      question.id,
-      dto,
-      question.correctAnswers.includes(dto.answer),
-    );
-
-    return new CustomResponse(true, null, answer);
+    return new CustomResponse(true, null, result.content.answer);
   }
 }

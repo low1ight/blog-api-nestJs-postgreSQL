@@ -12,14 +12,12 @@ export class QuizGamesQuestionsRepo {
 
   async addQuestionForQuizGame(questions: string[], gameId: string) {
     const quizGameQuestionsArr = [];
-    let questionCount = 1;
-    questions.forEach((question) => {
+    questions.forEach((question, index: number) => {
       const quizGameQuestion = new QuizGameQuestion();
       quizGameQuestion.quizGameId = gameId;
       quizGameQuestion.questionId = question;
-      quizGameQuestion.questionNumber = questionCount;
+      quizGameQuestion.questionNumber = index + 1;
       quizGameQuestionsArr.push(quizGameQuestion);
-      questionCount++;
     });
     await this.quizGamesQuestionsRepository.save(quizGameQuestionsArr);
   }

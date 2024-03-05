@@ -107,6 +107,8 @@ import { QuizGamesQuestionsRepo } from './modules/pair_quiz_game/quiz_game/repos
 import { QuizGamePlayerAnswer } from './modules/pair_quiz_game/quiz_game/entity/QuizGamePlayerAnswer.entity';
 import { QuizGamePlayerAnswersRepo } from './modules/pair_quiz_game/quiz_game/repository/repository/quizGamePlayerAnswers.repo';
 import { AnswerQuestionUseCase } from './modules/pair_quiz_game/quiz_game/application/use-case/answerQuestion';
+import { QuizGameQuestionTimeOutService } from './modules/pair_quiz_game/quiz_game/adapters/quizGameQuestionTimeOut.service';
+import { QuizGamePlayerAnswerService } from './modules/pair_quiz_game/quiz_game/application/quizGamePlayerAnswer.service';
 
 const customValidators = [IsUserLoginAlreadyExist, IsUserEmailAlreadyExist];
 const useCases = [
@@ -239,6 +241,7 @@ const useCases = [
     DeviceRepo,
     QuizGameQueryRepo,
     DevicesQueryRepo,
+    QuizGameQuestionTimeOutService,
     CommentLikesRepo,
     QuizGamePlayerAnswersRepo,
     JwtAdapter,
@@ -251,6 +254,7 @@ const useCases = [
     TestingRepository,
     BannedUsersForBlogRepo,
     UsersRepo,
+    QuizGamePlayerAnswerService,
     AuthPublicService,
     BannedUsersForBlogsQueryRepository,
     RefreshTokenStrategy,

@@ -40,7 +40,7 @@ export class QuizGamesRepo {
       .where('QuizGame.status = :status', { status: 'PendingSecondPlayer' })
       .getOne();
 
-    return game?.id || null;
+    return game;
   }
 
   async connectToGameWhatPendingSecondPlayer(gameId: string, userId: number) {
