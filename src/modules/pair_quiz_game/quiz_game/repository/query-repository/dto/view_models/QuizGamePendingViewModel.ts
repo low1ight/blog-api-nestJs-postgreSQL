@@ -28,6 +28,7 @@ export class QuizGamePendingViewModel {
     this.firstPlayerProgress = new QuizGamePlayerProgressViewModel(
       firstPlayer,
       [],
+      []
     );
     this.secondPlayerProgress = null;
 

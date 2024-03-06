@@ -1,7 +1,6 @@
 import { QuizGameDBType } from '../QuizGameDBType';
 import { QuizGamePlayerProgressViewModel } from './QuizGamePlayerProgressViewModel';
 import { QuizGameQuestionViewModel } from './QuizGameQuestionViewModel';
-import { QuizGamePlayerAnswerViewModel } from './QuizGamePlayerAnswerViewModel';
 
 export class QuizGameStartViewModel {
   id: string;
@@ -32,28 +31,13 @@ export class QuizGameStartViewModel {
 
     this.firstPlayerProgress = new QuizGamePlayerProgressViewModel(
       firstPlayer,
-      playerAnswers
-        .filter((i) => i.playerId === firstPlayer.id)
-        .map(
-          (question, index) =>
-            new QuizGamePlayerAnswerViewModel(
-              question,
-              questions[index].question.correctAnswers,
-            ),
-        ),
+      playerAnswers,questions
     );
     this.secondPlayerProgress = secondPlayer
       ? new QuizGamePlayerProgressViewModel(
           secondPlayer,
-          playerAnswers
-            .filter((i) => i.playerId === secondPlayer.id)
-            .map(
-              (question, index) =>
-                new QuizGamePlayerAnswerViewModel(
-                  question,
-                  questions[index].question.correctAnswers,
-                ),
-            ),
+          playerAnswers,questions
+
         )
       : null;
     this.questions = questions

@@ -10,10 +10,10 @@ export type QuizGameDBType = {
   firstPlayer: PlayerDBType;
   secondPlayer: PlayerDBType | null;
   playerAnswers: PlayerAnswerDbModel[];
-  questions: Question[] | null;
+  questions: QuestionDBType[] | null;
 };
 
-type Question = {
+export type QuestionDBType = {
   quizGameId: string;
   questionId: string;
   questionNumber: number;

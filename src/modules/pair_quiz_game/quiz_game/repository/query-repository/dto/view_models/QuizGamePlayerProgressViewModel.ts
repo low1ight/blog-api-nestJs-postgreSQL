@@ -2,6 +2,7 @@ import { QuizGamePlayerProgressAnswerViewModel } from './QuizGamePlayerProgressA
 import { PlayerDBType } from '../PlayerDBType';
 import { PlayerAnswerDbModel } from '../PlayerAnswerDbModel';
 import { QuizGamePlayerAnswerViewModel } from './QuizGamePlayerAnswerViewModel';
+import { QuestionDBType } from '../QuizGameDBType';
 
 export class QuizGamePlayerProgressViewModel {
   answers: QuizGamePlayerProgressAnswerViewModel[];
@@ -13,14 +14,24 @@ export class QuizGamePlayerProgressViewModel {
 
   constructor(
     { id, login }: PlayerDBType,
-    answers: QuizGamePlayerAnswerViewModel[],
+    answers: PlayerAnswerDbModel[],
+    questions:QuestionDBType[]
+
   ) {
-    this.answers = answers;
+    this.answers = answers
+      .filter((i) => i.playerId === id)
+      .map(
+        (question, index) =>
+          new QuizGamePlayerAnswerViewModel(
+            question,
+            questions[index].question.correctAnswers,
+          ),
+      )
     this.player = {
       id: id.toString(),
       login,
     };
-    this.score = answers.reduce((acc, cur) => {
+    this.score = this.answers.reduce((acc, cur) => {
       if (cur.answerStatus === 'Correct') acc++;
       return acc;
     }, 0);
