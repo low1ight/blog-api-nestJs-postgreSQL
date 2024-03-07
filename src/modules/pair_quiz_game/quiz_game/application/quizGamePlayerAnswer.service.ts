@@ -30,12 +30,13 @@ export class QuizGamePlayerAnswerService {
     if (!userCurrentGameId)
       return new CustomResponse(false, CustomResponseEnum.forbidden);
 
-    // get count of answered questions by player for current game
+    // get all player answers for current game
     const currentlyAnsweredQuestionsByUser =
-      await this.quizGamePlayerAnswersRepo.getPlayerAnswersInGameById(
+      await this.quizGamePlayerAnswersRepo.getPlayerAnswersInGameByGameId(
         userId,
         userCurrentGameId,
       );
+
 
     if (
       currentlyAnsweredQuestionsByUser >=
@@ -60,6 +61,18 @@ export class QuizGamePlayerAnswerService {
         dto,
         question.correctAnswers.includes(dto.answer),
       );
+
+
+    const totalGameAnswers = await this.quizGamePlayerAnswersRepo.getTotalPlayersAnswersInGameByGameId(userCurrentGameId)
+
+    //if answered question was last in the game, change game status to finished
+    console.log(totalGameAnswers === Number(process.env.QUIZ_GAME_QUESTION_COUNT) * 2)
+    console.log(totalGameAnswers)
+    console.log(Number(process.env.QUIZ_GAME_QUESTION_COUNT) * 2)
+    if(totalGameAnswers === Number(process.env.QUIZ_GAME_QUESTION_COUNT) * 2) {
+      console.log('qwe')
+      await this.quizGameRepo.setFinishStatusToGame(userCurrentGameId)
+    }
 
     return new CustomResponse(true, null, { answer, currentAnswerNumber });
   }

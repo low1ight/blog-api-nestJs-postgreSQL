@@ -19,6 +19,7 @@ import { ConnectGameStatus } from '../types/ConnectGameStatus';
 import { AnswerQuestionUseCaseCommand } from '../application/use-case/answerQuestion';
 import { AnswerQuestionDto } from './dto/AnswerQuestionDto';
 import { QuizGamePlayerProgressAnswerViewModel } from '../repository/query-repository/dto/view_models/QuizGamePlayerProgressAnswerViewModel';
+import { CustomResponseEnum } from '../../../../utils/customResponse/CustomResponseEnum';
 
 @Controller('/pair-game-quiz/pairs')
 @UseGuards(JwtAuthGuard)
@@ -42,13 +43,12 @@ export class QuizGameController {
     @CurrentUser() user: UserDataFromAT,
     @Param('id', new ParseUUIDPipe()) id: string,
   ) {
-    const game = await this.quizGameQueryRepo.getNotFinishedGameByGameId(id);
-    if (!game) return Exceptions.throwHttpException(1);
-    // if (
-    //   game.firstPlayerProgress.player.id !== user.id.toString() &&
-    //   game.secondPlayerProgress.player.id !== user.id.toString()
-    // )
-    //   return Exceptions.throwHttpException(1);
+    const isGameExist = await this.quizGameQueryRepo.isGameExistById(id);
+    if (!isGameExist) return Exceptions.throwHttpException(CustomResponseEnum.notExist);
+
+    const game = await this.quizGameQueryRepo.getGameByGameIdAndUserId(id,user.id)
+    if(!game)  return Exceptions.throwHttpException(CustomResponseEnum.forbidden);
+
     return game;
   }
 
@@ -59,8 +59,9 @@ export class QuizGameController {
     if (!result.isSuccess)
       return Exceptions.throwHttpException(result.errStatusCode);
 
-    return await this.quizGameQueryRepo.getNotFinishedGameByGameId(
+    return await this.quizGameQueryRepo.getGameByGameIdAndUserId(
       result.content.gameId,
+      user.id
     );
   }
 

@@ -35,7 +35,6 @@ export class AnswerQuestionUseCase
       result.content.currentAnswerNumber <
       Number(process.env.QUIZ_GAME_QUESTION_COUNT)
     ) {
-      console.log('get it');
 
       this.quizGameQuestionTimeOutService.setTimeOutForGame(
         userId,

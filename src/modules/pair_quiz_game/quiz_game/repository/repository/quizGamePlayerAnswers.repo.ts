@@ -12,9 +12,14 @@ export class QuizGamePlayerAnswersRepo {
     private readonly quizGamePlayerAnswersRepository: Repository<QuizGamePlayerAnswer>,
   ) {}
 
-  async getPlayerAnswersInGameById(playerId: number, gameId: string) {
+  async getPlayerAnswersInGameByGameId(playerId: number, gameId: string) {
     return await this.quizGamePlayerAnswersRepository.countBy({
       playerId,
+      gameId,
+    });
+  }
+  async getTotalPlayersAnswersInGameByGameId(gameId: string) {
+    return await this.quizGamePlayerAnswersRepository.countBy({
       gameId,
     });
   }

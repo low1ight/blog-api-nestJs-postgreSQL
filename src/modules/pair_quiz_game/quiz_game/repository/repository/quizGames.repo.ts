@@ -35,12 +35,20 @@ export class QuizGamesRepo {
   }
 
   async findGameWhatPendingSecondPlayer() {
-    const game = await this.quizGameRepository
+    return  await this.quizGameRepository
       .createQueryBuilder('QuizGame')
       .where('QuizGame.status = :status', { status: 'PendingSecondPlayer' })
       .getOne();
 
-    return game;
+
+  }
+
+
+  async setFinishStatusToGame(gameId:string) {
+    const game = await this.quizGameRepository.findOneBy({ id: gameId });
+    game.status = 'Finished';
+    game.finishGameDate = new Date()
+    await this.quizGameRepository.save(game);
   }
 
   async connectToGameWhatPendingSecondPlayer(gameId: string, userId: number) {

@@ -23,21 +23,21 @@ export class QuizGameQuestionTimeOutService {
         { answer: 'TimeOut' },
       );
 
-      console.log('question ' + answerNumber + ' answered by ' + playerId);
+      console.log('start ' + playerId);
 
       //check for creating timeout for next question
       const endTime = new Date();
       const timeTaken = endTime.getTime() - startTime.getTime();
-      console.log(timeTaken);
+      //console.log(timeTaken);
 
       if (
         result.isSuccess &&
         answerNumber < Number(process.env.QUIZ_GAME_QUESTION_COUNT)
       ) {
-        console.log('create timeout for question number ' + (answerNumber + 1));
+       // console.log('create timeout for question number ' + (answerNumber + 1));
         return this.setTimeOutForGame(playerId, answerNumber + 1);
       }
-      console.log('question list it empty, remove timeout from list');
+      //console.log('question list it empty, remove timeout from list');
       return this.stopTimeOut(playerId);
 
       //check is we have question for answer
@@ -70,7 +70,7 @@ export class QuizGameQuestionTimeOutService {
     //console.log(this.gamesTimeouts);
     const timeout = this.gamesTimeouts.get(userId);
     if (timeout) {
-      console.log('try to clear');
+     // console.log('try to clear');
       clearTimeout(timeout);
       this.gamesTimeouts.delete(userId);
     }
