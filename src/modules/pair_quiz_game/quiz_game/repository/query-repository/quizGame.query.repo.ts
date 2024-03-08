@@ -39,27 +39,29 @@ export class QuizGameQueryRepo {
       })
       .andWhere('NOT game.status = :status', { status: 'Finished' });
 
-
     return await this.getGame(queryBuilder);
   }
 
-  async getGameByGameIdAndUserId(gameId: string, userId:number) {
+  async getGameByGameIdAndUserId(gameId: string, userId: number) {
     const queryBuilder: SelectQueryBuilder<QuizGame> = this.quizGameRepository
       .createQueryBuilder('game')
       .where('game.id = :id', { id: gameId })
-      .andWhere('game."firstPlayerId" = :userId OR game."secondPlayerId" = :userId', {
-      userId
-    })
+      .andWhere(
+        'game."firstPlayerId" = :userId OR game."secondPlayerId" = :userId',
+        {
+          userId,
+        },
+      );
 
     return await this.getGame(queryBuilder);
   }
 
-  async isGameExistById(gameId:string):Promise<boolean> {
-      return await this.quizGameRepository.exist({where:
-    {
-      id:gameId
-    }
-  })
+  async isGameExistById(gameId: string): Promise<boolean> {
+    return await this.quizGameRepository.exist({
+      where: {
+        id: gameId,
+      },
+    });
   }
 
   private async getGame(query: SelectQueryBuilder<QuizGame>) {
@@ -87,8 +89,8 @@ export class QuizGameQueryRepo {
 
     //return game;
 
-    return game.status === 'Active'
-      ? new QuizGameStartViewModel(game)
-      : new QuizGamePendingViewModel(game);
+    return game.status === 'PendingSecondPlayer'
+      ? new QuizGamePendingViewModel(game)
+      : new QuizGameStartViewModel(game);
   }
 }

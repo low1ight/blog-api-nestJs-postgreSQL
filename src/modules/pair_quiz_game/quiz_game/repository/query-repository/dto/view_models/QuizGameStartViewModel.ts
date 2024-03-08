@@ -31,13 +31,14 @@ export class QuizGameStartViewModel {
 
     this.firstPlayerProgress = new QuizGamePlayerProgressViewModel(
       firstPlayer,
-      playerAnswers,questions
+      playerAnswers,
+      questions,
     );
     this.secondPlayerProgress = secondPlayer
       ? new QuizGamePlayerProgressViewModel(
           secondPlayer,
-          playerAnswers,questions
-
+          playerAnswers,
+          questions,
         )
       : null;
     this.questions = questions
@@ -46,33 +47,45 @@ export class QuizGameStartViewModel {
         )
       : null;
 
-    if (
-      this.isUserCanGetAdditionalBonusPoint(
-        this.firstPlayerProgress,
-        this.secondPlayerProgress.answers[4]?.addedAt,
-      )
-    ) {
-      this.firstPlayerProgress.score++;
+    if (status === 'Finished') {
+      const fp = this.firstPlayerProgress;
+      const sp = this.secondPlayerProgress;
+      if (
+        fp.score >= 1 &&
+        fp.answers[fp.answers.length - 1]?.addedAt <
+          sp.answers[sp.answers.length - 1].addedAt
+      ) {
+        ++this.firstPlayerProgress.score;
+      } else if (sp.score >= 1) {
+        ++this.secondPlayerProgress.score;
+      }
     }
-    if (
-      this.isUserCanGetAdditionalBonusPoint(
-        this.secondPlayerProgress,
-        this.firstPlayerProgress.answers[4]?.addedAt,
-      )
-    ) {
-      this.secondPlayerProgress.score++;
-    }
+
+    // if (
+    //   this.isUserCanGetAdditionalBonusPoint(
+    //     this.firstPlayerProgress,
+    //     this.secondPlayerProgress.answers[4]?.addedAt,
+    //   )
+    // ) {
+    //   this.firstPlayerProgress.score++;
+    // }
+    // if (
+    //   this.isUserCanGetAdditionalBonusPoint(
+    //     this.secondPlayerProgress,
+    //     this.firstPlayerProgress.answers[4]?.addedAt,
+    //   )
+    // ) {
+    //   this.secondPlayerProgress.score++;
+    // }
   }
 
-  private isUserCanGetAdditionalBonusPoint(
-    player: QuizGamePlayerProgressViewModel,
-    anotherPlayerDate: Date | undefined,
-  ): boolean {
-    return (
-      (player.score >= 1 &&
-        player.answers.length === 5 &&
-        !anotherPlayerDate) ||
-      player.answers[4]?.addedAt < anotherPlayerDate
-    );
-  }
+  // private isUserCanGetAdditionalBonusPoint(
+  //   player: QuizGamePlayerProgressViewModel,
+  //   anotherPlayerDate: Date | undefined,
+  // ): boolean {
+  //   return (
+  //     (player.score >= 1 &&
+  //     player.answers[player.answers.length - 1]?.addedAt < anotherPlayerDate
+  //   );
+  // }
 }
