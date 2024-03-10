@@ -51,7 +51,7 @@ export class AuthPublicController {
     @Res({ passthrough: true }) response: Response,
   ) {
     const { id, login } = req.user;
-    const title = req.headers['user-agent'];
+    const title = req.headers['user-agent'] || 'tests';
     const { refreshToken, accessToken } = await this.commandBus.execute(
       new LoginUseCaseCommand(id, login, title, ip),
     );

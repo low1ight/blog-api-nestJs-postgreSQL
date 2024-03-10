@@ -44,10 +44,15 @@ export class QuizGameController {
     @Param('id', new ParseUUIDPipe()) id: string,
   ) {
     const isGameExist = await this.quizGameQueryRepo.isGameExistById(id);
-    if (!isGameExist) return Exceptions.throwHttpException(CustomResponseEnum.notExist);
+    if (!isGameExist)
+      return Exceptions.throwHttpException(CustomResponseEnum.notExist);
 
-    const game = await this.quizGameQueryRepo.getGameByGameIdAndUserId(id,user.id)
-    if(!game)  return Exceptions.throwHttpException(CustomResponseEnum.forbidden);
+    const game = await this.quizGameQueryRepo.getGameByGameIdAndUserId(
+      id,
+      user.id,
+    );
+    if (!game)
+      return Exceptions.throwHttpException(CustomResponseEnum.forbidden);
 
     return game;
   }
@@ -61,7 +66,7 @@ export class QuizGameController {
 
     return await this.quizGameQueryRepo.getGameByGameIdAndUserId(
       result.content.gameId,
-      user.id
+      user.id,
     );
   }
 
