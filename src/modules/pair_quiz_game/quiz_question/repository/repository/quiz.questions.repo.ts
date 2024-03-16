@@ -58,9 +58,12 @@ export class QuizQuestionsRepo {
     const result = await this.quizQuestionRepository
       .createQueryBuilder('questions')
       .select('questions.id')
+      .where('questions.published = :status', { status: true })
       .orderBy('RANDOM()')
       .limit(count)
       .getMany();
+
+    console.log('questions:', result);
 
     return result.length === count ? result.map((i) => i.id) : null;
   }
